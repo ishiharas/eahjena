@@ -1,0 +1,29 @@
+
+<GridLayout rows="auto, *" class="intro">
+    <GridLayout row="0">
+        <StackLayout class="tile-top" [class.tile-top-slide-in]="opening"
+            [class.tile-top-slide-out]="!opening">
+            <StackLayout class="tile"></StackLayout>
+        </StackLayout>
+        <StackLayout [class.logo-slide-in]="opening"
+            [class.logo-slide-out]="!opening">
+            <Image src="res://eahlogo" stretch="aspectFit" class="logo"></Image>
+        </StackLayout>
+    </GridLayout>
+
+    <AbsoluteLayout class="text-center" rowSpan="2">
+        <StackLayout class="overlay center">
+            <Stacklayout class="m-x-15 overlay center" [class.overlay-zoom-in]="opening"
+                [class.overlay-zoom-out]="!opening"></Stacklayout>
+        </StackLayout>
+
+        <StackLayout class="center">
+            <Label text="Erhalte Zugang zum Stundenplan, Mensa, News-Feed, Wetter und mehr"
+                textWrap="true" [class.fade-out]="!opening" 
+                class="title text-center m-r-5 info-box"></Label>
+            <Button [class.fade-out]="!opening" text="App einrichten"
+                class="m-x-15 setup-btn btn-container" (tap)="selectModule()"></Button>
+        </StackLayout>
+
+    </AbsoluteLayout>
+</GridLayout>

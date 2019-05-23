@@ -1,0 +1,148 @@
+.page {
+    background-color: #00aaa0;
+}
+
+
+.container {
+    background-color: white;
+    border-radius: 30;
+    margin: 5;
+}
+
+.container-content {
+    padding: 20;
+    padding-top: 40;
+}
+
+.container-slide-in {
+	animation-duration: 0.5;
+	animation-timing-function: ease;
+	animation-name: container-slide-in;
+}
+
+.container-slide-out {
+	animation-duration: 0.5;
+	animation-timing-function: ease;  
+	animation-name: container-slide-out;
+}
+
+.header {
+    margin-left: 50;
+    margin-right: 50;
+}
+
+.header-study {
+    color: #ffffff;
+    font-size: 25;
+    text-align: center;
+    vertical-align: center;
+    horizontal-align: center;
+}
+
+.header-filled {
+    color: #4400cd;
+}
+
+.circle {
+    background-color: #394a5f;
+    border-radius: 50;
+    width: 50;
+    height: 50;
+    margin: 25;
+
+}
+
+.circle-num {
+    vertical-align: center;
+    text-align: center;
+    font-size: 20;
+    font-weight: 200;
+    font-family: sans-serif;
+    color: rgb(255, 255, 255);
+}
+
+.circle-sm {
+    background-color: #394a5f;
+    border-radius: 50;
+    width: 10;
+    height: 10;
+    margin: 25;
+}
+
+.bold {
+    font-weight: 500;
+}
+
+.input {
+    border-bottom-width: 1;
+    border-bottom-color: #eeeeee;
+    padding: 4 32 4 0;
+    margin-bottom: 30;
+    height: 28;
+}
+
+.notify {
+    margin-bottom: 40;
+    horizontal-alignement: right;
+
+}
+
+.arrow {
+    padding: 4 0 4 0;
+    margin-bottom: 30;
+    font-size: 15;
+}
+
+.edit-canteen {
+    padding: 4 0 4 0;
+    margin-bottom: 30;
+    font-size: 20;
+    color: #394a5f;
+}
+
+
+.title-label {
+    font-size: 16;
+    font-weight: 500;
+    color: #394a5f;
+}
+
+.navbtn {
+    font-weight: 200;
+    color: #FFFFFF;
+    height: 65;
+    background-color: #394a5f;
+
+}
+
+#btn:enabled {
+    background-color: #48607b;
+}
+
+.btn:disabled {
+    background-color: #72CDC7;
+    opacity: 0.9;
+}
+
+.highlight-header {
+	animation-duration: 0.5;
+	animation-timing-function: ease;
+    animation-name: highlight-header;
+    color: #42a064;
+}
+
+@keyframes container-slide-in {
+    0% { transform: translate(-500, 0) }
+    100% { transform: translate(0, 0) }
+  }
+  
+  @keyframes container-slide-out {
+    0% { transform: translate(0, 0) }
+    100% { transform: translate(-500, 0) }
+  }
+
+  @keyframes highlight-header {
+    0% { transform: scale(1, 1) }
+    50% { transform: scale(2, 2) }
+    100% { transform: scale(1, 1) }
+  }

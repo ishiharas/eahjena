@@ -1,0 +1,83 @@
+<RadSideDrawer [drawerTransition]="sideDrawerTransition" [drawerLocation]="drawerLocation" gesturesEnabled="true" tkExampleTitle tkToggleNavButton>
+    <StackLayout tkDrawerContent class="side-drawer-layout">
+        <left-drawer *ngIf="drawerLocation == 'Left'"></left-drawer>
+    </StackLayout>
+    
+    <StackLayout tkMainContent iosOverflowSafeArea="false">
+        <GridLayout rows="60, *">
+            <ScrollView style="height: 100%" row="0" rowSpan="2">
+                <GridLayout rows="auto, auto, auto" style="padding-top: 60">
+                    <GridLayout rows="auto, auto, auto" class="text-center">
+                        <Label row="0" text="&#xf111;" class="fa" style="font-size: 25; color: #00aaa0; vertical-align: center; opacity: 0.4;"></Label>
+                        <Label row="0" text="&#xf254;" class="fa" style="font-size: 16; color: #ffffff; vertical-align: center"></Label>
+                        <Label row="1" text="Stundenplan" class="event-component-header"></Label>
+                        <Label row="2" text="{{ _courses[0]?.dayOfWeek }}, {{ _courses[0]?.date }}" class="footnote"></Label>
+                    </GridLayout>
+                    <CardView [class.event-component-isIos]="isIos" [class.event-component-isAndroid]="isAndroid" row="1">
+                        <StackLayout>
+                                <GridLayout *ngFor="let course of _courses; let last = last"
+                                rows="auto, auto, auto" columns="*, 80" 
+                                class="list-courses" ripple rippleColor="#00aaa0">
+                                    <Label [text]="course.lecturer" 
+                                        row="0" col="0"
+                                        class="footnote m-t-10" style="font-size: 11" textWrap="true"></Label>
+                                    <Label [text]="course.startTime + ' - ' + course.endTime" 
+                                        row="0" col="1" 
+                                        class="footnote text-right m-t-10" style="font-size: 11"></Label>
+                                    <Label *ngIf="course.shortTitle; else longTitle" [text]="course.shortTitle"
+                                        row="1" col="0" textWrap="true" class="m-b-10"></Label>
+                                        <ng-template #longTitle>
+                                            <Label [text]="course.title"
+                                                row="1" col="0" textWrap="true" class="m-b-10"></Label>  
+                                        </ng-template>
+                                    <Label [text]="course.room" 
+                                        row="1" col="1" textWrap="true" 
+                                        class="footnote text-right m-b-10" style="font-size: 11; vertical-align: bottom"></Label>
+                                    <StackLayout class="hr-light" *ngIf="!last" row="2" col="0" colSpan="2"></StackLayout>
+                                </GridLayout>
+                        </StackLayout> 
+                    </CardView>        
+                    
+                    <StackLayout row="2">
+                        <StackLayout *ngFor="let canteen of _canteens; let last = last">
+                            <GridLayout rows="auto, auto, auto" class="text-center">
+                                <Label row="0" text="&#xf111;" class="fa" style="font-size: 25; color: #00aaa0; vertical-align: center; opacity: 0.4;"></Label>
+                                <Label row="0" text="&#xf787;" class="fa" style="font-size: 17; color: #ffffff; vertical-align: center"></Label>
+                                <Label row="1" text="{{ canteen[0]?.mensaName }}" class="event-component-header"></Label>
+                                <Label row="2" text="{{ canteen[0]?.dateAsString }}" class="footnote"></Label>
+                            </GridLayout>
+                            <CardView [class.event-component-isIos]="isIos" [class.event-component-isAndroid]="isAndroid">
+                                <StackLayout>
+                                    <GridLayout *ngFor="let food of canteen; let last = last" 
+                                        rows="auto, auto, auto, auto" columns="*, auto" 
+                                        class="list-courses" ripple rippleColor="#00aaa0"
+                                        (tap)="hint(food.ingredients)">
+            
+                                        <Label [text]="food.title" 
+                                            row="0" col="0"
+                                            class="footnote m-t-10" style="font-size: 11"></Label>
+                                        <Label [text]="food.price" 
+                                            row="0" col="1" 
+                                            class="footnote text-right m-t-10" style="font-size: 11"></Label>
+                                        <Label [text]="food.description"
+                                            row="1" col="0" textWrap="true"></Label>
+                                        <Label [text]="'Inhalt: ' + food.ingredients" 
+                                            row="2" col="0" 
+                                            class="footnote m-b-10" style="font-size: 11"></Label>
+                                        <StackLayout class="hr-light" *ngIf="!last" row="3" col="0" colSpan="2"></StackLayout>
+                                    </GridLayout>
+                                </StackLayout>
+                            </CardView>
+                        </StackLayout>
+                    </StackLayout>
+                </GridLayout>
+            </ScrollView>
+            <GridLayout row="0" rows="auto, auto" columns="60, *" class="actionbar">
+                <Image src="res://eahlogo_black" stretch="aspectFit" 
+                    row="0" col="0" colSpan="2" rowSpan="2" class="nav-header-title"></Image>
+                <Label text="&#xf0c9;" class="fa nav-icon" row="0" col="0" (tap)="openDrawer('Left')"></Label>
+                <Label text="Menü" row="1" col="0" class="nav-icon-header" (tap)="openDrawer('Left')"></Label>
+            </GridLayout>
+        </GridLayout>
+    </StackLayout>
+</RadSideDrawer>

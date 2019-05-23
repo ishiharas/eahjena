@@ -1,0 +1,64 @@
+<RadSideDrawer [drawerTransition]="sideDrawerTransition" [drawerLocation]="drawerLocation" gesturesEnabled="true" tkExampleTitle tkToggleNavButton>
+    <StackLayout tkDrawerContent class="side-drawer-layout">
+        <left-drawer *ngIf="drawerLocation == 'Left'"></left-drawer>
+    </StackLayout>
+    <GridLayout rows="60, *" tkMainContent iosOverflowSafeArea="false">  
+        <ScrollView #pageScroll row="0" rowSpan="2" (swipe)="onSwipe($event)" (scroll)="onScroll($event)">
+            <StackLayout style="padding-top: 60" [class.slide-out-left]="swipeLeft" [class.slide-out-right]="swipeRight">
+                <StackLayout *ngFor="let week of _coursesAllweeks[tabbarSelected]?.weekdays; let weekdayIndex = index">
+                    <GridLayout rows="auto, auto, auto" class="text-center">
+                        <Label row="0" text="&#xf111;" class="fa" style="font-size: 25; color: #00aaa0; vertical-align: center; opacity: 0.4;"></Label>
+                        <Label row="0" text="&#xf254;" class="fa" style="font-size: 16; color: #ffffff; vertical-align: center"></Label>
+                        <Label row="1" [text]="week.events[0]?.dayOfWeek" class="event-component-header"></Label>
+                        <Label row="2" [text]="week.events[0]?.date" class="footnote"></Label>
+                    </GridLayout>
+                    <CardView [class.event-component-isIos]="isIos" [class.event-component-isAndroid]="isAndroid" iosOverflowSafeArea="false">
+                        <StackLayout>
+                            <GridLayout *ngFor="let course of week?.events; let last = last; let courseIndex = index" 
+                                rows="auto, auto, auto" columns="*, 80" 
+                                class="list-courses" ripple rippleColor="#00aaa0"
+                                (tap)="showLessonsDialog(weekdayIndex, courseIndex, course)">
+                                <Label [text]="course.lecturer" 
+                                    row="0" col="0"
+                                    class="footnote m-t-10" style="font-size: 11" textWrap="true"></Label>
+                                <Label [text]="course.startTime + ' - ' + course.endTime" 
+                                    row="0" col="1" 
+                                    class="footnote text-right m-t-10" style="font-size: 11"></Label>
+                                <Label *ngIf="course.shortTitle; else longTitle" [text]="course.shortTitle"
+                                    row="1" col="0" textWrap="true" class="m-b-10"></Label>
+                                    <ng-template #longTitle>
+                                        <Label [text]="course.title"
+                                            row="1" col="0" textWrap="true" class="m-b-10"></Label>  
+                                    </ng-template>
+                                <Label [text]="course.room" 
+                                    row="1" col="1" textWrap="true" 
+                                    class="footnote text-right m-b-10" style="font-size: 11; vertical-align: bottom"></Label>
+                                <StackLayout *ngIf="!last" class="hr-light" row="2" col="0" colSpan="2"></StackLayout>
+                            </GridLayout>
+                        </StackLayout>
+                    </CardView>   
+                </StackLayout> 
+            </StackLayout>   
+        </ScrollView>
+        <GridLayout row="0" rows="auto, auto" columns="60, *, 60" class="actionbar">
+            <Label text="Stundenplan" row="0" col="0" colSpan="3" rowSpan="2" class="nav-header-title"></Label>
+            <Label text="&#xf0c9;" class="fa nav-icon" row="0" col="0" (tap)="openDrawer('Left')"></Label>
+            <Label text="Menü" row="1" col="0" class="nav-icon-header" (tap)="openDrawer('Left')"></Label>
+            <Label text="&#xf067;" class="fa nav-icon-right" row="0" col="2" (tap)="openPlannerEdit()"></Label>
+            <Label text="Hinzu." row="1" col="2" class="nav-icon-header-right" (tap)="openPlannerEdit()"></Label>
+        </GridLayout>
+        <ScrollView #tabbarScroll row="1" orientation="horizontal" [ngClass]="tabbarHidden ? 'tabbar-slide-in' : 'tabbar-slide-out'">
+            <StackLayout orientation="horizontal" class="tabbar">
+                <StackLayout    #tabbarStack
+                                *ngFor="let item of _coursesAllweeks; let i = index" 
+                                class="tabbar-cell" 
+                                [ngClass]="{'tabbar-selectedcell': tabbarSelected === i}"
+                                (tap)="tabbarTapped(i)">
+                    <Label  #tabbarLabel
+                            [text]="item.weekInYear + '. KW'" 
+                            textWrap="true"></Label>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </GridLayout>
+</RadSideDrawer>

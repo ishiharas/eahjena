@@ -1,0 +1,53 @@
+<GridLayout rows="60, *">  
+    <ScrollView row="0" rowSpan="2">
+        <GridLayout rows="auto, auto">
+            <Label row="0" text="&#xf111;" class="fa search-icon-bg" style="margin-top: 60"></Label>
+            <Label row="0" text="&#xf002;" class="fa search-icon" style="margin-top: 60"></Label>
+            <Stacklayout row="0" style="width: 30; height: 30; margin-top: 60" (tap)="onSearchTap()"></Stacklayout>
+            <StackLayout row="1" style="margin-top: 20">
+                <StackLayout *ngFor="let item of _courses" class="list-container">
+                    <GridLayout columns="32, 18, auto">
+                        <Label *ngIf="checkMarked(item.uid);else circleEmpty" col="0" text="&#xf058;" class="far checkmark-icon-bg text-center" (tap)="markTapped(item.uid, false)"></Label>
+                        <ng-template #circleEmpty>
+                            <Label col="0" text="&#xf111;" class="far checkmark-icon-bg text-center" (tap)="markTapped(item.uid, true)"></Label> 
+                        </ng-template>
+                        
+                        <Label *ngIf="!checkSelected(item.categoryShortTitle);else iconExpanded" col="1" text="&#xf054;" class="fa expand-icon"></Label>
+                        <ng-template #iconExpanded>
+                            <Label col="1" text="&#xf078;" class="fa expand-icon"></Label>
+                        </ng-template>
+                        
+                        <Label col="2" [text]="item.categoryShortTitle" style="padding: 5 500 5 0; color: #000000" (tap)="shortTitleTapped(item.categoryShortTitle)"></Label>      
+                    </GridLayout>
+                    <StackLayout *ngIf="checkSelected(item.categoryShortTitle)">
+                        <StackLayout *ngFor="let events of item.collectedEvents" 
+                            style="font-weight: 300" (tap)="shortTitleTapped(item.categoryShortTitle)">
+                            <Label [text]="events.shortTitle" style="padding-left: 50; color: #000000"></Label>
+                            <StackLayout *ngFor="let date of events.dates">
+                                <GridLayout columns="125, auto" style="padding-left: 60; font-size: 11">
+                                    <Label [text]="date.day + '. ' + date.date" col="0"></Label>
+                                    <Label [text]="date.startTime + ' - ' + date.endTime" col="1"></Label>
+                                </GridLayout>
+                            </StackLayout>
+                        </StackLayout>
+                    </StackLayout>
+                    <StackLayout class="hr-light"></StackLayout>
+                </StackLayout>
+            </StackLayout>
+        </GridLayout>
+    </ScrollView>
+    <GridLayout row="0" rowSpan="2" rows="350, 50" [ngClass]="checkSelection ? 'slide-in' : 'slide-out'" [visibility]="overlay ? 'visible' : 'collapsed'">
+        <courses row="0" (selectedID)="emittedID = $event" (selected)="courseSelected = $event"></courses>
+        <Label row="1" text="&#xf111;" class="fa search-icon-bg" style="margin-top: -40"></Label>
+        <Label row="1" text="&#xf002;" class="fa search-icon" style="margin-top: -40"></Label>
+        <Stacklayout row="1" style="width: 30; height: 30; margin-top: -40" (tap)="onSearchTap()"></Stacklayout>
+    </GridLayout>
+    <GridLayout row="0" rows="auto, auto" columns="60, *, 60" class="actionbar">
+        <Label text="Modul finden" row="0" col="0" colSpan="3" rowSpan="2" class="nav-header-title"></Label>
+        <Label text="&#xf053;" class="fa nav-icon" row="0" col="0" (tap)="onBackTap()"></Label>
+        <Label text="Zurück" row="1" col="0" class="nav-icon-header" (tap)="onBackTap()"></Label>
+        <Label *ngIf="checkSaveState()" text="&#xf0c7;" class="fa nav-icon-right" style="font-size: 21" row="0" col="2" (tap)="onSaveSelectionTap()"></Label>
+        <Label *ngIf="checkSaveState()" text="Speich." row="1" col="2" class="nav-icon-header-right" (tap)="onSaveSelectionTap()"></Label>
+    </GridLayout>
+
+</GridLayout>

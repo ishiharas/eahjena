@@ -1,0 +1,37 @@
+<GridLayout rows="150, *, 75" columns="*" class="page">
+    <GridLayout columns="*, *, *, *, *" class="header">
+        <Label class="circle" col="0"></Label>
+        <Label class="fa header-study" col="0" text="&#xf19d;" [class.highlight-header]="nextButtonEnabled()"></Label>
+        
+        <Label class="circle-sm" col="1"></Label>
+
+        <Label class="circle" col="2"></Label>
+        <Label class="fa header-study" col="2" text="&#xf2e7;" [class.highlight-header]="canteenHeaderEnabled()"></Label>
+
+        <Label class="circle-sm" col="3"></Label>
+        
+        <Label class="circle" col="4"></Label>
+        <Label class="fa header-study" col="4" text="&#xf085;" [class.highlight-header]="settingsHeaderEnabled()"></Label>
+    </GridLayout>
+
+    <FlexboxLayout row="1" flexDirection="column" class="container" [class.container-slide-in]="opening"
+    [class.container-slide-out]="!opening" [ngSwitch]="currentStep">
+
+        <courses *ngSwitchCase="1" 
+            (selected)="selectionFinishedCourse = $event"></courses>
+        <canteens *ngSwitchCase="2" 
+            (selected)=" selectionFinishedCanteen = $event "
+            (canteenCollection)=" canteenArr = $event "></canteens>
+        <preferences *ngSwitchCase="3" 
+            (selected)="selectionFinishedSettings = $event"></preferences>
+
+    </FlexboxLayout>
+
+    <GridLayout row="2" columns="*, *">
+        <Button col="0" class="btn btn-rounded-lg navbtn " 
+            text="Zurück" (tap)="onPreviousButton()" isEnabled="{{ currentStep > 1 }}"></Button>
+        <Button col="1" class="btn btn-rounded-lg navbtn" 
+            text="Weiter" (tap)="onNextButton()" isEnabled="{{ nextButtonEnabled() }}"></Button>
+    </GridLayout>
+
+</GridLayout>

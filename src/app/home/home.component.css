@@ -1,0 +1,85 @@
+.nav-icon {
+    color: #000000;
+    font-size: 25;
+    text-align: center;
+    padding-left: 20;
+    padding-top: 5;
+
+}
+
+.nav-icon-header {
+    font-size: 10;
+    text-align: center;
+    padding-left: 20;
+    margin-bottom: 10;
+    color: #000000;
+}
+
+.nav-header-title {
+    height: 50;
+}
+
+.side-drawer-layout {
+    background: linear-gradient(to right, #394a5f, #394a5f, #2f3d4f);
+}
+
+.event-component-isIos {
+    background-color: rgb(245, 245, 245);
+    radius: 15;
+    margin-left: 20;
+    margin-right: 20;
+    margin-bottom: 40;
+    margin-top: 10;
+    elevation: 30;
+    color: #000000;
+}
+
+.event-component-isAndroid {
+    background-color: rgb(245, 245, 245);
+    radius: 25;
+    margin-left: 20;
+    margin-right: 20;
+    margin-bottom: 40;
+    margin-top: 10;
+    elevation: 30;
+    color: #000000;
+}
+
+.inner-event-component {
+    color: #000000;
+}
+
+.event-component-header {
+    font-size: 20;
+    text-align: center;
+    font-weight: 300;
+    color: #000000;
+    vertical-align: center;
+}
+
+.last {
+    margin-bottom: 35;
+}
+
+.list-courses {
+    font-size: 15;
+    padding-left: 10;
+    padding-right: 10;
+}
+
+.list-group {
+    background-color:  rgb(245, 245, 245);
+}
+
+.actionbar {
+    opacity: 0.9;
+    background-color: white;
+    height: 60;
+    padding-top: 5;
+}
+
+.divider {
+    margin-left: 10;
+    margin-right: 10;
+    margin-bottom: 10;
+}

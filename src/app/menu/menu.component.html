@@ -1,0 +1,61 @@
+<RadSideDrawer [drawerTransition]="sideDrawerTransition" [drawerLocation]="drawerLocation" gesturesEnabled="true" tkExampleTitle tkToggleNavButton>
+    <StackLayout tkDrawerContent class="side-drawer-layout">
+        <left-drawer *ngIf="drawerLocation == 'Left'"></left-drawer>
+    </StackLayout>
+    <GridLayout rows="60, *" tkMainContent>
+        <ScrollView #pageScroll row="0" rowSpan="2" (swipe)="onSwipe($event)" (scroll)="onScroll($event)">
+            <StackLayout style="padding-top: 75" [class.slide-out-left]="swipeLeft" [class.slide-out-right]="swipeRight">
+                <StackLayout *ngFor="let canteen of _canteens[tabbarSelected]?.canteens">
+                    <GridLayout rows="auto, auto" class="event-component-header text-center">
+                        <Label row="0" text="&#xf111;" class="fa" style="font-size: 25; color: #00aaa0; vertical-align: center; opacity: 0.4;"></Label>
+                        <Label row="0" text="&#xf787;" class="fa" style="font-size: 16; color: #ffffff; vertical-align: center"></Label>
+                        <Label row="1" [text]="canteen.canteenName" class="subtitles"></Label>
+                    </GridLayout>
+                    <CardView
+                    [class.event-component-isIos]="isIos" [class.event-component-isAndroid]="isAndroid" iosOverflowSafeArea="false">
+                        <StackLayout>
+                            <GridLayout *ngFor="let food of canteen.food; let last = last" 
+                                rows="auto, auto, auto, auto" columns="*, auto" 
+                                class="list-canteens" ripple rippleColor="#00aaa0"
+                                (tap)="hint(food.ingredients)">
+    
+                                <Label [text]="food.title" 
+                                    row="0" col="0"
+                                    class="footnote m-t-10" style="font-size: 11"></Label>
+                                <Label [text]="food.price" 
+                                    row="0" col="1" 
+                                    class="footnote text-right m-t-10" style="font-size: 11"></Label>
+                                <Label [text]="food.description"
+                                    row="1" col="0" textWrap="true"></Label>
+                                <Label [text]="'Inhalt: ' + food.ingredients" 
+                                    row="2" col="0" 
+                                    class="footnote m-b-10" style="font-size: 11"></Label>
+                                <StackLayout class="hr-light" *ngIf="!last" row="3" col="0" colSpan="2"></StackLayout>
+
+                            </GridLayout>
+                        </StackLayout>
+                    </CardView>
+                </StackLayout>
+            </StackLayout>   
+        </ScrollView>
+        <GridLayout row="0" rows="auto, auto" columns="60, *" class="actionbar">
+            <Label text="Speiseplan" row="0" col="0" colSpan="2" class="nav-header-title"></Label>
+            <Label [text]="_canteens[tabbarSelected]?.dayString" row="1" col="0" colSpan="2" style="color: black" class="footnote m-b-10 text-center"></Label>
+            <Label text="&#xf0c9;" class="fa nav-icon" row="0" col="0" (tap)="openDrawer('Left')"></Label>
+            <Label text="Menü" row="1" col="0" class="nav-icon-header" (tap)="openDrawer('Left')"></Label>
+        </GridLayout>
+        <ScrollView #tabbarScroll row="1" orientation="horizontal" [ngClass]="tabbarHidden ? 'tabbar-slide-in' : 'tabbar-slide-out'">
+            <StackLayout orientation="horizontal" class="tabbar">
+                <StackLayout    #tabbarStack
+                                *ngFor="let item of _canteens; let i = index" 
+                                class="tabbar-cell" 
+                                [ngClass]="{'tabbar-selectedcell': tabbarSelected === i}"
+                                (tap)="tabbarTapped(i)">
+                    <Label  #tabbarLabel
+                            [text]="item.dateShort" 
+                            textWrap="true"></Label>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </GridLayout>
+</RadSideDrawer>
