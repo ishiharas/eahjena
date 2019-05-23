@@ -28,8 +28,11 @@ export class SelectorComponent implements OnInit {
 
     ngOnInit(): void {
         this.page.actionBarHidden = true;
+
+        // clean application-settings and local-storage
         localStorage.clear();
         clear();
+        console.log('LocalStorage + Appsettings cleared');
     }
 
     onPreviousButton(): void {

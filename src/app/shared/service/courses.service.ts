@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { Observable, of } from "rxjs";
 import { CoursesModel } from "../model/courses.model";
 import { TimestampService } from "./timestamp.service";
 import { LSOBJECTS } from "../ls-objects";
-import { flatMap, finalize } from "rxjs/operators";
+import { flatMap, finalize, map } from "rxjs/operators";
 import { courses, eventQuery } from "../../selector/shared/config";
 import { getString } from "tns-core-modules/application-settings/application-settings";
 import * as localStorage from 'nativescript-localstorage';
@@ -12,42 +12,15 @@ import * as localStorage from 'nativescript-localstorage';
 @Injectable()
 export class CoursesService {
     private coursesUrl: string = courses;
-    private _courseData: Observable<Array<CoursesModel>>;
-    private _localCourseData: Observable<Array<CoursesModel>> = localStorage.getItem(LSOBJECTS.MODULEPLAN);
-    private _updateAvailable: Observable<{ updatable: boolean, time: Date }>;
+    private localCourseData: CoursesModel[] = localStorage.getItem(LSOBJECTS.MODULEPLAN);
+
+    private _updateAvailable: Observable<{ updatable: boolean, time: string }>;
 
     constructor(
         private http: HttpClient,
         private _timestampService: TimestampService) { 
             this._updateAvailable = _timestampService._updateAvailable;
     } 
-
-    getCourseData(courseId?: string): Observable<Array<CoursesModel>> {
-        let headers = this.createRequestHeader();
-        let courseString = !courseId ? getString("timetable_id") : courseId;
-        let localCourseData: Observable<Array<CoursesModel>> = localStorage.getItem(LSOBJECTS.MODULEPLAN);
-
-        return this._updateAvailable.pipe(flatMap((data) => {
-            if (data.updatable) {
-
-                this._courseData = this.http
-                    .get<Array<CoursesModel>>(this.coursesUrl + eventQuery + courseString, { headers: headers })
-                    .pipe(finalize(() => {
-                        localStorage.setItem(LSOBJECTS.LASTUPDATED, data.time);
-                    }));
-
-                localStorage.setItemObject(LSOBJECTS.MODULEPLAN, this._courseData);
-                console.log('passed local data with refresh');
-
-                this._localCourseData = localStorage.getItem(LSOBJECTS.MODULEPLAN);
-                return this._localCourseData;
-            } else {
-                console.log('passed local data without refresh');
-                let localCourseData: Observable<Array<CoursesModel>> = localStorage.getItem(LSOBJECTS.MODULEPLAN);
-                return localCourseData;             
-            }
-        }))
-    }
 
     private createRequestHeader() {
         let headers = new HttpHeaders({
@@ -58,4 +31,32 @@ export class CoursesService {
 
         return headers;
     }
+
+    getCourseData(): Observable<Array<CoursesModel>> {
+        let headers = this.createRequestHeader();
+        let courseString = getString("timetable_id");
+
+        return this._updateAvailable.pipe(flatMap((data) => {
+            if (data.updatable) {
+                return this.http
+                    .get<Array<CoursesModel>>(this.coursesUrl + eventQuery + courseString, { headers: headers })
+                    .pipe(finalize(() => {
+                        localStorage.setItem(LSOBJECTS.LASTUPDATED, data.time);
+                    }), map((finalData) => {
+                        localStorage.setItemObject(LSOBJECTS.MODULEPLAN, finalData);
+                        console.log('saved moduleplan to localStorage');
+                        return finalData;
+                    }));
+            } else {
+                console.log('moduleplan from localstorage');
+                return of(this.localCourseData);             
+            }
+        }));
+    }
+
+    getSpecificCourseData(courseId: string): Observable<CoursesModel[]> {
+        let headers = this.createRequestHeader();
+        return this.http.get<Array<CoursesModel>>(this.coursesUrl + eventQuery + courseId, { headers: headers });
+    }
+
 }

@@ -64,7 +64,7 @@ export class PlannerEditComponent implements OnInit {
     extractCoursesData(): void {
         this._isLoadingCourses = true;
 
-        this._coursesService.getCourseData(this.emittedID)
+        this._coursesService.getSpecificCourseData(this.emittedID)
             .pipe(finalize(() => this._isLoadingCourses = false))
             .subscribe((result: Array<CoursesModel>) => {
                 let listCollection = [];
