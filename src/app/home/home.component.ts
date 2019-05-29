@@ -166,5 +166,16 @@ export class HomeComponent implements AfterViewInit {
 
     }
 
+    serviceTest() {
+        this._coursesService.getSpecificModules('SPLUS4280BA', 'SPLUS938ED2s').subscribe((str) => {
+            str.forEach(element => {
+                element.weekdays.forEach((ele) => {
+                    ele.events.forEach((e) => {
+                        console.log(e.date + ' ' + e.title);
+                    })                    
+                })
+            });
+        })
+    }
 
 }

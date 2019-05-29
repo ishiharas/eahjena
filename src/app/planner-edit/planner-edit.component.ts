@@ -3,6 +3,8 @@ import { Page } from "tns-core-modules/ui/page/page";
 import { CoursesService } from "../shared/service/courses.service";
 import { finalize } from "rxjs/operators";
 import { CoursesModel } from "../shared/model/courses.model";
+import * as localStorage from 'nativescript-localstorage';
+import { LSOBJECTS } from "../shared/ls-objects";
 
 
 @Component({
@@ -24,13 +26,15 @@ export class PlannerEditComponent implements OnInit {
     public _courses = [];
     public _isLoadingCourses: boolean = false;
 
+    public additionalModule: Array<{ courseID: string, moduleId: string[]}>;
+
     constructor(private page: Page,
         private _coursesService: CoursesService) {
-
     }
 
     ngOnInit(): void {
         this.page.actionBarHidden = true;
+        this.additionalModule = localStorage.getItem(LSOBJECTS.ADDITIONALMODULES);
     }
 
     onBackTap(): void {
@@ -40,11 +44,21 @@ export class PlannerEditComponent implements OnInit {
     onSearchTap(): void {
         if (this.emittedID) {
             this.checkSelection = !this.checkSelection;
-            this.markedIDs = [];
+   
             if (this.overlay) {
                 if (this.emittedID !== this.lastEmittedId) {
                     this.lastEmittedId = this.emittedID;
+                    this.markedIDs = [];
                     this.extractCoursesData();
+
+                    if (this.additionalModule) {
+                        this.additionalModule.map((obj) => {
+                            if (obj.courseID == this.emittedID) {
+                                this.markedIDs = obj.moduleId;
+                            };
+                        });
+                    };
+
                 }
                 setTimeout(() => {
                     this.overlay = false;
@@ -135,7 +149,8 @@ export class PlannerEditComponent implements OnInit {
     }
 
     checkSaveState(): boolean {
-        return this.markedIDs[0] ? true : false;
+        // return this.markedIDs[0] ? true : false;
+        return this.overlay ? false : true;
     }
 
     markTapped(uid: string, empty: boolean): void {
@@ -156,6 +171,51 @@ export class PlannerEditComponent implements OnInit {
     }
 
     onSaveSelectionTap(): void {
-        console.log('tapped on saveSelection');
+        if (!this.additionalModule) {
+            this.additionalModule = [];
+            if (this.markedIDs && this.markedIDs.length) {
+                this.additionalModule.push({
+                    courseID: this.emittedID,
+                    moduleId: this.markedIDs
+                });
+            }
+            localStorage.setItemObject(LSOBJECTS.ADDITIONALMODULES, this.additionalModule);
+        } else {
+            let found: boolean = false;
+            this.additionalModule.map((obj, index) => {
+                if (obj.courseID == this.emittedID) {
+                    obj.moduleId = this.markedIDs;
+                    found = true;
+                    if (!obj.moduleId || !obj.moduleId.length) {
+                        this.additionalModule.splice(index, 1);
+                    };
+                    return obj;
+                } else {
+                    return obj;
+                }
+            });
+            if (!found) {
+                if (this.markedIDs && this.markedIDs.length) {
+                    this.additionalModule.push({
+                        courseID: this.emittedID,
+                        moduleId: this.markedIDs
+                    });
+                }
+            };
+            localStorage.setItemObject(LSOBJECTS.ADDITIONALMODULES, this.additionalModule);
+        }
+
+        // -- Beginning of Method
+        // Method for printing out content of saveState Button
+        // Useful for debugging different Savestates of Localstorage
+        console.log('Storage Content of LSOBJECTS.ADDITIONALMODULES');
+        this.additionalModule.forEach(obj => {
+            console.log(obj.courseID);
+            obj.moduleId.forEach(ob => {
+                console.log('---\t' + ob);
+            })
+        });
+        // -- End of Method
     }
+
 }
