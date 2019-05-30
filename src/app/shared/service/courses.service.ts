@@ -1,20 +1,20 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Observable, of } from "rxjs";
+import { Observable, of, forkJoin, empty } from "rxjs";
 import { CoursesModel } from "../model/courses.model";
 import { TimestampService } from "./timestamp.service";
 import { LSOBJECTS } from "../ls-objects";
-import { flatMap, finalize, map, mergeMap } from "rxjs/operators";
+import { flatMap, finalize, map, reduce } from "rxjs/operators";
 import { courses, eventQuery } from "../../selector/shared/config";
 import { getString } from "tns-core-modules/application-settings/application-settings";
 import * as localStorage from 'nativescript-localstorage';
-import { CoursesDayModel } from "../model/courses-day.model";
 
 @Injectable()
 export class CoursesService {
     private coursesUrl: string = courses;
     private localCourseData: CoursesModel[] = localStorage.getItem(LSOBJECTS.MODULEPLAN);
 
+    private _additionalModule: Array<{ courseID: string, moduleId: string[]}> = localStorage.getItem(LSOBJECTS.ADDITIONALMODULES);
     private _updateAvailable: Observable<{ updatable: boolean, time: string }>;
 
     constructor(
@@ -33,27 +33,72 @@ export class CoursesService {
         return headers;
     }
 
-    getCourseData(): Observable<Array<CoursesModel>> {
+    getCourseData(): Observable<CoursesModel[]> {
         let headers = this.createRequestHeader();
         let courseString = getString("timetable_id");
 
         return this._updateAvailable.pipe(flatMap((data) => {
             if (data.updatable) {
+                let baseRequest = this.http
+                    .get<Array<CoursesModel>>(this.coursesUrl + eventQuery + courseString, { headers: headers });
+                if (this._additionalModule) {
+                    let additionalForked: Observable<CoursesModel[]>[] = [];
+                    additionalForked.push(baseRequest);
+                    this._additionalModule.forEach((obj) => { 
+                        additionalForked.push(this.getSpecificModules(obj.courseID, obj.moduleId));
+                    });
 
-                // if additional SPLUS ID's available
-                // x - additional requests to get the whole course plan
-                // search through every single lesson, if specific id available
+                    return forkJoin(additionalForked)
+                        .pipe(map(response => response
+                                .reduce((a, b) => {
+                                    b.forEach((item) => {
+                                        let f = a.find((i) => i.weekInYear == item.weekInYear);
+                                        let f_ind = a.findIndex((i) => i.weekInYear == item.weekInYear);
+                                        console.log('addition Item 1')
+                                        if (f) {
+                                            console.log('addition Item 2')
 
+                                            item.weekdays.forEach((week) => {
+                                                let f2 = f.weekdays.find((i) => i.dayInWeek == week.dayInWeek);
+                                                let f2_ind = f.weekdays.findIndex((i) => i.dayInWeek == week.dayInWeek);
+                                                if (f2) {
+                                                    console.log('addition Item 3')
 
-                return this.http
-                    .get<Array<CoursesModel>>(this.coursesUrl + eventQuery + courseString, { headers: headers })
-                    .pipe(finalize(() => {
+                                                    if (week.events.length) {
+                                                        a[f_ind].weekdays[f2_ind].events =
+                                                            a[f_ind].weekdays[f2_ind].events.concat(week.events);
+                                                        a[f_ind].weekdays[f2_ind].events =
+                                                            this.sortByKey(a[f_ind].weekdays[f2_ind].events, 'startDate');
+                                                    }
+                                                } else {
+                                                    a[f_ind].weekdays.push(week);
+                                                    a[f_ind].weekdays = this.sortByKey(a[f_ind].weekdays, 'dayInWeek');
+                                                }
+                                            });
+                                        } else {
+                                            a.push(item);
+                                            a = this.sortByKey(a, 'weekInYear');
+                                        };
+                                    });
+                                    return a;
+                                })))
+                        .pipe(finalize(() => {
+                                localStorage.setItem(LSOBJECTS.LASTUPDATED, data.time);
+                            }), map((finalData) => {
+                                localStorage.setItemObject(LSOBJECTS.MODULEPLAN, finalData);
+                                console.log('saved moduleplan to localStorage');
+                                return finalData;
+                            }));
+                } else {
+                    return baseRequest.pipe(finalize(() => {
                         localStorage.setItem(LSOBJECTS.LASTUPDATED, data.time);
                     }), map((finalData) => {
                         localStorage.setItemObject(LSOBJECTS.MODULEPLAN, finalData);
                         console.log('saved moduleplan to localStorage');
                         return finalData;
                     }));
+                }
+
             } else {
                 console.log('moduleplan from localstorage');
                 return of(this.localCourseData);             
@@ -66,7 +111,7 @@ export class CoursesService {
         return this.http.get<Array<CoursesModel>>(this.coursesUrl + eventQuery + courseId, { headers: headers });
     }
 
-    getSpecificModules(splusID: string, moduleID?: string): Observable<CoursesModel[]> {
+    getSpecificModules(splusID: string, moduleIDs: string[]): Observable<CoursesModel[]> {
         let headers = this.createRequestHeader();
 
         return this.http.get<CoursesModel[]>(this.coursesUrl + eventQuery + splusID, { headers: headers })
@@ -75,7 +120,7 @@ export class CoursesService {
                     models.weekdays.map((weeks) => {
                         weeks.events = weeks.events
                             .filter((events) => {
-                                return (moduleID.includes('-')) ? events.uid === moduleID : events.uid.startsWith(moduleID);
+                                    return moduleIDs.some(obj => events.uid.startsWith(obj));
                             });
                         return weeks;
                     });
@@ -83,5 +128,12 @@ export class CoursesService {
                 });
         }));
     }
+
+    sortByKey(array, key) {
+        return array.sort(function(a, b) {
+            var x = a[key]; var y = b[key];
+            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        });
+    };
 
 }

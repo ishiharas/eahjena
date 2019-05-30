@@ -1,10 +1,7 @@
-import { Component, ViewChild } from "@angular/core";
-import { Router, NavigationEnd, NavigationStart } from "@angular/router";
+import { Component } from "@angular/core";
+import { Router, NavigationEnd } from "@angular/router";
 import { filter } from "rxjs/operators";
 import { RouterExtensions } from "nativescript-angular/router";
-import { RadSideDrawer } from "nativescript-ui-sidedrawer";
-import * as app from "tns-core-modules/application";
-import { RadSideDrawerComponent } from "nativescript-ui-sidedrawer/angular/side-drawer-directives";
 import { setString, getString } from "tns-core-modules/application-settings/application-settings";
 
 

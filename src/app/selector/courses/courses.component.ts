@@ -7,7 +7,7 @@ import { Course } from '../shared/course.model';
 import { Term } from '../shared/term.model';
 import { Group } from '../shared/group.model';
 import { action } from 'tns-core-modules/ui/dialogs/dialogs';
-import { setString } from "tns-core-modules/application-settings";
+import { setString, getString } from "tns-core-modules/application-settings";
 
 
 @Component({
@@ -170,8 +170,10 @@ export class CoursesComponent implements OnInit {
                         this.getCourseID(this.selection.course_index, this.selection.term_index, this.selection.group_index);
                     
                     this.selected.emit(true);
-                    this.selectedID.emit(this.selection.timetableId)
-                    setString("timetable_id", this.selection.timetableId);
+                    this.selectedID.emit(this.selection.timetableId);
+                    if (!getString('timetable_id')) {
+                        setString('timetable_id', this.selection.timetableId);
+                    };
                 };
             });
         } else {

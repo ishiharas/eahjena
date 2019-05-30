@@ -180,6 +180,7 @@ export class PlannerEditComponent implements OnInit {
                 });
             }
             localStorage.setItemObject(LSOBJECTS.ADDITIONALMODULES, this.additionalModule);
+            localStorage.removeItem(LSOBJECTS.LASTUPDATED);
         } else {
             let found: boolean = false;
             this.additionalModule.map((obj, index) => {
@@ -203,9 +204,14 @@ export class PlannerEditComponent implements OnInit {
                 }
             };
             localStorage.setItemObject(LSOBJECTS.ADDITIONALMODULES, this.additionalModule);
+            localStorage.removeItem(LSOBJECTS.LASTUPDATED);
+            if (!this.additionalModule[0]) {
+                console.log('additionalModule is empty and gets deleted');
+                localStorage.removeItem(LSOBJECTS.ADDITIONALMODULES);
+            };
         }
 
-        // -- Beginning of Method
+        // -- Beginning of Logging Method
         // Method for printing out content of saveState Button
         // Useful for debugging different Savestates of Localstorage
         console.log('Storage Content of LSOBJECTS.ADDITIONALMODULES');

@@ -15,6 +15,8 @@ import { CanteensModel } from "../shared/model/canteens.model";
 import { INGREDIENTS } from "../shared/ingredients";
 import { setString } from "tns-core-modules/application-settings/application-settings";
 import { ScrollEventData } from "tns-core-modules/ui/scroll-view";
+import { LSOBJECTS } from "../shared/ls-objects";
+import * as localStorage from 'nativescript-localstorage';
 
 registerElement('CardView', () => CardView);
 
@@ -167,7 +169,11 @@ export class HomeComponent implements AfterViewInit {
     }
 
     serviceTest() {
-        this._coursesService.getSpecificModules('SPLUS4280BA', 'SPLUS938ED2s').subscribe((str) => {
+        let additionalModule: { courseID: string, moduleId: string[]}[] = localStorage.getItem(LSOBJECTS.ADDITIONALMODULES);
+        console.log(additionalModule[0].courseID);
+        console.log(additionalModule[0].moduleId);
+        
+        this._coursesService.getSpecificModules(additionalModule[0].courseID, additionalModule[0].moduleId).subscribe((str) => {
             str.forEach(element => {
                 element.weekdays.forEach((ele) => {
                     ele.events.forEach((e) => {
