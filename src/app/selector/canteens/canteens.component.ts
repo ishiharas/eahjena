@@ -72,7 +72,9 @@ export class CanteensComponent implements OnInit {
         
         this.actionOptions.length = 0;
         this.getCanteens().forEach((canteen) => {
-            this.actionOptions.push(canteen.name);
+			if (!this.selection.canteens.find(e => e.name == canteen.name)) {
+				this.actionOptions.push(canteen.name);
+			}
         });
         this.actionOptions.sort();
 

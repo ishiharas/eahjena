@@ -54,16 +54,11 @@ export class CoursesService {
                                     b.forEach((item) => {
                                         let f = a.find((i) => i.weekInYear == item.weekInYear);
                                         let f_ind = a.findIndex((i) => i.weekInYear == item.weekInYear);
-                                        console.log('addition Item 1')
                                         if (f) {
-                                            console.log('addition Item 2')
-
                                             item.weekdays.forEach((week) => {
                                                 let f2 = f.weekdays.find((i) => i.dayInWeek == week.dayInWeek);
                                                 let f2_ind = f.weekdays.findIndex((i) => i.dayInWeek == week.dayInWeek);
                                                 if (f2) {
-                                                    console.log('addition Item 3')
-
                                                     if (week.events.length) {
                                                         a[f_ind].weekdays[f2_ind].events =
                                                             a[f_ind].weekdays[f2_ind].events.concat(week.events);
@@ -116,17 +111,21 @@ export class CoursesService {
 
         return this.http.get<CoursesModel[]>(this.coursesUrl + eventQuery + splusID, { headers: headers })
             .pipe(map((mainModel) => {
+                let emptyModel: boolean = false;
                 return mainModel.map((models) => {
                     models.weekdays.map((weeks) => {
                         weeks.events = weeks.events
                             .filter((events) => {
                                     return moduleIDs.some(obj => events.uid.startsWith(obj));
                             });
+                        if (weeks.events.length) {
+                            emptyModel = true;
+                        }
                         return weeks;
                     });
                     return models;
-                });
-        }));
+                }).filter((obj) => !emptyModel);
+            }))
     }
 
     sortByKey(array, key) {
