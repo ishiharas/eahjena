@@ -19,9 +19,11 @@
 
         <courses *ngSwitchCase="1" 
             (selected)="selectionFinishedCourse = $event"></courses>
-        <canteens *ngSwitchCase="2" 
+        <ScrollView *ngSwitchCase="2" >
+            <canteens
             (selected)=" selectionFinishedCanteen = $event "
             (canteenCollection)=" canteenArr = $event "></canteens>
+        </ScrollView>
         <preferences *ngSwitchCase="3" 
             (selected)="selectionFinishedSettings = $event"></preferences>
 

@@ -1,19 +1,19 @@
-<GridLayout rows="auto, auto, auto" class="container-content">
-    <Label row="0" col="0"
-        text="Wähle die Mensa aus, die du am häufigsten besuchst, um auf dem laufenden zu bleiben"
-        class="footnote m-b-30" textWrap="true"></Label>
+    <GridLayout rows="auto, auto, auto" class="container-content">
+        <Label row="0" col="0"
+            text="Wähle die Mensa aus, die du am häufigsten besuchst, um auf dem laufenden zu bleiben"
+            class="footnote m-b-30" textWrap="true"></Label>
 
-    <Label row="1" text="Mensa:" class="title-label"></Label>
-    <StackLayout row="2" (tap)="userInteraction()">
-        <GridLayout columns="*, 25, 25, 25" *ngFor="let canteen of selection.canteens; let i = index">
-            <Label text="&#xf105;" class="fa arrow text-right"></Label>
-            <Label text="{{ canteen.name || 'Bitte wählen..'}}" class="footnote input" (tap)="showDialogCanteen(i)"></Label>
-            <Label *ngIf="i !== 0"
-                col="2" text="&#xf056;" 
-                class="fa edit-canteen text-right" (tap)="deleteCanteen(i)"></Label>
-            <Label col="3" 
-                text="&#xf055;" 
-                class="fa edit-canteen text-right" (tap)="addCanteen(canteen, i)"></Label>
-        </GridLayout>
-    </StackLayout>
-</GridLayout>
+        <Label row="1" text="Mensa:" class="title-label"></Label>
+            <StackLayout row="2" (tap)="userInteraction()">
+                    <GridLayout columns="*, 25, 25, 25" *ngFor="let canteen of selection.canteens; let i = index">
+                        <Label text="&#xf105;" class="fa arrow text-right"></Label>
+                        <Label text="{{ canteen.name || 'Bitte wählen..'}}" class="footnote input" (tap)="showDialogCanteen(i)"></Label>
+                        <Label *ngIf="i !== 0"
+                            col="2" text="&#xf056;" 
+                            class="fa edit-canteen text-right" (tap)="deleteCanteen(i)"></Label>
+                        <Label col="3" 
+                            text="&#xf055;" 
+                            class="fa edit-canteen text-right" (tap)="addCanteen(canteen, i)"></Label>
+                    </GridLayout>
+            </StackLayout>
+    </GridLayout>

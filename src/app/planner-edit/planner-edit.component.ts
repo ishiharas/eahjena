@@ -5,6 +5,7 @@ import { finalize } from "rxjs/operators";
 import { CoursesModel } from "../shared/model/courses.model";
 import * as localStorage from 'nativescript-localstorage';
 import { LSOBJECTS } from "../shared/ls-objects";
+import { RouterExtensions } from "nativescript-angular/router";
 
 
 @Component({
@@ -29,7 +30,8 @@ export class PlannerEditComponent implements OnInit {
     public additionalModule: Array<{ courseID: string, moduleId: string[]}>;
 
     constructor(private page: Page,
-        private _coursesService: CoursesService) {
+        private _coursesService: CoursesService,
+        private _router: RouterExtensions) {
     }
 
     ngOnInit(): void {
@@ -211,6 +213,7 @@ export class PlannerEditComponent implements OnInit {
             };
         }
 
+        // this._router.navigate(['/planner']);
         // -- Beginning of Logging Method
         // Method for printing out content of saveState Button
         // Useful for debugging different Savestates of Localstorage

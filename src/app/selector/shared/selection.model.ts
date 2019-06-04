@@ -8,7 +8,7 @@ export class Selection {
     group?: string;
     group_index?: number;
     timetableId?: string;
-    canteens?: Array<CanteenData>;
+    canteens?: Array<any>;
     saveSelection?: boolean;
 
     constructor(options: any) {

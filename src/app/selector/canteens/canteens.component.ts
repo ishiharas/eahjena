@@ -69,21 +69,25 @@ export class CanteensComponent implements OnInit {
 	
 	showDialogCanteen(listIndex: number): void {
         this.options.title = "Wähle eine Mensa";
-        
-        this.actionOptions.length = 0;
+		this.actionOptions.length = 0;
+
         this.getCanteens().forEach((canteen) => {
 			if (!this.selection.canteens.find(e => e.name == canteen.name)) {
 				this.actionOptions.push(canteen.name);
-			}
-        });
+			};
+		});
         this.actionOptions.sort();
 
         action(this.options).then((result) => {
             if (result !== this.options.cancelButtonText) {
 				this.selection.canteens[listIndex] = this.getCanteenByName(result);
-
-				this.canteenArr[listIndex] = this.selection.canteens[listIndex].id;
-				this.canteenCollection.emit(this.canteenArr);
+				if (this.canteenArr[listIndex]) {
+					this.canteenArr[listIndex] = this.selection.canteens[listIndex].id;
+					this.canteenCollection.emit(this.canteenArr);
+				} else {
+					this.canteenArr.push(this.selection.canteens[listIndex].id);
+					this.canteenCollection.emit(this.canteenArr);
+				}
             };
         });
     }
@@ -93,10 +97,8 @@ export class CanteensComponent implements OnInit {
 	}
 
 	addCanteen(canteen: CanteenData, i: number): void {
-		this.selection.canteens.push(canteen);
-
-		this.canteenArr.push(canteen.id);
-		this.canteenCollection.emit(this.canteenArr);
+		// this.selection.canteens.push(canteen);
+		this.selection.canteens.push({});
 	}
 
 	deleteCanteen(listIndex: number): void {
