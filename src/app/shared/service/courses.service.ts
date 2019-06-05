@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Observable, of, forkJoin, empty } from "rxjs";
+import { Observable, of, forkJoin } from "rxjs";
 import { CoursesModel } from "../model/courses.model";
 import { TimestampService } from "./timestamp.service";
 import { LSOBJECTS } from "../ls-objects";
-import { flatMap, finalize, map, reduce } from "rxjs/operators";
+import { flatMap, finalize, map, tap } from "rxjs/operators";
 import { courses, eventQuery } from "../../selector/shared/config";
 import { getString } from "tns-core-modules/application-settings/application-settings";
 import * as localStorage from 'nativescript-localstorage';
@@ -93,7 +93,6 @@ export class CoursesService {
                         return finalData;
                     }));
                 }
-
             } else {
                 console.log('moduleplan from localstorage');
                 return of(this.localCourseData);             
@@ -111,21 +110,20 @@ export class CoursesService {
 
         return this.http.get<CoursesModel[]>(this.coursesUrl + eventQuery + splusID, { headers: headers })
             .pipe(map((mainModel) => {
-                let emptyModel: boolean = false;
                 return mainModel.map((models) => {
                     models.weekdays.map((weeks) => {
                         weeks.events = weeks.events
-                            .filter((events) => {
-                                    return moduleIDs.some(obj => events.uid.startsWith(obj));
-                            });
-                        if (weeks.events.length) {
-                            emptyModel = true;
-                        }
+                            .filter((events) => moduleIDs.some(obj => {
+                                events.added = true;
+                                return events.uid.startsWith(obj)
+                            }));
                         return weeks;
                     });
+                    models.weekdays =
+                        models.weekdays.filter((filteredWeek) => filteredWeek.events.length ? true : false);
                     return models;
-                }).filter((obj) => !emptyModel);
-            }))
+                }).filter((filteredModel) => filteredModel.weekdays.length ? true : false);
+            }));
     }
 
     sortByKey(array, key) {

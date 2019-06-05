@@ -10,6 +10,7 @@ export class CoursesDayModel {
     lecturer: string;
     room: string;
     uid: string;
+    added: boolean;
 
     constructor(options: any) {
         this.startDate = options.startDate;

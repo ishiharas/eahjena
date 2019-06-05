@@ -213,7 +213,15 @@ export class PlannerEditComponent implements OnInit {
             };
         }
 
-        // this._router.navigate(['/planner']);
+        this._router.navigate(['/planner'], {
+            clearHistory: true,
+            animated: true,
+            transition: {
+                name: "slideRight",
+                duration: 300,
+                curve: "easeIn"
+            }
+        });
         // -- Beginning of Logging Method
         // Method for printing out content of saveState Button
         // Useful for debugging different Savestates of Localstorage

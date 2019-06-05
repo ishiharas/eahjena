@@ -17,6 +17,7 @@
                             <GridLayout *ngFor="let course of week?.events; let last = last; let courseIndex = index" 
                                 rows="auto, auto, auto" columns="*, 80" 
                                 class="list-courses" ripple rippleColor="#00aaa0"
+                                [class.module-added]="course.added"
                                 (tap)="showLessonsDialog(weekdayIndex, courseIndex, course)">
                                 <Label [text]="course.lecturer" 
                                     row="0" col="0"

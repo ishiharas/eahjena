@@ -20,7 +20,8 @@ export var coursesDetail: Array<CoursesModel> = [
                         "endTime": "09:15",
                         "lecturer": "Pfeifroth",
                         "room": "04.02.15",
-                        "uid": "SPLUS001603s-0"
+                        "uid": "SPLUS001603s-0",
+                        "added": false
                     },
                     {
                         "startDate": 1550232000000,
@@ -33,7 +34,8 @@ export var coursesDetail: Array<CoursesModel> = [
                         "endTime": "11:00",
                         "lecturer": "Reimer",
                         "room": "05.00.06",
-                        "uid": "SPLUS13FD7Cs-0"
+                        "uid": "SPLUS13FD7Cs-0",
+                        "added": false
                     },
                     {
                         "startDate": 1550232000000,
@@ -46,7 +48,8 @@ export var coursesDetail: Array<CoursesModel> = [
                         "endTime": "13:00",
                         "lecturer": "Werner",
                         "room": "05.00.06",
-                        "uid": "SPLUS13FD7Cs-0"
+                        "uid": "SPLUS13FD7Cs-0",
+                        "added": false
                     },
                     {
                         "startDate": 1550232000000,
@@ -59,7 +62,8 @@ export var coursesDetail: Array<CoursesModel> = [
                         "endTime": "16:30",
                         "lecturer": "Reger-Wagner",
                         "room": "05.00.06",
-                        "uid": "SPLUS13FD7Cs-0"
+                        "uid": "SPLUS13FD7Cs-0",
+                        "added": false
                     },
                     {
                         "startDate": 1550232000000,
@@ -72,7 +76,8 @@ export var coursesDetail: Array<CoursesModel> = [
                         "endTime": "18:30",
                         "lecturer": "Tutorin Worgitzky(GW)",
                         "room": "05.00.06",
-                        "uid": "SPLUS13FD7Cs-0"
+                        "uid": "SPLUS13FD7Cs-0",
+                        "added": false
                     }
                 ]
             }
@@ -97,7 +102,8 @@ export var coursesDetail: Array<CoursesModel> = [
                         "endTime": "17:00",
                         "lecturer": "Tutorin Worgitzky(GW)",
                         "room": "05.00.03",
-                        "uid": "SPLUS13FDD0s-0"
+                        "uid": "SPLUS13FDD0s-0",
+                        "added": false
                     },{
                         "startDate": 1550232000000,
                         "title": "WI/WIEC(BA)Marketing/V/01.1",
@@ -109,7 +115,8 @@ export var coursesDetail: Array<CoursesModel> = [
                         "endTime": "16:30",
                         "lecturer": "Reger-Wagner",
                         "room": "05.00.06",
-                        "uid": "SPLUS13FD7Cs-0"
+                        "uid": "SPLUS13FD7Cs-0",
+                        "added": false
                     },
                     {
                         "startDate": 1550232000000,
@@ -122,7 +129,8 @@ export var coursesDetail: Array<CoursesModel> = [
                         "endTime": "18:30",
                         "lecturer": "Tutorin Worgitzky(GW)",
                         "room": "05.00.06",
-                        "uid": "SPLUS13FD7Cs-0"
+                        "uid": "SPLUS13FD7Cs-0",
+                        "added": false
                     }
                 ]
             },
@@ -141,7 +149,8 @@ export var coursesDetail: Array<CoursesModel> = [
                         "endTime": "10:00",
                         "lecturer": "Planer",
                         "room": "04.-1.01(Aula)",
-                        "uid": "SPLUS2C6BACs-0"
+                        "uid": "SPLUS2C6BACs-0",
+                        "added": false
                     },{
                         "startDate": 1550232000000,
                         "title": "WI/WIEC(BA)Marketing/V/01.1",
@@ -153,7 +162,8 @@ export var coursesDetail: Array<CoursesModel> = [
                         "endTime": "16:30",
                         "lecturer": "Reger-Wagner",
                         "room": "05.00.06",
-                        "uid": "SPLUS13FD7Cs-0"
+                        "uid": "SPLUS13FD7Cs-0",
+                        "added": false
                     },
                     {
                         "startDate": 1550232000000,
@@ -166,7 +176,8 @@ export var coursesDetail: Array<CoursesModel> = [
                         "endTime": "18:30",
                         "lecturer": "Tutorin Worgitzky(GW)",
                         "room": "05.00.06",
-                        "uid": "SPLUS13FD7Cs-0"
+                        "uid": "SPLUS13FD7Cs-0",
+                        "added": false
                     }
                 ]
             },
@@ -185,7 +196,8 @@ export var coursesDetail: Array<CoursesModel> = [
                         "endTime": "09:00",
                         "lecturer": "Pfeifroth",
                         "room": "04.03.11",
-                        "uid": "SPLUS2C68EDs-0"
+                        "uid": "SPLUS2C68EDs-0",
+                        "added": false
                     },{
                         "startDate": 1550232000000,
                         "title": "WI/WIEC(BA)Marketing/V/01.1",
@@ -197,7 +209,8 @@ export var coursesDetail: Array<CoursesModel> = [
                         "endTime": "16:30",
                         "lecturer": "Reger-Wagner",
                         "room": "05.00.06",
-                        "uid": "SPLUS13FD7Cs-0"
+                        "uid": "SPLUS13FD7Cs-0",
+                        "added": false
                     },
                     {
                         "startDate": 1550232000000,
@@ -210,7 +223,8 @@ export var coursesDetail: Array<CoursesModel> = [
                         "endTime": "18:30",
                         "lecturer": "Tutorin Worgitzky(GW)",
                         "room": "05.00.06",
-                        "uid": "SPLUS13FD7Cs-0"
+                        "uid": "SPLUS13FD7Cs-0",
+                        "added": false
                     }
                 ]
             },
@@ -229,7 +243,8 @@ export var coursesDetail: Array<CoursesModel> = [
                         "endTime": "13:30",
                         "lecturer": "Engelmann",
                         "room": "04.-1.01(Aula)",
-                        "uid": "SPLUS00151Bs-0"
+                        "uid": "SPLUS00151Bs-0",
+                        "added": false
                     },
                     {
                         "startDate": 1550840400000,
@@ -242,7 +257,8 @@ export var coursesDetail: Array<CoursesModel> = [
                         "endTime": "15:30",
                         "lecturer": "Reimer",
                         "room": "05.03.02 (HS 5)",
-                        "uid": "SPLUS13FDD9s-0"
+                        "uid": "SPLUS13FDD9s-0",
+                        "added": false
                     }
                 ]
             }
@@ -267,7 +283,8 @@ export var coursesDetail: Array<CoursesModel> = [
                         "endTime": "11:30",
                         "lecturer": "Reimer",
                         "room": "04.-1.01(Aula)",
-                        "uid": "SPLUS2C6BD0s-0"
+                        "uid": "SPLUS2C6BD0s-0",
+                        "added": false
                     }
                 ]
             },
@@ -286,7 +303,8 @@ export var coursesDetail: Array<CoursesModel> = [
                         "endTime": "09:15",
                         "lecturer": "Pfeifroth",
                         "room": "04.02.15",
-                        "uid": "SPLUS001603s-0"
+                        "uid": "SPLUS001603s-0",
+                        "added": false
                     },
                     {
                         "startDate": 1550232000000,
@@ -299,7 +317,8 @@ export var coursesDetail: Array<CoursesModel> = [
                         "endTime": "11:00",
                         "lecturer": "Reimer",
                         "room": "05.00.06",
-                        "uid": "SPLUS13FD7Cs-0"
+                        "uid": "SPLUS13FD7Cs-0",
+                        "added": false
                     },
                     {
                         "startDate": 1550232000000,
@@ -312,7 +331,8 @@ export var coursesDetail: Array<CoursesModel> = [
                         "endTime": "13:00",
                         "lecturer": "Werner",
                         "room": "05.00.06",
-                        "uid": "SPLUS13FD7Cs-0"
+                        "uid": "SPLUS13FD7Cs-0",
+                        "added": false
                     },
                     {
                         "startDate": 1550232000000,
@@ -325,7 +345,8 @@ export var coursesDetail: Array<CoursesModel> = [
                         "endTime": "16:30",
                         "lecturer": "Reger-Wagner",
                         "room": "05.00.06",
-                        "uid": "SPLUS13FD7Cs-0"
+                        "uid": "SPLUS13FD7Cs-0",
+                        "added": false
                     },
                     {
                         "startDate": 1550232000000,
@@ -338,7 +359,8 @@ export var coursesDetail: Array<CoursesModel> = [
                         "endTime": "18:30",
                         "lecturer": "Tutorin Worgitzky(GW)",
                         "room": "05.00.06",
-                        "uid": "SPLUS13FD7Cs-0"
+                        "uid": "SPLUS13FD7Cs-0",
+                        "added": false
                     }
                 ]
             }
