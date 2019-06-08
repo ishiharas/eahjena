@@ -17,7 +17,7 @@
                         <StackLayout>
                                 <GridLayout *ngFor="let course of _courses; let last = last"
                                 rows="auto, auto, auto" columns="*, 80" 
-                                class="list-courses" ripple rippleColor="#00aaa0" (tap)="serviceTest()">
+                                class="list-courses" ripple rippleColor="#00aaa0">
                                     <Label [text]="course.lecturer" 
                                         row="0" col="0"
                                         class="footnote m-t-10" style="font-size: 11" textWrap="true"></Label>

@@ -5,11 +5,11 @@
             <Label row="0" text="&#xf002;" class="fa search-icon" style="margin-top: 60"></Label>
             <Stacklayout row="0" style="width: 30; height: 30; margin-top: 60" (tap)="onSearchTap()"></Stacklayout>
             <StackLayout row="1" style="margin-top: 20">
-                <StackLayout *ngFor="let item of _courses" class="list-container">
+                <StackLayout *ngFor="let item of _courses; let i = index" class="list-container">
                     <GridLayout columns="32, 18, auto">
-                        <Label *ngIf="checkMarked(item.uid);else circleEmpty" col="0" text="&#xf058;" class="far checkmark-icon-bg text-center" (tap)="markTapped(item.uid, false)"></Label>
+                        <Label *ngIf="checkMarked(item.uid);else circleEmpty" col="0" text="&#xf058;" class="far checkmark-icon-bg text-center" (tap)="markTapped(item.uid, false, i)"></Label>
                         <ng-template #circleEmpty>
-                            <Label col="0" text="&#xf111;" class="far checkmark-icon-bg text-center" (tap)="markTapped(item.uid, true)"></Label> 
+                            <Label col="0" text="&#xf111;" class="far checkmark-icon-bg text-center" (tap)="markTapped(item.uid, true, i)"></Label> 
                         </ng-template>
                         
                         <Label *ngIf="!checkSelected(item.categoryShortTitle);else iconExpanded" col="1" text="&#xf054;" class="fa expand-icon"></Label>
@@ -36,11 +36,12 @@
             </StackLayout>
         </GridLayout>
     </ScrollView>
-    <GridLayout row="0" rowSpan="2" rows="350, 50" [ngClass]="checkSelection ? 'slide-in' : 'slide-out'" [visibility]="overlay ? 'visible' : 'collapsed'">
-        <courses row="0" (selectedID)="emittedID = $event" (selected)="courseSelected = $event"></courses>
+    <GridLayout row="0" rowSpan="2" rows="350, 50, 65" [ngClass]="checkSelection ? 'slide-in' : 'slide-out'" [visibility]="overlay ? 'visible' : 'collapsed'">
+        <courses row="0" (selectedID)="emittedID = $event" (selected)="courseSelected = $event" (selectedIdString)="emittedIdString = $event"></courses>
         <Label row="1" text="&#xf111;" class="fa search-icon-bg" style="margin-top: -40"></Label>
         <Label row="1" text="&#xf002;" class="fa search-icon" style="margin-top: -40"></Label>
         <Stacklayout row="1" style="width: 30; height: 30; margin-top: -40" (tap)="onSearchTap()"></Stacklayout>
+        <Label *ngIf="additionalModule" row="2" text="(Studiengänge, die hinzugefügte Module beinhalten, werden mit einem '⊕' im Namen markiert.)" textWrap="true" style="padding: 0 20 0 20; margin-top: 20" class="footnote"></Label>
     </GridLayout>
     <GridLayout row="0" rows="auto, auto" columns="60, *, 60" class="actionbar">
         <Label text="Modul finden" row="0" col="0" colSpan="3" rowSpan="2" class="nav-header-title"></Label>

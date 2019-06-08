@@ -21,13 +21,14 @@ export class PlannerEditComponent implements OnInit {
     public overlay: boolean = true;
     public emittedID: string;
     public lastEmittedId: string;
+    public emittedIdString: string;
     public actuallyTapped: string;
     public markedIDs: Array<string> = [];
 
     public _courses = [];
     public _isLoadingCourses: boolean = false;
 
-    public additionalModule: Array<{ courseID: string, moduleId: string[]}>;
+    public additionalModule: { courseID: string, moduleId: string[], courseShortString: string}[];
 
     constructor(private page: Page,
         private _coursesService: CoursesService,
@@ -155,12 +156,15 @@ export class PlannerEditComponent implements OnInit {
         return this.overlay ? false : true;
     }
 
-    markTapped(uid: string, empty: boolean): void {
+    markTapped(uid: string, empty: boolean, i: number): void {
         if (empty) {
-            console.log('pushed id ' + uid)
-            this.markedIDs.push(uid);
+            this._courses[i].collectedEvents.forEach(element => {
+                this.markedIDs.push(element.uid);
+            });
         } else {
-            this.markedIDs.splice(this.markedIDs.findIndex(k => k === uid), 1);
+            this._courses[i].collectedEvents.forEach(element => {
+                this.markedIDs.splice(this.markedIDs.findIndex(k => k === element.uid), 1);
+            });
         }
     }
 
@@ -178,7 +182,8 @@ export class PlannerEditComponent implements OnInit {
             if (this.markedIDs && this.markedIDs.length) {
                 this.additionalModule.push({
                     courseID: this.emittedID,
-                    moduleId: this.markedIDs
+                    moduleId: this.markedIDs,
+                    courseShortString: this.emittedIdString
                 });
             }
             localStorage.setItemObject(LSOBJECTS.ADDITIONALMODULES, this.additionalModule);
@@ -201,7 +206,8 @@ export class PlannerEditComponent implements OnInit {
                 if (this.markedIDs && this.markedIDs.length) {
                     this.additionalModule.push({
                         courseID: this.emittedID,
-                        moduleId: this.markedIDs
+                        moduleId: this.markedIDs,
+                        courseShortString: this.emittedIdString
                     });
                 }
             };

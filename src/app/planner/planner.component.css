@@ -181,5 +181,7 @@
 }
 
 .module-added {
-    background: linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.158));
+    /* background: linear-gradient(to top, rgba(0, 0, 0, 0), rgba(167, 219, 216, 0.733)); */
+    background-color: rgba(167, 219, 216, 0.400);
+    border-radius: 15;
 }

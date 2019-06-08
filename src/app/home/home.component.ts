@@ -168,20 +168,4 @@ export class HomeComponent implements AfterViewInit {
 
     }
 
-    serviceTest() {
-        let additionalModule: { courseID: string, moduleId: string[]}[] = localStorage.getItem(LSOBJECTS.ADDITIONALMODULES);
-        console.log(additionalModule[0].courseID);
-        console.log(additionalModule[0].moduleId);
-        
-        this._coursesService.getSpecificModules(additionalModule[0].courseID, additionalModule[0].moduleId).subscribe((str) => {
-            str.forEach(element => {
-                element.weekdays.forEach((ele) => {
-                    ele.events.forEach((e) => {
-                        console.log(e.date + ' ' + e.title);
-                    })                    
-                })
-            });
-        })
-    }
-
 }

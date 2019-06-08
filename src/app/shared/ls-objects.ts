@@ -3,5 +3,5 @@ export enum LSOBJECTS {
     LASTUPDATED = 'lastUpdated',
     MODULEIDS = 'moduleIds',
     MODULEPLAN = 'modulePlan',
-    ADDITIONALMODULES = 'additionalModules' //  { courseID: string; moduleID: string[] }[]
+    ADDITIONALMODULES = 'additionalModules' //  { courseID: string, moduleId: string[], courseShortString?: string}[]
 }

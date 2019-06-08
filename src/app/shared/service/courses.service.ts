@@ -14,7 +14,7 @@ export class CoursesService {
     private coursesUrl: string = courses;
     private localCourseData: CoursesModel[] = localStorage.getItem(LSOBJECTS.MODULEPLAN);
 
-    private _additionalModule: Array<{ courseID: string, moduleId: string[]}> = localStorage.getItem(LSOBJECTS.ADDITIONALMODULES);
+    private _additionalModule: { courseID: string, moduleId: string[], courseShortString?: string}[] = localStorage.getItem(LSOBJECTS.ADDITIONALMODULES);
     private _updateAvailable: Observable<{ updatable: boolean, time: string }>;
 
     constructor(

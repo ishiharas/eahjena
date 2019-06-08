@@ -8,6 +8,8 @@ import { Term } from '../shared/term.model';
 import { Group } from '../shared/group.model';
 import { action } from 'tns-core-modules/ui/dialogs/dialogs';
 import { setString, getString } from "tns-core-modules/application-settings";
+import * as localStorage from 'nativescript-localstorage';
+import { LSOBJECTS } from '~/app/shared/ls-objects';
 
 
 @Component({
@@ -18,8 +20,12 @@ import { setString, getString } from "tns-core-modules/application-settings";
 	providers: [SelectorService]
 })
 export class CoursesComponent implements OnInit {
+    public local: { courseID: string; moduleID: string[], courseShortString?: string }[] = localStorage.getItem(LSOBJECTS.ADDITIONALMODULES) || [];
+
+
     @Output() selectedID = new EventEmitter<string>();
     @Output() selected = new EventEmitter<boolean>();
+    @Output() selectedIdString = new EventEmitter<string>();
     public didSelect: boolean = false;
 
     public actionOptions: Array<string> = [];
@@ -83,30 +89,51 @@ export class CoursesComponent implements OnInit {
 
     getCourseID(courseIndex: number, termIndex: number, groupIndex: number): string {
         const _courseID: string = 
-            this.getGroups(courseIndex, termIndex)[groupIndex].timetableId
+            this.getGroups(courseIndex, termIndex)[groupIndex].timetableId;
+        return _courseID;
+    }
+
+    getCourseIdString(courseIndex: number, termIndex: number, groupIndex: number): string {
+        const _courseID: string = 
+            this.getGroups(courseIndex, termIndex)[groupIndex].title;
         return _courseID;
     }
 
     showDialogCourses(): void {
+
         this.options.title = "Wähle deinen Studiengang";
         
         this.selection = {};
         this.selectedID.emit(null);
         this.selected.emit(false);
+        this.selectedIdString.emit(null);
         this.actionOptions.length = 0;
+
         this.getCourses().forEach(course => {
-            this.actionOptions.push(course.title);
+            let f = this.local.find((obj) => obj.courseShortString.startsWith(course.id));
+            if (f) {
+                    this.actionOptions.push(course.title + ' ⊕');  
+            } else {
+                this.actionOptions.push(course.title);
+            }
         });
         this.actionOptions.sort();
 
         action(this.options).then((result) => {
             if (result !== this.options.cancelButtonText) {
+                let restVar = result;
 
-                this.selection.course = result;
+                if (result.includes('⊕')) {
+                    let titleManipulation = result.split(' ');
+                    let lastMan = titleManipulation.pop();
+                    restVar = titleManipulation.join(' ');
+                }
+
+                this.selection.course = restVar;
                 this.selection.course_index =
                     this.getCourses().map((element) => {
                         return element.title
-                    }).indexOf(result);  
+                    }).indexOf(restVar);  
             };
         });
     }
@@ -120,21 +147,37 @@ export class CoursesComponent implements OnInit {
         this.selection.saveSelection = false;
         this.selectedID.emit(null);
         this.selected.emit(false);
+        this.selectedIdString.emit(null);
 
 
         if (this.selection.course) {
 
             this.getTerms(this.selection.course_index).forEach((element) => {
-                this.actionOptions.push(element.title);
-            })
+                let f = this.local.find((obj) => obj.courseShortString.startsWith(element.title));
+                if (f) {
+                    this.actionOptions.push(element.title + ' ⊕');  
+                } else {
+                    this.actionOptions.push(element.title);
+                }
+            });
+
+
             action(this.options).then((result) => {
                 if (result !== this.options.cancelButtonText) {
-                    this.selection.term = result;
+                    let restVar = result;
+
+                    if (result.includes('⊕')) {
+                        let titleManipulation = result.split(' ');
+                        let lastMan = titleManipulation.pop();
+                        restVar = titleManipulation.join(' ');
+                    }
+
+                    this.selection.term = restVar;
                     this.selection.term_index =
                         this.getTerms(this.selection.course_index)
                             .map((element) => {
                                 return element.title
-                            }).indexOf(result);  
+                            }).indexOf(restVar);  
                 };
             });
         } else {
@@ -152,25 +195,41 @@ export class CoursesComponent implements OnInit {
         this.selection.group = null;
         this.selectedID.emit(null);
         this.selected.emit(false);
+        this.selectedIdString.emit(null);
 
         if (this.selection.term) {
             this.getGroups(this.selection.course_index, this.selection.term_index).forEach((element) => {
-                this.actionOptions.push(element.title);
+                let f = this.local.find((obj) => obj.courseShortString.startsWith(element.title));
+                if (f) {
+                    this.actionOptions.push(element.title + ' ⊕');  
+                } else {
+                    this.actionOptions.push(element.title);
+                }
             })
     
             action(this.options).then((result) => {
                 if (result !== this.options.cancelButtonText) {
-                    this.selection.group = result;
+                    let restVar = result;
+
+                    if (result.includes('⊕')) {
+                        let titleManipulation = result.split(' ');
+                        let lastMan = titleManipulation.pop();
+                        restVar = titleManipulation.join(' ');
+                    }
+
+                    this.selection.group = restVar;
                     this.selection.group_index =
                         this.getGroups(this.selection.course_index, this.selection.term_index)
                             .map((element) => {
                                 return element.title
-                            }).indexOf(result);  
+                            }).indexOf(restVar);  
                     this.selection.timetableId =
                         this.getCourseID(this.selection.course_index, this.selection.term_index, this.selection.group_index);
-                    
+
                     this.selected.emit(true);
                     this.selectedID.emit(this.selection.timetableId);
+                    this.selectedIdString.emit(this.getCourseIdString(this.selection.course_index, this.selection.term_index, this.selection.group_index));
+
                     if (!getString('timetable_id')) {
                         setString('timetable_id', this.selection.timetableId);
                     };
