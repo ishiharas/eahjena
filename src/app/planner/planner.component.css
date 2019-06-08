@@ -180,8 +180,30 @@
     100% { opacity: 1 }
 }
 
-.module-added {
-    /* background: linear-gradient(to top, rgba(0, 0, 0, 0), rgba(167, 219, 216, 0.733)); */
+.module-added-top-ios {
     background-color: rgba(167, 219, 216, 0.400);
-    border-radius: 15;
+    border-top-left-radius: 15;
+    border-top-right-radius: 15;
+}
+
+.module-added-bottom-ios {
+    background-color: rgba(167, 219, 216, 0.400);
+    border-bottom-left-radius: 15;
+    border-bottom-right-radius: 15;
+}
+
+.module-added-top-android {
+    background-color: rgba(167, 219, 216, 0.400);
+    border-top-left-radius: 6;
+    border-top-right-radius: 6;
+}
+
+.module-added-bottom-android {
+    background-color: rgba(167, 219, 216, 0.400);
+    border-bottom-left-radius: 6;
+    border-bottom-right-radius: 6;
+}
+
+.module-added-center {
+    background-color: rgba(167, 219, 216, 0.400);
 }

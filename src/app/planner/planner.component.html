@@ -14,10 +14,10 @@
                     </GridLayout>
                     <CardView [class.event-component-isIos]="isIos" [class.event-component-isAndroid]="isAndroid" iosOverflowSafeArea="false">
                         <StackLayout>
-                            <GridLayout *ngFor="let course of week?.events; let last = last; let courseIndex = index" 
+                            <GridLayout *ngFor="let course of week?.events; let first = first; let last = last; let courseIndex = index" 
                                 rows="auto, auto, auto" columns="*, 80" 
                                 class="list-courses" ripple rippleColor="#00aaa0"
-                                [class.module-added]="course.added"
+                                [ngClass]="[(course.added && first && isAndroid) ? 'module-added-top-android' : '', (course.added && first && isIos) ? 'module-added-top-ios' : '', (course.added && last && isAndroid) ? 'module-added-bottom-android' : '', (course.added && last && isIos) ? 'module-added-bottom-ios' : '', (course.added && !first && !last) ? 'module-added-center' : '']"
                                 (tap)="showLessonsDialog(weekdayIndex, courseIndex, course)">
                                 <Label [text]="course.lecturer" 
                                     row="0" col="0"
