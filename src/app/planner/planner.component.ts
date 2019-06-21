@@ -12,6 +12,10 @@ import { ScrollView, ScrollEventData } from "tns-core-modules/ui/scroll-view/scr
 import { isAndroid, isIOS, screen } from "tns-core-modules/platform";
 import * as dialogs from "tns-core-modules/ui/dialogs"
 import { RouterExtensions } from "nativescript-angular/router";
+import { of, Observable } from "rxjs";
+import { CoursesWeekModel } from "../shared/model/courses-week.model";
+import { RadListViewComponent } from "nativescript-ui-listview/angular/";
+import { ListViewItemSnapMode } from "nativescript-ui-listview";
 
 @Component({
     selector: "Planner",
@@ -21,15 +25,18 @@ import { RouterExtensions } from "nativescript-angular/router";
     providers: [CoursesService]
 })
 export class PlannerComponent implements AfterViewInit  {
+    @ViewChild("myListView") myListViewComponent: RadListViewComponent;
     @ViewChild(RadSideDrawerComponent) public drawerComponent: RadSideDrawerComponent;
     private drawer: RadSideDrawer;
     private _sideDrawerTransition: DrawerTransitionBase;
     public drawerLocation: string = "Left";
     public currentTransition: string;
     public screenWidth: number = screen.mainScreen.widthDIPs;
+    public screenHeight: number = screen.mainScreen.heightDIPs;
 
 
     public _coursesAllweeks: Array<CoursesModel> = [];
+    public _coursesWeekList: Array<CoursesWeekModel> = [];
     public _isLoadingCourses: boolean = false;
     public today: string = formatDate(new Date(), 'EE, dd.MM.yyyy', 'en');
     public todayDate: Date = new Date();
@@ -47,17 +54,22 @@ export class PlannerComponent implements AfterViewInit  {
     public tabbarSelected: number = 0;
     public tabbarHidden: boolean = false;
     public lastScrollPosition: number = 0;
+    private _myFilteringFunc: (item: any) => any;
 
     constructor(private page: Page,
         private _router: RouterExtensions,
         private _changeDetectionRef: ChangeDetectorRef,
         private _coursesService: CoursesService) {
+
     }
 
     ngOnInit(): void {
         this.page.actionBarHidden = true;
         this.tabbarHidden = false;
         this.extractCoursesData();
+        this._myFilteringFunc = (item: CoursesWeekModel) => {
+            return item && item.weekOfYear == this._coursesAllweeks[this.tabbarSelected].weekInYear;
+        };
     }
 
     ngAfterViewInit() {
@@ -74,6 +86,18 @@ export class PlannerComponent implements AfterViewInit  {
         this._sideDrawerTransition = value;
     }
 
+    get weekItems(): CoursesWeekModel[] {
+        return this._coursesWeekList;
+    }
+
+    get myFilteringFunc(): (item: any) => any {
+        return this._myFilteringFunc;
+    }
+
+    set myFilteringFunc(value: (item: any) => any) {
+        this._myFilteringFunc = value;
+    }
+    
     openDrawer(position) {
         this.drawerLocation = position;
         setTimeout(() => this.drawer.showDrawer(), 5);
@@ -82,11 +106,17 @@ export class PlannerComponent implements AfterViewInit  {
     tabbarTapped(args): void {
         console.log("tabbar was tapped: " + args);
         this.tabbarSelected = args;
+
+        this._myFilteringFunc = (item: CoursesWeekModel) => {
+            return item && item.weekOfYear == this._coursesAllweeks[this.tabbarSelected].weekInYear;
+        };
+        this.myListViewComponent.listView.scrollWithAmount(- this.myListViewComponent.listView.getScrollOffset(), true);
+
         this.tabbarIndexScroll();
     }
 
     onSwipe(event: SwipeGestureEventData) {
-        this.pageScrollview = this.psc.nativeElement;
+        // this.pageScrollview = this.psc.nativeElement;
         if (event.direction === SwipeDirection.left) {
             console.log("swipe to the left triggered");
             if (this.tabbarSelected < this._coursesAllweeks.length - 1 && !this.swipeLeft && !this.swipeRight) {
@@ -95,8 +125,14 @@ export class PlannerComponent implements AfterViewInit  {
                     this.swipeLeft = false;
                 }, 500);
                 setTimeout(() => {
-                    this.pageScrollview.scrollToVerticalOffset(0, false);
+                    // this.pageScrollview.scrollToVerticalOffset(0, false);
                     this.tabbarSelected = this.tabbarSelected + 1;
+                    this._myFilteringFunc = (item: CoursesWeekModel) => {
+                        return item && item.weekOfYear == this._coursesAllweeks[this.tabbarSelected].weekInYear;
+                    };
+
+                    this.myListViewComponent.listView.scrollWithAmount(- this.myListViewComponent.listView.getScrollOffset(), true);
+
                     this.tabbarIndexScroll();
                 }, 100);
             }
@@ -108,8 +144,14 @@ export class PlannerComponent implements AfterViewInit  {
                     this.swipeRight = false;
                 }, 500);
                 setTimeout(() => {
-                    this.pageScrollview.scrollToVerticalOffset(0, false);
+                    // this.pageScrollview.scrollToVerticalOffset(0, false);
                     this.tabbarSelected = this.tabbarSelected - 1;
+                    this._myFilteringFunc = (item: CoursesWeekModel) => {
+                        return item && item.weekOfYear == this._coursesAllweeks[this.tabbarSelected].weekInYear;
+                    };
+
+                    this.myListViewComponent.listView.scrollWithAmount(- this.myListViewComponent.listView.getScrollOffset(), true);
+
                     this.tabbarIndexScroll();
                 }, 100);
             }
@@ -152,11 +194,24 @@ export class PlannerComponent implements AfterViewInit  {
             .pipe(finalize(() => this._isLoadingCourses = false))
             .subscribe((result: Array<CoursesModel>) => {
                 let collection = [];
+                let collectionDays = [];
+
                 result.forEach((event) => {
                     collection.push(event);
+                    event.weekdays.forEach((day) => {
+                        collectionDays.push({
+                            name: day.name,
+                            events: day.events,
+                            dayInWeek: day.dayInWeek,
+                            weekOfYear: day.events[0].weekOfYear
+                        });
+                    })
+                    
                 })
                 setTimeout(() => {
                     this._coursesAllweeks = collection;
+                    this._coursesWeekList = collectionDays;
+
                     this._isLoadingCourses = false;
                 }, 1);
             }, (error) => console.log(error));

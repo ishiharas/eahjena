@@ -2,45 +2,44 @@
     <StackLayout tkDrawerContent class="side-drawer-layout">
         <left-drawer *ngIf="drawerLocation == 'Left'"></left-drawer>
     </StackLayout>
-    <GridLayout rows="60, *" tkMainContent iosOverflowSafeArea="false">  
-        <ScrollView #pageScroll row="0" rowSpan="2" (swipe)="onSwipe($event)" (scroll)="onScroll($event)">
-            <StackLayout style="padding-top: 60" [class.slide-out-left]="swipeLeft" [class.slide-out-right]="swipeRight">
-                <StackLayout *ngFor="let week of _coursesAllweeks[tabbarSelected]?.weekdays; let weekdayIndex = index">
-                    <GridLayout rows="auto, auto, auto" class="text-center">
-                        <Label row="0" text="&#xf111;" class="fa" style="font-size: 25; color: #00aaa0; vertical-align: center; opacity: 0.4;"></Label>
-                        <Label row="0" text="&#xf254;" class="fa" style="font-size: 16; color: #ffffff; vertical-align: center"></Label>
-                        <Label row="1" [text]="week.events[0]?.dayOfWeek" class="event-component-header"></Label>
-                        <Label row="2" [text]="week.events[0]?.date" class="footnote"></Label>
-                    </GridLayout>
-                    <CardView [class.event-component-isIos]="isIos" [class.event-component-isAndroid]="isAndroid" iosOverflowSafeArea="false">
-                        <StackLayout>
-                            <GridLayout *ngFor="let course of week?.events; let first = first; let last = last; let courseIndex = index" 
-                                rows="auto, auto, auto" columns="*, 80" 
-                                class="list-courses" ripple rippleColor="#00aaa0"
-                                [ngClass]="[(course.added && first && isAndroid) ? 'module-added-top-android' : '', (course.added && first && isIos) ? 'module-added-top-ios' : '', (course.added && last && isAndroid) ? 'module-added-bottom-android' : '', (course.added && last && isIos) ? 'module-added-bottom-ios' : '', (course.added && !first && !last) ? 'module-added-center' : '']"
-                                (tap)="showLessonsDialog(weekdayIndex, courseIndex, course)">
-                                <Label [text]="course.lecturer" 
-                                    row="0" col="0"
-                                    class="footnote m-t-10" style="font-size: 11" textWrap="true"></Label>
-                                <Label [text]="course.startTime + ' - ' + course.endTime" 
-                                    row="0" col="1" 
-                                    class="footnote text-right m-t-10" style="font-size: 11"></Label>
-                                <Label *ngIf="course.shortTitle; else longTitle" [text]="course.shortTitle"
-                                    row="1" col="0" textWrap="true" class="m-b-10"></Label>
-                                    <ng-template #longTitle>
-                                        <Label [text]="course.title"
-                                            row="1" col="0" textWrap="true" class="m-b-10"></Label>  
+    <GridLayout rows="60, *" tkMainContent>  
+        <GridLayout row="0" rowSpan="2" *ngIf="_coursesAllweeks[0]" (swipe)="onSwipe($event)">
+                <RadListView #myListView [items]="weekItems" [height]=screenHeight [filteringFunction]="myFilteringFunc" [class.slide-out-left]="swipeLeft" [class.slide-out-right]="swipeRight" swipeActions="false">
+                    <ng-template tkListItemTemplate let-item="item" let-idx="index">
+                        <GridLayout rows="auto, auto, auto, auto, auto" class="text-center" [height]="item.events.length * 45 + 110" (swipe)="onSwipe($event)">
+                            <Label row="1" text="&#xf111;" class="fa" style="font-size: 25; color: #00aaa0; vertical-align: center; opacity: 0.4;"></Label>
+                            <Label row="1" text="&#xf254;" class="fa" style="font-size: 16; color: #ffffff; vertical-align: center"></Label>
+                            <Label row="2" [text]="item.events[0]?.dayOfWeek" class="event-component-header"></Label>
+                            <Label row="3" [text]="item.events[0]?.date" class="footnote"></Label>
+                            <CardView row="4" [class.event-component-isIos]="isIos" [class.event-component-isAndroid]="isAndroid" [height]="item.events.length * 45">
+                                <GridLayout
+                                    rows="auto" columns="*, 80" 
+                                    class="list-courses" verticalAlignment="top">
+                                    <ng-template ngFor let-option [ngForOf]="item.events" let-i="index" let-last="last">
+                                        <Label [text]="option.lecturer"  verticalAlignment="top"
+                                            [row]="i" col="0" [marginTop]="i * 45 + 5"
+                                            class="footnote" style="font-size: 11" textWrap="true" ripple rippleColor="#00aaa0" (tap)="showLessonsDialog(idx, i, option)"></Label>
+                                        <Label [text]="option.startTime + ' - ' + option.endTime"  verticalAlignment="top"
+                                            [row]="i" col="1" [marginTop]="i * 45 + 5"
+                                            class="footnote text-right" style="font-size: 11" ripple rippleColor="#00aaa0" (tap)="showLessonsDialog(idx, i, option)"></Label>
+                                        <Label *ngIf="option.shortTitle; else longTitle" [text]="option.shortTitle"  verticalAlignment="top"
+                                            [row]="i" col="0" [marginTop]="i * 45 + 20" textWrap="true" ripple rippleColor="#00aaa0" (tap)="showLessonsDialog(idx, i, option)"></Label>
+                                            <ng-template #longTitle>
+                                                <Label [text]="option.title" verticalAlignment="top"
+                                                    [row]="i" col="0" [marginTop]="i * 45 + 20" textWrap="true" ripple rippleColor="#00aaa0" (tap)="showLessonsDialog(idx, i, option)"></Label>  
+                                            </ng-template>
+                                        <Label [text]="option.room"  verticalAlignment="top"
+                                            [row]="i" col="1" textWrap="true" [marginTop]="i * 45 + 24"
+                                            class="footnote text-right" style="font-size: 11" ripple rippleColor="#00aaa0" (tap)="showLessonsDialog(idx, i, option)"></Label>
+                                        <Label [row]="i" col="0" *ngIf="!last" colSpan="2" class="hr-light" [marginTop]="i * 45 + 45"  verticalAlignment="top"></Label>
                                     </ng-template>
-                                <Label [text]="course.room" 
-                                    row="1" col="1" textWrap="true" 
-                                    class="footnote text-right m-b-10" style="font-size: 11; vertical-align: bottom"></Label>
-                                <StackLayout *ngIf="!last" class="hr-light" row="2" col="0" colSpan="2"></StackLayout>
-                            </GridLayout>
-                        </StackLayout>
-                    </CardView>   
-                </StackLayout> 
-            </StackLayout>   
-        </ScrollView>
+                                </GridLayout>
+                            </CardView>   
+                        </GridLayout>
+                    </ng-template>
+                </RadListView> 
+        </GridLayout>
+
         <GridLayout row="0" rows="auto, auto" columns="60, *, 60" class="actionbar">
             <Label text="Stundenplan" row="0" col="0" colSpan="3" rowSpan="2" class="nav-header-title"></Label>
             <Label text="&#xf0c9;" class="fa nav-icon" row="0" col="0" (tap)="openDrawer('Left')"></Label>

@@ -9,6 +9,7 @@ import { NativeScriptHttpClientModule } from "nativescript-angular/http-client";
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { HomeInterceptor } from "../shared/mock/home-interceptor";
 import { NgRippleModule } from "nativescript-ng-ripple";
+import { NativeScriptUIListViewModule } from "nativescript-ui-listview/angular";
 
 @NgModule({
     imports: [
@@ -17,7 +18,8 @@ import { NgRippleModule } from "nativescript-ng-ripple";
         NativeScriptUISideDrawerModule,
         SharedModule,
         NativeScriptHttpClientModule,
-        NgRippleModule
+        NgRippleModule,
+        NativeScriptUIListViewModule
     ],
     declarations: [
         PlannerComponent

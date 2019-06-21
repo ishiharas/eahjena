@@ -5,6 +5,7 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { SharedModule } from "./shared/shared.module";
 import { NativeScriptUISideDrawerModule } from "nativescript-ui-sidedrawer/angular/side-drawer-directives";
+import { NativeScriptUIListViewModule } from "nativescript-ui-listview/angular";
 import { AuthGuard } from "./shared/service/auth-guard.service";
 import { TimestampService } from "./shared/service/timestamp.service";
 import { HttpClientModule } from "@angular/common/http";
@@ -22,6 +23,7 @@ import { HttpClientModule } from "@angular/common/http";
         NativeScriptModule,
         AppRoutingModule,
         NativeScriptUISideDrawerModule,
+        NativeScriptUIListViewModule,
         SharedModule,
         HttpClientModule
     ],

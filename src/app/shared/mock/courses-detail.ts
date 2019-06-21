@@ -8,6 +8,7 @@ export var coursesDetail: Array<CoursesModel> = [
             {
                 "dayInWeek": 6,
                 "name": "Freitag",
+                "weekOfYear": 7,
                 "events": [
                     {
                         "startDate": 1550221200000,
@@ -90,6 +91,7 @@ export var coursesDetail: Array<CoursesModel> = [
             {
                 "dayInWeek": 2,
                 "name": "Montag",
+                "weekOfYear": 8,
                 "events": [
                     {
                         "startDate": 1550494800000,
@@ -137,6 +139,7 @@ export var coursesDetail: Array<CoursesModel> = [
             {
                 "dayInWeek": 3,
                 "name": "Dienstag",
+                "weekOfYear": 8,
                 "events": [
                     {
                         "startDate": 1550559600000,
@@ -184,6 +187,7 @@ export var coursesDetail: Array<CoursesModel> = [
             {
                 "dayInWeek": 4,
                 "name": "Mittwoch",
+                "weekOfYear": 8,
                 "events": [
                     {
                         "startDate": 1550646000000,
@@ -231,6 +235,7 @@ export var coursesDetail: Array<CoursesModel> = [
             {
                 "dayInWeek": 6,
                 "name": "Freitag",
+                "weekOfYear": 8,
                 "events": [
                     {
                         "startDate": 1550833200000,
@@ -271,6 +276,7 @@ export var coursesDetail: Array<CoursesModel> = [
             {
                 "dayInWeek": 3,
                 "name": "Dienstag",
+                "weekOfYear": 9,
                 "events": [
                     {
                         "startDate": 1551171600000,
@@ -291,6 +297,7 @@ export var coursesDetail: Array<CoursesModel> = [
             {
                 "dayInWeek": 5,
                 "name": "Donnerstag",
+                "weekOfYear": 9,
                 "events": [
                     {
                         "startDate": 1550221200000,
