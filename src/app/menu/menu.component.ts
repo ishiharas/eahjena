@@ -28,7 +28,7 @@ export class MenuComponent implements AfterViewInit {
     public screenWidth: number = screen.mainScreen.widthDIPs;
 
     public _canteens = [];
-    public _isLoadingCanteens: boolean = false;
+    public _isLoadingCanteens: boolean = true;
     public swipeLeft = false;
     public swipeRight = false;
     public isAndroid = isAndroid;
@@ -43,6 +43,10 @@ export class MenuComponent implements AfterViewInit {
     public tabbarSelected: number = 0;
     public tabbarHidden: boolean = false;
     public lastScrollPosition: number = 0;
+
+    public renderView = false;
+    public isBusy = true;
+    public renderViewTimeout: any;
 
     constructor(private page: Page,
         private _changeDetectionRef: ChangeDetectorRef,
@@ -60,12 +64,35 @@ export class MenuComponent implements AfterViewInit {
         this._changeDetectionRef.detectChanges();
     }
 
+    ngAfterContentInit() {
+        if (isAndroid) {
+            this.renderViewTimeout = setTimeout(() => {
+                this.renderView = true;
+            }, 300);
+        } else {
+            this.renderView = true;
+        }
+    }
+
+    ngOnDestroy() {
+        if (isAndroid) {
+            clearTimeout(this.renderViewTimeout);
+        }
+     }
+
     get sideDrawerTransition(): DrawerTransitionBase {
         return this._sideDrawerTransition;
     }
 
     set sideDrawerTransition(value: DrawerTransitionBase) {
         this._sideDrawerTransition = value;
+    }
+
+    get loadingAndUi(): boolean {
+        if (!this.renderView && this._isLoadingCanteens) {
+            return true;
+        }
+        return false;
     }
 
     openDrawer(position) {
@@ -139,10 +166,7 @@ export class MenuComponent implements AfterViewInit {
     }
 
     extractCanteensData(): void {
-        this._isLoadingCanteens = true;
-
         this._canteensService.getCanteensData()
-        .pipe(finalize(() => this._isLoadingCanteens = false))
         .subscribe((result: Array<Array<CanteensModel>>) => {
             let days = [];
             result.forEach((canteen, index) => {
@@ -172,7 +196,8 @@ export class MenuComponent implements AfterViewInit {
             });
             this._canteens = days;
             this._isLoadingCanteens = false;
-        }, (error) => console.log(error));
+            
+        }, (error) => {console.log(error); this._isLoadingCanteens = true});
     }
 
     hint(ingredients: string) {

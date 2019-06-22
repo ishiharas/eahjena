@@ -32,10 +32,9 @@ export class HomeComponent implements AfterViewInit {
     private drawer: RadSideDrawer;
     private _sideDrawerTransition: DrawerTransitionBase;
     public _courses: Array<CoursesDayModel> = [];
-    public _isLoadingCourses: boolean = false;
+    public _isLoadingCourses: boolean = true;
     public _canteens: Array<CanteensModel[]> = [];
-    public _isLoadingCanteens: boolean = false;
-
+    public _isLoadingCanteens: boolean = true;
 
     public today: string = formatDate(new Date(), 'EE, dd.MM.yyyy', 'en');
     public todayDate: Date = new Date();
@@ -44,6 +43,10 @@ export class HomeComponent implements AfterViewInit {
     public isAndroid = isAndroid;
     public isIos = isIOS;
     public status = "not scrolling";
+
+    public renderView = false;
+    public isBusy = true;
+    public renderViewTimeout: any;
 
     constructor(private page: Page, 
         private _changeDetectionRef: ChangeDetectorRef,
@@ -64,11 +67,31 @@ export class HomeComponent implements AfterViewInit {
         this._changeDetectionRef.detectChanges();
     }
 
-    extractCoursesData(): void {
-        this._isLoadingCourses = true;
+    ngAfterContentInit() {
+        if (isAndroid) {
+            this.renderViewTimeout = setTimeout(() => {
+                this.renderView = true;
+            }, 300);
+        } else {
+            this.renderView = true;
+        }
+    }
 
+    ngOnDestroy() {
+        if (isAndroid) {
+            clearTimeout(this.renderViewTimeout);
+        }
+    }
+     
+    get loadingAndUi(): boolean {
+        if (!this.renderView && this._isLoadingCourses) {
+            return true;
+        }
+        return false;
+    }
+
+    extractCoursesData(): void {
         this._coursesService.getCourseData()
-            .pipe(finalize(() => this._isLoadingCourses = false))
             .subscribe((result: Array<CoursesModel>) => {
                 result[0].weekdays[0].events.forEach((event) => {
                     this._courses.push(event);

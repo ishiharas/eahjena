@@ -6,7 +6,7 @@
     <StackLayout tkMainContent iosOverflowSafeArea="false">
         <GridLayout rows="60, *">
             <ScrollView style="height: 100%" row="0" rowSpan="2">
-                <GridLayout rows="auto, auto, auto" style="padding-top: 60">
+                <GridLayout *ngIf="!loadingAndUi; else loading" rows="auto, auto, auto" style="padding-top: 60">
                     <GridLayout rows="auto, auto, auto" class="text-center">
                         <Label row="0" text="&#xf111;" class="fa" style="font-size: 25; color: #00aaa0; vertical-align: center; opacity: 0.4;"></Label>
                         <Label row="0" text="&#xf254;" class="fa" style="font-size: 16; color: #ffffff; vertical-align: center"></Label>
@@ -33,7 +33,7 @@
                                     <Label [text]="course.room" 
                                         row="1" col="1" textWrap="true" 
                                         class="footnote text-right m-b-10" style="font-size: 11; vertical-align: bottom"></Label>
-                                    <StackLayout class="hr-light" *ngIf="!last" row="2" col="0" colSpan="2"></StackLayout>
+                                    <Label class="hr-light" *ngIf="!last" row="2" col="0" colSpan="2"></Label>
                                 </GridLayout>
                         </StackLayout> 
                     </CardView>        
@@ -64,13 +64,18 @@
                                         <Label [text]="'Inhalt: ' + food.ingredients" 
                                             row="2" col="0" 
                                             class="footnote m-b-10" style="font-size: 11"></Label>
-                                        <StackLayout class="hr-light" *ngIf="!last" row="3" col="0" colSpan="2"></StackLayout>
+                                        <Label class="hr-light" *ngIf="!last" row="3" col="0" colSpan="2"></Label>
                                     </GridLayout>
                                 </StackLayout>
                             </CardView>
                         </StackLayout>
                     </StackLayout>
                 </GridLayout>
+                <ng-template #loading>
+                    <GridLayout style="padding-top: 150">
+                        <ActivityIndicator [busy]="loadingAndUi" width="100" height="100" class="activity-indicator"></ActivityIndicator>
+                    </GridLayout>
+                </ng-template>
             </ScrollView>
             <GridLayout row="0" rows="auto, auto" columns="60, *" class="actionbar">
                 <Image src="res://eahlogo_black" stretch="aspectFit" 

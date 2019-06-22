@@ -8,10 +8,12 @@ import { CoursesModel } from "../shared/model/courses.model";
 import { formatDate } from "@angular/common";
 import { SwipeDirection, SwipeGestureEventData } from "tns-core-modules/ui/gestures/gestures";
 import { StackLayout } from "tns-core-modules/ui/layouts/stack-layout/stack-layout";
+import { GridLayout } from "tns-core-modules/ui/layouts/grid-layout/grid-layout";
 import { ScrollView, ScrollEventData } from "tns-core-modules/ui/scroll-view/scroll-view";
 import { isAndroid, isIOS, screen } from "tns-core-modules/platform";
 import * as dialogs from "tns-core-modules/ui/dialogs"
 import { RouterExtensions } from "nativescript-angular/router";
+import { CoursesDayModel } from "../shared/model/courses-day.model";
 
 @Component({
     selector: "Planner",
@@ -28,9 +30,10 @@ export class PlannerComponent implements AfterViewInit  {
     public currentTransition: string;
     public screenWidth: number = screen.mainScreen.widthDIPs;
 
-
     public _coursesAllweeks: Array<CoursesModel> = [];
-    public _isLoadingCourses: boolean = false;
+    public _coursesWeekList: CoursesDayModel[];
+
+    public _isLoadingCourses: boolean = true;
     public today: string = formatDate(new Date(), 'EE, dd.MM.yyyy', 'en');
     public todayDate: Date = new Date();
     public swipeLeft = false;
@@ -45,8 +48,12 @@ export class PlannerComponent implements AfterViewInit  {
     public tabbarScrollview: ScrollView;
     public pageScrollview: ScrollView;
     public tabbarSelected: number = 0;
+    public tabbarSelectedKW: number = 0;
     public tabbarHidden: boolean = false;
     public lastScrollPosition: number = 0;
+
+    public renderView = false;
+    public renderViewTimeout: any;
 
     constructor(private page: Page,
         private _router: RouterExtensions,
@@ -66,6 +73,22 @@ export class PlannerComponent implements AfterViewInit  {
         this._changeDetectionRef.detectChanges();
     }
 
+    ngAfterContentInit() {
+        if (isAndroid) {
+            this.renderViewTimeout = setTimeout(() => {
+                this.renderView = true;
+            }, 300);
+        } else {
+            this.renderView = true;
+        }
+    }
+
+    ngOnDestroy() {
+        if (isAndroid) {
+            clearTimeout(this.renderViewTimeout);
+        }
+     }
+
     get sideDrawerTransition(): DrawerTransitionBase {
         return this._sideDrawerTransition;
     }
@@ -74,44 +97,62 @@ export class PlannerComponent implements AfterViewInit  {
         this._sideDrawerTransition = value;
     }
 
+    get loadingAndUi(): boolean {
+            if (!this.renderView && this._isLoadingCourses) {
+                return true;
+            }
+
+        return false;
+    }
+
     openDrawer(position) {
         this.drawerLocation = position;
         setTimeout(() => this.drawer.showDrawer(), 5);
     }
 
-    tabbarTapped(args): void {
+    tabbarTapped(args, kw: number): void {
         console.log("tabbar was tapped: " + args);
+        this.pageScrollview = this.psc.nativeElement;
         this.tabbarSelected = args;
+        this.tabbarSelectedKW = kw;
         this.tabbarIndexScroll();
+        this.pageScrollview.scrollToVerticalOffset(0, false);
     }
 
     onSwipe(event: SwipeGestureEventData) {
         this.pageScrollview = this.psc.nativeElement;
+        let swipeEnabled = !this.swipeLeft && !this.swipeRight;
+        let courseSize = this._coursesAllweeks.length - 1;
+        
         if (event.direction === SwipeDirection.left) {
             console.log("swipe to the left triggered");
-            if (this.tabbarSelected < this._coursesAllweeks.length - 1 && !this.swipeLeft && !this.swipeRight) {
+            if (this.tabbarSelected < courseSize && swipeEnabled) {
                 this.swipeLeft = true;
+                this.tabbarSelected = this.tabbarSelected + 1;
+                this.tabbarIndexScroll();
+                let selectedKW = this._coursesAllweeks[this.tabbarSelected].weekInYear;
                 setTimeout(() => {
                     this.swipeLeft = false;
                 }, 500);
                 setTimeout(() => {
-                    this.pageScrollview.scrollToVerticalOffset(0, false);
-                    this.tabbarSelected = this.tabbarSelected + 1;
-                    this.tabbarIndexScroll();
-                }, 100);
+                    this.tabbarSelectedKW = selectedKW;
+                }, 125);
             }
+
         } else if (event.direction === SwipeDirection.right) {
             console.log("swipe to the right triggered");
-            if (this.tabbarSelected > 0 && !this.swipeLeft && !this.swipeRight) {
+            if (this.tabbarSelected > 0 && swipeEnabled) {
                 this.swipeRight = true;
+                this.tabbarSelected = this.tabbarSelected - 1;
+                this.tabbarIndexScroll();
+
+                let selectedKW = this._coursesAllweeks[this.tabbarSelected].weekInYear;
                 setTimeout(() => {
                     this.swipeRight = false;
                 }, 500);
                 setTimeout(() => {
-                    this.pageScrollview.scrollToVerticalOffset(0, false);
-                    this.tabbarSelected = this.tabbarSelected - 1;
-                    this.tabbarIndexScroll();
-                }, 100);
+                    this.tabbarSelectedKW = selectedKW;
+                }, 125);
             }
         } 
     }
@@ -146,18 +187,29 @@ export class PlannerComponent implements AfterViewInit  {
     }
 
     extractCoursesData(): void {
-        this._isLoadingCourses = true;
-
         this._coursesService.getCourseData()
-            .pipe(finalize(() => this._isLoadingCourses = false))
             .subscribe((result: Array<CoursesModel>) => {
                 let collection = [];
+                let collectionDays = [];
+
                 result.forEach((event) => {
                     collection.push(event);
+                    event.weekdays.forEach((day, index) => {
+                        collectionDays.push({
+                            name: day.name,
+                            events: day.events,
+                            dayInWeek: day.dayInWeek,
+                            weekOfYear: day.events[0].weekOfYear
+                        });
+                    })
+                    
                 })
                 setTimeout(() => {
                     this._coursesAllweeks = collection;
                     this._isLoadingCourses = false;
+                    this._coursesWeekList = collectionDays;
+                    this.tabbarSelectedKW = this._coursesWeekList[0].weekOfYear;
+                    
                 }, 1);
             }, (error) => console.log(error));
     }

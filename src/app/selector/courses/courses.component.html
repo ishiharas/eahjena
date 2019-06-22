@@ -1,23 +1,23 @@
 <GridLayout rows="auto, auto, auto, auto, auto, auto, auto" columns="*" 
     class="container-content">
-        <ActivityIndicator [busy]="_isLoading"></ActivityIndicator>
 
         <Label row="0" col="0"
             text="Wähle aus folgenden Optionen deinen passenden Veranstaltungsplan aus" 
-            class="footnote m-b-30" textWrap="true"></Label>
+            class="footnote m-b-30" textWrap="true" [class.container-loading]="_isLoading"></Label>
+        <ActivityIndicator [busy]="_isLoading" height="100" width="100" row="0" rowSpan="6"></ActivityIndicator>
 
-        <Label row="1" col="0" text="Studiengang:" class="title-label"></Label>
-        <Label row="2" col="0" text="&#xf105;" class="fa arrow text-right"></Label>
+        <Label row="1" col="0" text="Studiengang:" class="title-label" [class.container-loading]="_isLoading"></Label>
+        <Label row="2" col="0" text="&#xf105;" class="fa arrow text-right" [class.container-loading]="_isLoading"></Label>
         <Label row="2" col="0" text="{{ selection.course || 'Bitte wählen..'}}" 
-            class="footnote input" (tap)="showDialogCourses()"></Label>
+            class="footnote input" (tap)="showDialogCourses()" [class.container-loading]="_isLoading"></Label>
             
-        <Label row="3" col="0" text="Semester:" class="title-label"></Label>
-        <Label row="4" col="0" text="&#xf105;" class="fa arrow text-right"></Label>
+        <Label row="3" col="0" text="Semester:" class="title-label" [class.container-loading]="_isLoading"></Label>
+        <Label row="4" col="0" text="&#xf105;" class="fa arrow text-right" [class.container-loading]="_isLoading"></Label>
         <Label row="4" col="0" text="{{ selection.term || 'Bitte wählen..'}}" 
-            class="footnote input" (tap)="showDialogTerms()"></Label>
+            class="footnote input" (tap)="showDialogTerms()" [class.container-loading]="_isLoading"></Label>
 
-        <Label row="5" col="0" text="Gruppe:" class="title-label"></Label>
-        <Label row="6" col="0" text="&#xf105;" class="fa arrow text-right"></Label>
+        <Label row="5" col="0" text="Gruppe:" class="title-label" [class.container-loading]="_isLoading"></Label>
+        <Label row="6" col="0" text="&#xf105;" class="fa arrow text-right" [class.container-loading]="_isLoading"></Label>
         <Label row="6" col="0" text="{{ selection.group || 'Bitte wählen..'}}" 
-            class="footnote input" (tap)="showDialogGroups()"></Label>
+            class="footnote input" (tap)="showDialogGroups()" [class.container-loading]="_isLoading"></Label>
 </GridLayout>

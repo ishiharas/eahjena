@@ -4,7 +4,7 @@
     </StackLayout>
     <GridLayout rows="60, *" tkMainContent>
         <ScrollView #pageScroll row="0" rowSpan="2" (swipe)="onSwipe($event)" (scroll)="onScroll($event)">
-            <StackLayout style="padding-top: 75" [class.slide-out-left]="swipeLeft" [class.slide-out-right]="swipeRight">
+            <StackLayout *ngIf="!loadingAndUi; else loading" style="padding-top: 75" [class.slide-out-left]="swipeLeft" [class.slide-out-right]="swipeRight">
                 <StackLayout *ngFor="let canteen of _canteens[tabbarSelected]?.canteens">
                     <GridLayout rows="auto, auto" class="event-component-header text-center">
                         <Label row="0" text="&#xf111;" class="fa" style="font-size: 25; color: #00aaa0; vertical-align: center; opacity: 0.4;"></Label>
@@ -18,7 +18,6 @@
                                 rows="auto, auto, auto, auto" columns="*, auto" 
                                 class="list-canteens" ripple rippleColor="#00aaa0"
                                 (tap)="hint(food.ingredients)">
-    
                                 <Label [text]="food.title" 
                                     row="0" col="0"
                                     class="footnote m-t-10" style="font-size: 11"></Label>
@@ -30,13 +29,17 @@
                                 <Label [text]="'Inhalt: ' + food.ingredients" 
                                     row="2" col="0" 
                                     class="footnote m-b-10" style="font-size: 11"></Label>
-                                <StackLayout class="hr-light" *ngIf="!last" row="3" col="0" colSpan="2"></StackLayout>
-
+                                <Label class="hr-light" *ngIf="!last" row="3" col="0" colSpan="2"></Label>
                             </GridLayout>
                         </StackLayout>
                     </CardView>
                 </StackLayout>
             </StackLayout>   
+            <ng-template #loading>
+                <GridLayout style="padding-top: 150">
+                    <ActivityIndicator [busy]="loadingAndUi" width="100" height="100" class="activity-indicator"></ActivityIndicator>
+                </GridLayout>
+            </ng-template>   
         </ScrollView>
         <GridLayout row="0" rows="auto, auto" columns="60, *" class="actionbar">
             <Label text="Speiseplan" row="0" col="0" colSpan="2" class="nav-header-title"></Label>
@@ -51,9 +54,7 @@
                                 class="tabbar-cell" 
                                 [ngClass]="{'tabbar-selectedcell': tabbarSelected === i}"
                                 (tap)="tabbarTapped(i)">
-                    <Label  #tabbarLabel
-                            [text]="item.dateShort" 
-                            textWrap="true"></Label>
+                    <Label  [text]="item.dateShort" textWrap="true"></Label>
                 </StackLayout>
             </StackLayout>
         </ScrollView>

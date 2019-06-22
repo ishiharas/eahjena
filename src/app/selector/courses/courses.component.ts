@@ -31,7 +31,7 @@ export class CoursesComponent implements OnInit {
     public actionOptions: Array<string> = [];
     public selection: Selection = {};
 
-    public _isLoading: boolean = false;
+    public _isLoading: boolean = true;
     public _courseData: CourseData;
 
     public options = {
@@ -50,10 +50,7 @@ export class CoursesComponent implements OnInit {
     }
 
     extractData(): void {
-        this._isLoading = true;
-
         this._selectorService.getCourseData()
-            .pipe(finalize(() => this._isLoading = false))
             .subscribe((result: CourseData) => {
                 this._courseData = result;
                 this._isLoading = false;
