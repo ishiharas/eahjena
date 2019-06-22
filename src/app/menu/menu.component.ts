@@ -10,6 +10,7 @@ import { SwipeGestureEventData, SwipeDirection } from "tns-core-modules/ui/gestu
 import { finalize } from "rxjs/operators";
 import { CanteensModel } from "../shared/model/canteens.model";
 import { INGREDIENTS } from "../shared/ingredients";
+import { RouterExtensions } from "nativescript-angular/router";
 
 
 @Component({
@@ -50,7 +51,8 @@ export class MenuComponent implements AfterViewInit {
 
     constructor(private page: Page,
         private _changeDetectionRef: ChangeDetectorRef,
-        private _canteensService: CanteensService) {
+        private _canteensService: CanteensService,
+        private _router: RouterExtensions) {
     }
 
     ngOnInit(): void {
@@ -65,13 +67,9 @@ export class MenuComponent implements AfterViewInit {
     }
 
     ngAfterContentInit() {
-        if (isAndroid) {
             this.renderViewTimeout = setTimeout(() => {
                 this.renderView = true;
             }, 300);
-        } else {
-            this.renderView = true;
-        }
     }
 
     ngOnDestroy() {
@@ -243,5 +241,14 @@ export class MenuComponent implements AfterViewInit {
             alert(options);
         }
 
+    }
+
+    openPlannerEdit(): void {
+        this._router.navigate(['menu-edit'], {
+            animated: true,
+            transition: {
+                name: 'slideLeft'
+            }
+        })
     }
 }

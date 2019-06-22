@@ -41,11 +41,13 @@
                 </GridLayout>
             </ng-template>   
         </ScrollView>
-        <GridLayout row="0" rows="auto, auto" columns="60, *" class="actionbar">
-            <Label text="Speiseplan" row="0" col="0" colSpan="2" class="nav-header-title"></Label>
-            <Label [text]="_canteens[tabbarSelected]?.dayString" row="1" col="0" colSpan="2" style="color: black" class="footnote m-b-10 text-center"></Label>
+        <GridLayout row="0" rows="auto, auto" columns="60, *, 60" class="actionbar">
+            <Label text="Speiseplan" row="0" col="0" colSpan="3" class="nav-header-title"></Label>
+            <Label [text]="_canteens[tabbarSelected]?.dayString" row="1" col="0" colSpan="3" style="color: black" class="footnote m-b-10 text-center"></Label>
             <Label text="&#xf0c9;" class="fa nav-icon" row="0" col="0" (tap)="openDrawer('Left')"></Label>
             <Label text="Menü" row="1" col="0" class="nav-icon-header" (tap)="openDrawer('Left')"></Label>
+            <Label text="&#xf044;" class="far nav-icon-right" row="0" col="2" (tap)="openPlannerEdit()"></Label>
+            <Label text="Bearb." row="1" col="2" class="nav-icon-header-right" (tap)="openPlannerEdit()"></Label>
         </GridLayout>
         <ScrollView #tabbarScroll row="1" orientation="horizontal" [ngClass]="tabbarHidden ? 'tabbar-slide-in' : 'tabbar-slide-out'">
             <StackLayout orientation="horizontal" class="tabbar">

@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { Page } from "tns-core-modules/ui/page/page";
 import { SelectorService } from "./shared/selector.service";
 import { RouterExtensions } from "nativescript-angular/router";
-import { setString, setBoolean, clear } from "tns-core-modules/application-settings";
+import { setString, setBoolean, clear, getString, remove } from "tns-core-modules/application-settings";
 import * as localStorage from 'nativescript-localstorage';
 
 
@@ -41,6 +41,15 @@ export class SelectorComponent implements OnInit {
                 this.currentStep--;
                 this.opening = !this.opening;
             }, 300);
+
+            if(this.currentStep == 3) {
+                    let i: number = 0;
+                    while (getString("canteen_" + i)) {
+                        remove("canteen_" + i)
+                        i++;
+                    }	
+                
+            }
     }
 
     onNextButton(): void {

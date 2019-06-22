@@ -68,13 +68,9 @@ export class HomeComponent implements AfterViewInit {
     }
 
     ngAfterContentInit() {
-        if (isAndroid) {
             this.renderViewTimeout = setTimeout(() => {
                 this.renderView = true;
             }, 300);
-        } else {
-            this.renderView = true;
-        }
     }
 
     ngOnDestroy() {

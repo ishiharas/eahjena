@@ -1,0 +1,14 @@
+<GridLayout rows="60, *">
+    <ScrollView row="0" rowSpan="2">
+        <GridLayout style="padding-top: 30">
+            <canteens (canteenCollection)="canteenArr = $event"></canteens>
+        </GridLayout>
+    </ScrollView>
+    <GridLayout row="0" rows="auto, auto" columns="60, *, 60" class="actionbar">
+        <Label text="Speisepläne" row="0" col="0" colSpan="3" rowSpan="2" class="nav-header-title"></Label>
+        <Label text="&#xf053;" class="fa nav-icon" row="0" col="0" (tap)="onBackTap()"></Label>
+        <Label text="Zurück" row="1" col="0" class="nav-icon-header" (tap)="onBackTap()"></Label>
+        <Label text="&#xf0c7;" class="fa nav-icon-right" style="font-size: 21" row="0" col="2" (tap)="onSaveSelectionTap()"></Label>
+        <Label text="Speich." row="1" col="2" class="nav-icon-header-right" (tap)="onSaveSelectionTap()"></Label>
+    </GridLayout>
+</GridLayout>

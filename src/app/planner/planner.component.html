@@ -50,7 +50,7 @@
             <Label text="Stundenplan" row="0" col="0" colSpan="3" rowSpan="2" class="nav-header-title"></Label>
             <Label text="&#xf0c9;" class="fa nav-icon" row="0" col="0" (tap)="openDrawer('Left')"></Label>
             <Label text="Menü" row="1" col="0" class="nav-icon-header" (tap)="openDrawer('Left')"></Label>
-            <Label text="&#xf067;" class="fa nav-icon-right" row="0" col="2" (tap)="openPlannerEdit()"></Label>
+            <Label text="&#xf271;" class="far nav-icon-right" row="0" col="2" (tap)="openPlannerEdit()"></Label>
             <Label text="Hinzu." row="1" col="2" class="nav-icon-header-right" (tap)="openPlannerEdit()"></Label>
         </GridLayout>
         <ScrollView #tabbarScroll *ngIf="renderView" row="1" orientation="horizontal" [ngClass]="tabbarHidden ? 'tabbar-slide-in' : 'tabbar-slide-out'">

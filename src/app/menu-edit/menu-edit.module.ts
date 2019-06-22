@@ -1,6 +1,6 @@
 import { NgModule, NO_ERRORS_SCHEMA } from "@angular/core";
-import { PlannerEditRoutingModule } from "./planner-edit-routing.module";
-import { PlannerEditComponent } from "./planner-edit.component";
+import { MenuEditRoutingModule } from "./menu-edit-routing.module";
+import { MenuEditComponent } from "./menu-edit.component";
 import { NativeScriptCommonModule } from "nativescript-angular/common";
 import { NativeScriptHttpClientModule } from "nativescript-angular/http-client";
 import { SharedModule } from "../shared/shared.module";
@@ -8,15 +8,15 @@ import { SharedModule } from "../shared/shared.module";
 @NgModule({
     imports: [
         NativeScriptCommonModule,
-        PlannerEditRoutingModule,
+        MenuEditRoutingModule,
         NativeScriptHttpClientModule,
         SharedModule
     ],
     declarations: [
-        PlannerEditComponent
+        MenuEditComponent
     ],
     schemas: [
         NO_ERRORS_SCHEMA
     ]
 })
-export class PlannerEditModule { }
+export class MenuEditModule { }

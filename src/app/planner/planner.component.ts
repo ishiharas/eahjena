@@ -31,7 +31,7 @@ export class PlannerComponent implements AfterViewInit  {
     public screenWidth: number = screen.mainScreen.widthDIPs;
 
     public _coursesAllweeks: Array<CoursesModel> = [];
-    public _coursesWeekList: CoursesDayModel[];
+    public _coursesWeekList: any[];
 
     public _isLoadingCourses: boolean = true;
     public today: string = formatDate(new Date(), 'EE, dd.MM.yyyy', 'en');
@@ -74,13 +74,9 @@ export class PlannerComponent implements AfterViewInit  {
     }
 
     ngAfterContentInit() {
-        if (isAndroid) {
             this.renderViewTimeout = setTimeout(() => {
                 this.renderView = true;
             }, 300);
-        } else {
-            this.renderView = true;
-        }
     }
 
     ngOnDestroy() {
@@ -217,8 +213,8 @@ export class PlannerComponent implements AfterViewInit  {
     showLessonsDialog(weekday: number, course: number, coursecontent: any): void {
         let singleEvent = "Nur dieses Ereignis";
         let allEvents = "Alle Ereignisse in der Reihe";
-        let eventUid = this._coursesAllweeks[this.tabbarSelected].weekdays[weekday].events[course].uid;
-        let eventUidAll = this._coursesAllweeks[this.tabbarSelected].weekdays[weekday].events[course].uid.split('-')[0];
+        let eventUid = this._coursesWeekList[weekday].events[course].uid;
+        let eventUidAll = this._coursesWeekList[weekday].events[course].uid.split('-')[0];
         console.log(coursecontent)
         dialogs.action({
             message: "Ereignis löschen",

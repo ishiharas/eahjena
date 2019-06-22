@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { SelectorService } from '../shared/selector.service';
-import { finalize } from 'rxjs/operators';
+import { finalize, single } from 'rxjs/operators';
 import { CanteenData } from '../shared/canteenData.model';
 import { action } from 'tns-core-modules/ui/dialogs/dialogs';
 import { Selection } from '../shared/selection.model';
@@ -22,6 +22,7 @@ export class CanteensComponent implements OnInit {
 	public _canteenData: Array<CanteenData> = [];
 	public selection: Selection = {};
     public actionOptions: Array<string> = [];
+	public localCanteenIds: string[] = [];
 
     public options = {
         title: "",
@@ -34,28 +35,38 @@ export class CanteensComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		this.getLocalIds();
 		this.extractData();
 		this.selected.emit(false);
-		this.removeApplicationSettings();		
+		// this.removeApplicationSettings();		
 	}
 
 	extractData(): void {
 		this._isLoading = true;
 
+
         this._selectorService.getCanteenData()
             .pipe(finalize(() => this._isLoading = false))
             .subscribe((result: Array<CanteenData>) => {
+	
+				this.selection.canteens = [];
+
 				result.forEach((singleCanteen) => {
 					this._canteenData.push(singleCanteen);
+					const found = this.localCanteenIds.find(id => singleCanteen.id == id);
+					if (found) {
+						this.selection.canteens.push(singleCanteen)
+						this.canteenArr.push(singleCanteen.id)
+					}
 				})
 
-				this.selection.canteens = [];
-				this.selection.canteens.push(result[0]);
-
-				this.canteenArr.push(result[0].id);
+				if(!this.localCanteenIds[0]) {
+					this.selection.canteens.push(result[0]);
+					this.canteenArr.push(result[0].id);
+				} 
+				
 				this.canteenCollection.emit(this.canteenArr);
-
-                this._isLoading = false;
+				this._isLoading = false;
             }, (error) => console.log(error));
 	}
 
@@ -114,5 +125,13 @@ export class CanteensComponent implements OnInit {
 			remove("canteen_" + i)
 			i++;
 		}	
+	}
+
+	getLocalIds(): void {
+		let i: number = 0;
+		while (getString("canteen_" + i)) {
+			this.localCanteenIds.push(getString("canteen_" + i))
+			i++;
+		}
 	}
 }

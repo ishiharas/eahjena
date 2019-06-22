@@ -10,7 +10,9 @@ const routes: Routes = [
     { path: "home", loadChildren: "~/app/home/home.module#HomeModule", canActivate:[AuthGuard] },
     { path: "planner", loadChildren: "~/app/planner/planner.module#PlannerModule" },
     { path: "planner-edit", loadChildren: "~/app/planner-edit/planner-edit.module#PlannerEditModule" },
-    { path: "menu", loadChildren: "~/app/menu/menu.module#MenuModule" }
+    { path: "menu", loadChildren: "~/app/menu/menu.module#MenuModule" },
+    { path: "menu-edit", loadChildren: "~/app/menu-edit/menu-edit.module#MenuEditModule" },
+
 ];
 
 @NgModule({
