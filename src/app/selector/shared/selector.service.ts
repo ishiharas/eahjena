@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { CourseData } from "./courseData.model";
 
-import { courses, canteens } from "./config";
+import { courses, canteens } from "../../shared/config";
 import { CanteenData } from "./canteenData.model";
 
 @Injectable()

@@ -16,24 +16,24 @@
         </GridLayout>
 
         <GridLayout row="2" columns="40, *" 
-            class="drawer-layout" [class.selected]="isComponentSelected('/default')" 
-            (tap)="onNavItemTap('/default')">
-                <Label col="0" text="&#xf362;" class="fa divider"></Label>
-                <Label col="1" text="Änderungen" class="divider"></Label>
-        </GridLayout>
-
-        <GridLayout row="3" columns="40, *" 
             class="drawer-layout" [class.selected]="isComponentSelected('/menu')" 
             (tap)="onNavItemTap('/menu')">
                 <Label col="0" text="&#xf2e7;" class="fa divider"></Label>
                 <Label col="1" text="Speiseplan" class="divider"></Label>
         </GridLayout>
 
-        <GridLayout row="4" columns="40, *" 
+        <GridLayout row="3" columns="40, *" 
             class="drawer-layout" [class.selected]="isComponentSelected('/default')" 
             (tap)="onNavItemTap('/default')">
                 <Label col="0" text="&#xf1ea;" class="fa divider"></Label>
                 <Label col="1" text="Neues" class="divider"></Label>
+        </GridLayout>
+        
+        <GridLayout row="4" columns="40, *" 
+            class="drawer-layout" [class.selected]="isComponentSelected('/imprint')" 
+            (tap)="onNavItemTap('/imprint')">
+                <Label col="0" text="&#xf0e3;" class="fa divider"></Label>
+                <Label col="1" text="Rechtliches" class="divider"></Label>
         </GridLayout>
 
         <GridLayout row="5" columns="40, *" 

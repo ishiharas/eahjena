@@ -8,7 +8,7 @@ export var MONTHS = [
     {id: 6, string: 'Jul'},
     {id: 7, string: 'Aug'},
     {id: 8, string: 'Sep'},
-    {id: 9, string: 'Okt'},
+    {id: 9, string: 'Oct'},
     {id: 10, string: 'Nov'},
     {id: 11, string: 'Dec'},
 ]

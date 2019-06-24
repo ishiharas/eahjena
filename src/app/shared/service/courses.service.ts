@@ -5,7 +5,7 @@ import { CoursesModel } from "../model/courses.model";
 import { TimestampService } from "./timestamp.service";
 import { LSOBJECTS } from "../ls-objects";
 import { flatMap, finalize, map, tap } from "rxjs/operators";
-import { courses, eventQuery } from "../../selector/shared/config";
+import { courses, eventQuery } from "../config";
 import { getString } from "tns-core-modules/application-settings/application-settings";
 import * as localStorage from 'nativescript-localstorage';
 

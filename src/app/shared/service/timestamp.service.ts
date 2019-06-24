@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { courses } from "../../selector/shared/config";
+import { courses } from "../config";
 import { CourseData } from "~/app/selector/shared/courseData.model";
 import { Observable, of } from "rxjs";
 // import { MONTHS } from "../months";
