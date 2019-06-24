@@ -1,8 +1,4 @@
-<RadSideDrawer [drawerTransition]="sideDrawerTransition" [drawerLocation]="drawerLocation" gesturesEnabled="true" tkExampleTitle tkToggleNavButton>
-    <StackLayout tkDrawerContent class="side-drawer-layout">
-        <left-drawer *ngIf="drawerLocation == 'Left'"></left-drawer>
-    </StackLayout>
-    <GridLayout rows="60, *" tkMainContent iosOverflowSafeArea="false">  
+<GridLayout rows="60, *" tkMainContent iosOverflowSafeArea="false">  
         <ScrollView #pageScroll  style="height: 100%" row="0" rowSpan="2" (swipe)="onSwipe($event)" (scroll)="onScroll($event)">
             <StackLayout *ngIf="!loadingAndUi; else loading" style="padding-top: 60" [class.slide-out-left]="swipeLeft" [class.slide-out-right]="swipeRight">
                 <StackLayout *ngFor="let week of _coursesWeekList; let weekdayIndex = index" [visibility]="week.weekOfYear == tabbarSelectedKW ? 'visible' : 'collapsed'">
@@ -48,8 +44,8 @@
         </ScrollView>
         <GridLayout row="0" rows="auto, auto" columns="60, *, 60" class="actionbar">
             <Label text="Stundenplan" row="0" col="0" colSpan="3" rowSpan="2" class="nav-header-title"></Label>
-            <Label text="&#xf0c9;" class="fa nav-icon" row="0" col="0" (tap)="openDrawer('Left')"></Label>
-            <Label text="Menü" row="1" col="0" class="nav-icon-header" (tap)="openDrawer('Left')"></Label>
+            <Label text="&#xf0c9;" class="fa nav-icon" row="0" col="0" (tap)="openDrawer()"></Label>
+            <Label text="Menü" row="1" col="0" class="nav-icon-header" (tap)="openDrawer()"></Label>
             <Label text="&#xf271;" class="far nav-icon-right" row="0" col="2" (tap)="openPlannerEdit()"></Label>
             <Label text="Hinzu." row="1" col="2" class="nav-icon-header-right" (tap)="openPlannerEdit()"></Label>
         </GridLayout>
@@ -64,5 +60,4 @@
                 </StackLayout>
             </StackLayout>
         </ScrollView>
-    </GridLayout>
-</RadSideDrawer>
+</GridLayout>

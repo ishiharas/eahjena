@@ -37,3 +37,34 @@ components that have the btn class name.
     width: 100%;
     height: 100%;
 }
+
+.logo {
+    width: 210;
+    margin-top: 25;
+    opacity: 0.9;
+    horizontal-alignement: center;
+  }
+
+.drawer-layout {
+    color: #ffffff;
+    font-weight: 400;
+    font-size: 17;
+}
+
+.divider {
+    padding-bottom: 17;
+    padding-top: 17;
+    padding-left: 20;
+    vertical-align: center;
+}
+
+
+.selected {
+    background-color: #ffffff;
+    opacity: 0.2;
+    color: #224878;
+}
+
+.side-drawer-layout {
+    background: linear-gradient(to right, #394a5f, #394a5f, #2f3d4f);
+}

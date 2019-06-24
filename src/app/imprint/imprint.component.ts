@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild, AfterViewInit, ChangeDetectorRef, ElementRef } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { imprint } from "../shared/config";
-import { RadSideDrawerComponent } from "nativescript-ui-sidedrawer/angular";
-import { RadSideDrawer, DrawerTransitionBase, PushTransition } from 'nativescript-ui-sidedrawer';
+import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
 import { Page } from "tns-core-modules/ui/page/page";
-import { WebView, LoadEventData } from "tns-core-modules/ui/web-view";
+import { LoadEventData } from "tns-core-modules/ui/web-view";
+import * as app from "tns-core-modules/application";
 
 
 @Component({
@@ -12,48 +12,22 @@ import { WebView, LoadEventData } from "tns-core-modules/ui/web-view";
     templateUrl: "./imprint.component.html",
 	styleUrls: ['./imprint.component.css']
 })
-export class ImprintComponent implements AfterViewInit {
+export class ImprintComponent implements OnInit {
     @ViewChild("webview") webViewElement: ElementRef;
-
     public webViewSrc = imprint;
-    public drawerLocation: string = "Left";
-    
-    @ViewChild(RadSideDrawerComponent) public drawerComponent: RadSideDrawerComponent;
-    private drawer: RadSideDrawer;
-    private _sideDrawerTransition: DrawerTransitionBase;
-    private requestFinished: boolean = false;
+    public requestFinished: boolean = false;
         
-    get sideDrawerTransition(): DrawerTransitionBase {
-        return this._sideDrawerTransition;
-    }
-
-    set sideDrawerTransition(value: DrawerTransitionBase) {
-        this._sideDrawerTransition = value;
-    }
- 
-    constructor(private page: Page, 
-        private _changeDetectionRef: ChangeDetectorRef) {
-
+    constructor(private page: Page) {
     }
 
     ngOnInit(): void {
         this.page.actionBarHidden = true;
     }
 
-    ngAfterViewInit() {
-        this.drawer = this.drawerComponent.sideDrawer;
-        this._sideDrawerTransition = new PushTransition();
-        this._changeDetectionRef.detectChanges();
+    openDrawer(): void {
+        const sideDrawer = <RadSideDrawer>app.getRootView();
+        sideDrawer.showDrawer();
     }
-
-    openDrawer(position) {
-        this.drawerLocation = position;
-        setTimeout(() => this.drawer.showDrawer(), 5);
-    }
-
-    closeDrawer() {
-        this.drawer.closeDrawer();
-    }   
 
     public onLoadFinished(args: LoadEventData) {
         if (!args.error) {

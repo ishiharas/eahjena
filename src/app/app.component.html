@@ -1,1 +1,50 @@
-<page-router-outlet></page-router-outlet>
+<RadSideDrawer [drawerTransition]="sideDrawerTransition" gesturesEnabled="true">
+    <StackLayout tkDrawerContent class="side-drawer-layout">
+        <Image src="res://eahlogo_triangle" stretch="aspectFit" class="logo"></Image>
+        <GridLayout rows="auto, auto, auto, auto, auto, auto" class="drawer-layout">
+            <GridLayout row="0" columns="40, *" 
+                class="drawer-layout" [class.selected]="isComponentSelected('/home')" 
+                (tap)="onNavItemTap('/home')">
+                    <Label col="0" text="&#xf015;" class="fa divider"></Label>
+                    <Label col="1" text="Home" class="divider"></Label>
+            </GridLayout>
+    
+            <GridLayout row="1" columns="40, *" 
+                class="drawer-layout" [class.selected]="isComponentSelected('/planner')" 
+                (tap)="onNavItemTap('/planner')">
+                    <Label col="0" text="&#xf073;" class="fa divider"></Label>
+                    <Label col="1" text="Stundenplan" class="divider"></Label>
+            </GridLayout>
+    
+            <GridLayout row="2" columns="40, *" 
+                class="drawer-layout" [class.selected]="isComponentSelected('/menu')" 
+                (tap)="onNavItemTap('/menu')">
+                    <Label col="0" text="&#xf2e7;" class="fa divider"></Label>
+                    <Label col="1" text="Speiseplan" class="divider"></Label>
+            </GridLayout>
+    
+            <GridLayout row="3" columns="40, *" 
+                class="drawer-layout" [class.selected]="isComponentSelected('/default')" 
+                (tap)="onNavItemTap('/default')">
+                    <Label col="0" text="&#xf1ea;" class="fa divider"></Label>
+                    <Label col="1" text="Neues" class="divider"></Label>
+            </GridLayout>
+            
+            <GridLayout row="4" columns="40, *" 
+                class="drawer-layout" [class.selected]="isComponentSelected('/imprint')" 
+                (tap)="onNavItemTap('/imprint')">
+                    <Label col="0" text="&#xf0e3;" class="fa divider"></Label>
+                    <Label col="1" text="Rechtliches" class="divider"></Label>
+            </GridLayout>
+    
+            <GridLayout row="5" columns="40, *" 
+                class="drawer-layout" [class.selected]="isComponentSelected('/selector')" 
+                (tap)="onNavItemTap('/selector')">
+                    <Label col="0" text="&#xf013;" class="fa divider"></Label>
+                    <Label col="1" text="Einstellungen" class="divider"></Label>
+            </GridLayout>
+        
+        </GridLayout>
+    </StackLayout>
+    <page-router-outlet tkMainContent></page-router-outlet>
+</RadSideDrawer>

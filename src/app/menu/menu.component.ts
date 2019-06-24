@@ -2,15 +2,14 @@ import { Component, OnInit, ChangeDetectorRef, AfterViewInit, ViewChild, Element
 import { CanteensService } from "../shared/service/canteens.service";
 import { Page, isAndroid, isIOS } from "tns-core-modules/ui/page/page";
 import { screen } from "tns-core-modules/platform";
-import { RadSideDrawerComponent } from "nativescript-ui-sidedrawer/angular/side-drawer-directives";
-import { RadSideDrawer, DrawerTransitionBase, PushTransition } from "nativescript-ui-sidedrawer";
+import { RadSideDrawer } from "nativescript-ui-sidedrawer";
 import { StackLayout } from "tns-core-modules/ui/layouts/stack-layout/stack-layout";
 import { ScrollView, ScrollEventData } from "tns-core-modules/ui/scroll-view/scroll-view";
 import { SwipeGestureEventData, SwipeDirection } from "tns-core-modules/ui/gestures/gestures";
-import { finalize } from "rxjs/operators";
 import { CanteensModel } from "../shared/model/canteens.model";
 import { INGREDIENTS } from "../shared/ingredients";
 import { RouterExtensions } from "nativescript-angular/router";
+import * as app from "tns-core-modules/application";
 
 
 @Component({
@@ -20,12 +19,7 @@ import { RouterExtensions } from "nativescript-angular/router";
 	styleUrls: ['./menu.component.css'],
     providers: [CanteensService]
 })
-export class MenuComponent implements AfterViewInit {
-    @ViewChild(RadSideDrawerComponent) public drawerComponent: RadSideDrawerComponent;
-    private drawer: RadSideDrawer;
-    private _sideDrawerTransition: DrawerTransitionBase;
-    public drawerLocation: string = "Left";
-    public currentTransition: string;
+export class MenuComponent implements OnInit {
     public screenWidth: number = screen.mainScreen.widthDIPs;
 
     public _canteens = [];
@@ -50,7 +44,6 @@ export class MenuComponent implements AfterViewInit {
     public renderViewTimeout: any;
 
     constructor(private page: Page,
-        private _changeDetectionRef: ChangeDetectorRef,
         private _canteensService: CanteensService,
         private _router: RouterExtensions) {
     }
@@ -60,16 +53,10 @@ export class MenuComponent implements AfterViewInit {
         this.extractCanteensData();
     }
 
-    ngAfterViewInit() {
-        this.drawer = this.drawerComponent.sideDrawer;
-        this._sideDrawerTransition = new PushTransition();
-        this._changeDetectionRef.detectChanges();
-    }
-
     ngAfterContentInit() {
-            this.renderViewTimeout = setTimeout(() => {
-                this.renderView = true;
-            }, 300);
+        this.renderViewTimeout = setTimeout(() => {
+            this.renderView = true;
+        }, 300);
     }
 
     ngOnDestroy() {
@@ -78,13 +65,6 @@ export class MenuComponent implements AfterViewInit {
         }
      }
 
-    get sideDrawerTransition(): DrawerTransitionBase {
-        return this._sideDrawerTransition;
-    }
-
-    set sideDrawerTransition(value: DrawerTransitionBase) {
-        this._sideDrawerTransition = value;
-    }
 
     get loadingAndUi(): boolean {
         if (!this.renderView && this._isLoadingCanteens) {
@@ -93,9 +73,9 @@ export class MenuComponent implements AfterViewInit {
         return false;
     }
 
-    openDrawer(position) {
-        this.drawerLocation = position;
-        setTimeout(() => this.drawer.showDrawer(), 5);
+    openDrawer(): void {
+        const sideDrawer = <RadSideDrawer>app.getRootView();
+        sideDrawer.showDrawer();
     }
 
     tabbarTapped(args): void {

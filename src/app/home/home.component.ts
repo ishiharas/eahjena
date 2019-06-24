@@ -1,7 +1,6 @@
-import { Component, AfterViewInit, ViewChild, ChangeDetectorRef } from "@angular/core";
+import { Component, AfterViewInit, ChangeDetectorRef, OnInit } from "@angular/core";
 
-import { RadSideDrawerComponent } from "nativescript-ui-sidedrawer/angular";
-import { RadSideDrawer, DrawerTransitionBase, PushTransition } from 'nativescript-ui-sidedrawer';
+import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
 import { Page, isAndroid, isIOS } from "tns-core-modules/ui/page/page";
 import { CoursesService } from "../shared/service/courses.service";
 import { registerElement } from 'nativescript-angular/element-registry';
@@ -15,8 +14,7 @@ import { CanteensModel } from "../shared/model/canteens.model";
 import { INGREDIENTS } from "../shared/ingredients";
 import { setString } from "tns-core-modules/application-settings/application-settings";
 import { ScrollEventData } from "tns-core-modules/ui/scroll-view";
-import { LSOBJECTS } from "../shared/ls-objects";
-import * as localStorage from 'nativescript-localstorage';
+import * as app from "tns-core-modules/application";
 
 registerElement('CardView', () => CardView);
 
@@ -27,10 +25,7 @@ registerElement('CardView', () => CardView);
 	styleUrls: ['./home.component.css'],
     providers: [CoursesService, CanteensService]
 })
-export class HomeComponent implements AfterViewInit {
-    @ViewChild(RadSideDrawerComponent) public drawerComponent: RadSideDrawerComponent;
-    private drawer: RadSideDrawer;
-    private _sideDrawerTransition: DrawerTransitionBase;
+export class HomeComponent implements OnInit {
     public _courses: Array<CoursesDayModel> = [];
     public _isLoadingCourses: boolean = true;
     public _canteens: Array<CanteensModel[]> = [];
@@ -38,8 +33,6 @@ export class HomeComponent implements AfterViewInit {
 
     public today: string = formatDate(new Date(), 'EE, dd.MM.yyyy', 'en');
     public todayDate: Date = new Date();
-    public drawerLocation: string = "Left";
-    public currentTransition: string;
     public isAndroid = isAndroid;
     public isIos = isIOS;
     public status = "not scrolling";
@@ -48,8 +41,7 @@ export class HomeComponent implements AfterViewInit {
     public isBusy = true;
     public renderViewTimeout: any;
 
-    constructor(private page: Page, 
-        private _changeDetectionRef: ChangeDetectorRef,
+    constructor(private page: Page,
         private _coursesService: CoursesService,
         private _canteensService: CanteensService) {
     }
@@ -59,12 +51,6 @@ export class HomeComponent implements AfterViewInit {
         this.extractCanteensData();
         this.page.actionBarHidden = true;
         setString("activatedUrl", "/home");
-    }
-
-    ngAfterViewInit() {
-        this.drawer = this.drawerComponent.sideDrawer;
-        this._sideDrawerTransition = new PushTransition();
-        this._changeDetectionRef.detectChanges();
     }
 
     ngAfterContentInit() {
@@ -113,23 +99,11 @@ export class HomeComponent implements AfterViewInit {
             this._isLoadingCanteens = false;
         }, (error) => console.log(error));
     }
-    
-    get sideDrawerTransition(): DrawerTransitionBase {
-        return this._sideDrawerTransition;
-    }
 
-    set sideDrawerTransition(value: DrawerTransitionBase) {
-        this._sideDrawerTransition = value;
+    openDrawer(): void {
+        const sideDrawer = <RadSideDrawer>app.getRootView();
+        sideDrawer.showDrawer();
     }
-
-    openDrawer(position) {
-        this.drawerLocation = position;
-        setTimeout(() => this.drawer.showDrawer(), 5);
-    }
-
-    closeDrawer() {
-        this.drawer.closeDrawer();
-    }    
 
     public onScroll(args: ScrollEventData) {
         this.status = "scrolling";

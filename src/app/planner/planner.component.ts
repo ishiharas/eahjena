@@ -1,19 +1,16 @@
-import { Component, AfterViewInit, ViewChild, ChangeDetectorRef, ElementRef } from "@angular/core";
+import { Component, ViewChild, ElementRef, OnInit } from "@angular/core";
 import { Page } from "tns-core-modules/ui/page/page";
-import { RadSideDrawerComponent } from "nativescript-ui-sidedrawer/angular/side-drawer-directives";
-import { RadSideDrawer, DrawerTransitionBase, PushTransition } from "nativescript-ui-sidedrawer";
+import { RadSideDrawer } from "nativescript-ui-sidedrawer";
 import { CoursesService } from "../shared/service/courses.service";
-import { finalize } from "rxjs/operators";
 import { CoursesModel } from "../shared/model/courses.model";
 import { formatDate } from "@angular/common";
 import { SwipeDirection, SwipeGestureEventData } from "tns-core-modules/ui/gestures/gestures";
 import { StackLayout } from "tns-core-modules/ui/layouts/stack-layout/stack-layout";
-import { GridLayout } from "tns-core-modules/ui/layouts/grid-layout/grid-layout";
 import { ScrollView, ScrollEventData } from "tns-core-modules/ui/scroll-view/scroll-view";
 import { isAndroid, isIOS, screen } from "tns-core-modules/platform";
 import * as dialogs from "tns-core-modules/ui/dialogs"
 import { RouterExtensions } from "nativescript-angular/router";
-import { CoursesDayModel } from "../shared/model/courses-day.model";
+import * as app from "tns-core-modules/application";
 
 @Component({
     selector: "Planner",
@@ -22,12 +19,7 @@ import { CoursesDayModel } from "../shared/model/courses-day.model";
 	styleUrls: ['./planner.component.css'],
     providers: [CoursesService]
 })
-export class PlannerComponent implements AfterViewInit  {
-    @ViewChild(RadSideDrawerComponent) public drawerComponent: RadSideDrawerComponent;
-    private drawer: RadSideDrawer;
-    private _sideDrawerTransition: DrawerTransitionBase;
-    public drawerLocation: string = "Left";
-    public currentTransition: string;
+export class PlannerComponent implements OnInit  {
     public screenWidth: number = screen.mainScreen.widthDIPs;
 
     public _coursesAllweeks: Array<CoursesModel> = [];
@@ -57,7 +49,6 @@ export class PlannerComponent implements AfterViewInit  {
 
     constructor(private page: Page,
         private _router: RouterExtensions,
-        private _changeDetectionRef: ChangeDetectorRef,
         private _coursesService: CoursesService) {
     }
 
@@ -67,16 +58,11 @@ export class PlannerComponent implements AfterViewInit  {
         this.extractCoursesData();
     }
 
-    ngAfterViewInit() {
-        this.drawer = this.drawerComponent.sideDrawer;
-        this._sideDrawerTransition = new PushTransition();
-        this._changeDetectionRef.detectChanges();
-    }
 
     ngAfterContentInit() {
-            this.renderViewTimeout = setTimeout(() => {
-                this.renderView = true;
-            }, 300);
+        this.renderViewTimeout = setTimeout(() => {
+            this.renderView = true;
+        }, 300);
     }
 
     ngOnDestroy() {
@@ -84,14 +70,6 @@ export class PlannerComponent implements AfterViewInit  {
             clearTimeout(this.renderViewTimeout);
         }
      }
-
-    get sideDrawerTransition(): DrawerTransitionBase {
-        return this._sideDrawerTransition;
-    }
-
-    set sideDrawerTransition(value: DrawerTransitionBase) {
-        this._sideDrawerTransition = value;
-    }
 
     get loadingAndUi(): boolean {
             if (!this.renderView && this._isLoadingCourses) {
@@ -101,9 +79,9 @@ export class PlannerComponent implements AfterViewInit  {
         return false;
     }
 
-    openDrawer(position) {
-        this.drawerLocation = position;
-        setTimeout(() => this.drawer.showDrawer(), 5);
+    openDrawer(): void {
+        const sideDrawer = <RadSideDrawer>app.getRootView();
+        sideDrawer.showDrawer();
     }
 
     tabbarTapped(args, kw: number): void {
