@@ -1,27 +1,39 @@
 import { Component, OnInit } from "@angular/core";
-
-/* ***********************************************************
-* Before you can navigate to this page from your app, you need to reference this page's module in the
-* global app router module. Add the following object to the global array of routes:
-* { path: "weather", loadChildren: "./weather/weather.module#WeatherModule" }
-* Note that this simply points the path to the page module file. If you move the page, you need to update the route too.
-*************************************************************/
+import { WeatherService } from "../shared/service/weather.service";
+import { WeatherModel } from "../shared/model/weather.model";
+import { RadSideDrawer } from "nativescript-ui-sidedrawer";
+import * as app from "tns-core-modules/application";
+import { Page } from "tns-core-modules/ui/page/page";
 
 @Component({
     selector: "Weather",
     moduleId: module.id,
-    templateUrl: "./weather.component.html"
+    templateUrl: "./weather.component.html",
+    providers: [WeatherService]
 })
 export class WeatherComponent implements OnInit {
-    constructor() {
-        /* ***********************************************************
-        * Use the constructor to inject app services that you need in this component.
-        *************************************************************/
+    public requestFinished: boolean = false;
+    public weather: WeatherModel;
+
+    constructor(private page: Page,
+        private _weatherService: WeatherService) {
     }
 
     ngOnInit(): void {
-        /* ***********************************************************
-        * Use the "ngOnInit" handler to initialize data for this component.
-        *************************************************************/
+        this.page.actionBarHidden = true;
+        this.extractWeatherData();
+    }
+
+    openDrawer(): void {
+        const sideDrawer = <RadSideDrawer>app.getRootView();
+        sideDrawer.showDrawer();
+    }
+    
+    extractWeatherData(): void {
+        this._weatherService.getWeatherData()
+            .subscribe((result: WeatherModel) => {
+                this.weather = result;
+                this.requestFinished = true;
+            }, (error) => console.log(error));
     }
 }

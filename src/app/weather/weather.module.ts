@@ -1,12 +1,11 @@
 import { NgModule, NO_ERRORS_SCHEMA } from "@angular/core";
-import { NativeScriptModule } from "nativescript-angular/nativescript.module";
-
 import { WeatherRoutingModule } from "./weather-routing.module";
 import { WeatherComponent } from "./weather.component";
+import { NativeScriptCommonModule } from "nativescript-angular/common";
 
 @NgModule({
     imports: [
-        NativeScriptModule,
+        NativeScriptCommonModule,
         WeatherRoutingModule
     ],
     declarations: [

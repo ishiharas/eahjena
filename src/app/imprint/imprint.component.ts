@@ -9,8 +9,7 @@ import * as app from "tns-core-modules/application";
 @Component({
     selector: "Imprint",
     moduleId: module.id,
-    templateUrl: "./imprint.component.html",
-	styleUrls: ['./imprint.component.css']
+    templateUrl: "./imprint.component.html"
 })
 export class ImprintComponent implements OnInit {
     @ViewChild("webview") webViewElement: ElementRef;

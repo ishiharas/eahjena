@@ -12,7 +12,8 @@ const routes: Routes = [
     { path: "planner-edit", loadChildren: "~/app/planner-edit/planner-edit.module#PlannerEditModule" },
     { path: "menu", loadChildren: "~/app/menu/menu.module#MenuModule" },
     { path: "menu-edit", loadChildren: "~/app/menu-edit/menu-edit.module#MenuEditModule" },
-    { path: "imprint", loadChildren: "~/app/imprint/imprint.module#ImprintModule" }
+    { path: "imprint", loadChildren: "~/app/imprint/imprint.module#ImprintModule" },
+    { path: "weather", loadChildren: "~/app/weather/weather.module#WeatherModule" }
 ];
 
 @NgModule({

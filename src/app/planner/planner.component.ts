@@ -60,23 +60,23 @@ export class PlannerComponent implements OnInit  {
 
 
     ngAfterContentInit() {
-        this.renderViewTimeout = setTimeout(() => {
-            this.renderView = true;
-        }, 300);
+        if (isAndroid) {
+            this.renderViewTimeout = setTimeout(() => {
+                this.renderView = true;
+            }, 5000);
+        } else {
+            this.renderViewTimeout = setTimeout(() => {
+                this.renderView = true;
+            }, 200);
+        }
     }
 
     ngOnDestroy() {
-        if (isAndroid) {
-            clearTimeout(this.renderViewTimeout);
-        }
+        clearTimeout(this.renderViewTimeout);
      }
 
     get loadingAndUi(): boolean {
-            if (!this.renderView && this._isLoadingCourses) {
-                return true;
-            }
-
-        return false;
+        return (!this.renderView && this._isLoadingCourses) ? true : false;
     }
 
     openDrawer(): void {

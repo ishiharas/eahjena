@@ -1,5 +1,4 @@
-import { Component, AfterViewInit, ChangeDetectorRef, OnInit } from "@angular/core";
-
+import { Component, OnInit } from "@angular/core";
 import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
 import { Page, isAndroid, isIOS } from "tns-core-modules/ui/page/page";
 import { CoursesService } from "../shared/service/courses.service";
@@ -54,22 +53,23 @@ export class HomeComponent implements OnInit {
     }
 
     ngAfterContentInit() {
+        if (isAndroid) {
             this.renderViewTimeout = setTimeout(() => {
                 this.renderView = true;
-            }, 300);
+            }, 600);
+        } else {
+            this.renderViewTimeout = setTimeout(() => {
+                this.renderView = true;
+            }, 200);
+        }
     }
 
     ngOnDestroy() {
-        if (isAndroid) {
-            clearTimeout(this.renderViewTimeout);
-        }
+        clearTimeout(this.renderViewTimeout);
     }
-     
+
     get loadingAndUi(): boolean {
-        if (!this.renderView && this._isLoadingCourses) {
-            return true;
-        }
-        return false;
+        return (!this.renderView && this._isLoadingCourses) ? true : false;
     }
 
     extractCoursesData(): void {
