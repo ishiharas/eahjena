@@ -1,7 +1,9 @@
-# NativeScript with Angular Blank Template
-App templates help you jump start your native cross-platform apps with built-in UI elements and best practices. Save time writing boilerplate code over and over again when you create new apps.
+# EAH Jena Stundenplan-App (Crossplattform-Projekt)
+Diese App ist mithilfe des Nativescript Frameworks realisiert worden. Zusätzlich wurde das Angular Framework genutzt, um sich bekannter Werkzeuge bedienen zu können. 
 
-## Quick Start
+## Preview
+
+
 Execute the following command to create an app from this template:
 
 ```
