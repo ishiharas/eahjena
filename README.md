@@ -2,10 +2,19 @@
 Diese App ist mithilfe des Nativescript Frameworks realisiert worden. Als Sprache wird Typescript genutzt. Zusätzlich wurde das Angular Framework eingebunden, um sich bekannter Werkzeuge bedienen zu können.
 Dadurch ist diese App sowohl unter Android, als auch unter iOS nutzbar.
 
+
 ## Vorschau
 Folgende Vorschau zeigt bisher implementierte Funktionalitäten (im iOS Simulator):
 
 <img src="https://github.com/ishiharas/eahjena/blob/master/preview.gif?raw=true" width="354"/>
+
+Dazu gehören folgende Komponenten:
+* Home
+
+ ... Zeigt die heutigen Stundenplan-Veranstaltungen und Mensapläne
+
+* News
+
 
 
 ## Download Android App
@@ -15,7 +24,7 @@ Bitte beachten Sie, dass es sich dabei um ein Beta Version handelt.
 
 
 ## Nativescript
-Was Nativescript ist und wie damit native Apps gebaut werden können, kann unter folgendem Link nachgelesen werden:
+Was Nativescript ist und wie damit native Apps realisiert werden können, kann unter folgendem Link nachgelesen werden:
 https://docs.nativescript.org/core-concepts/android-runtime/overview
 
 Wie Nativescript unter Windows oder iOS gebaut werden kann und was dafür installiert werden muss, kann hier nachgelesen werden:
