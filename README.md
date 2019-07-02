@@ -1,49 +1,38 @@
 # EAH Jena Stundenplan-App
-Diese App ist mithilfe des Nativescript Frameworks realisiert worden. Zusätzlich wurde das Angular Framework genutzt, um sich bekannter Werkzeuge bedienen zu können.
+Diese App ist mithilfe des Nativescript Frameworks realisiert worden. Als Sprache wird Typescript genutzt. Zusätzlich wurde das Angular Framework eingebunden, um sich bekannter Werkzeuge bedienen zu können.
 Dadurch ist diese App sowohl unter Android, als auch unter iOS nutzbar.
 
-## Preview
-Folgender Preview zeigt kurz die Funktionalitäten unter iOS. Um die App unter Android zu testen, bitte einmal auf "Release" klicken und die .apk herunterladen. 
+## Vorschau
+Folgende Vorschau zeigt bisher implementierte Funktionalitäten (im iOS Simulator):
+
+<!-- <img src="https://user-images.githubusercontent.com/43359029/53537018-d0c72500-3b08-11e9-934c-3bb97e7d953e.png" width="500"/> -->
 
 
+## Download Android App
+Unter folgendem Link kann ein aktueller Build der Android .apk runter geladen werden.
+Bitte beachten Sie, dass es sich dabei um ein Beta Version handelt.
+* <summary><a href="https://github.com/ishiharas/eahjena/releases/latest">Latest Release</a></summary>
 
 
-Execute the following command to create an app from this template:
+## Nativescript
+Was Nativescript ist und wie damit native Apps gebaut werden können, kann unter folgendem Link nachgelesen werden:
+https://docs.nativescript.org/core-concepts/android-runtime/overview
+
+Wie Nativescript unter Windows oder iOS gebaut werden kann und was dafür installiert werden muss, kann hier nachgelesen werden:
+https://docs.nativescript.org/start/quick-setup#full-setup
+
+Der Punkt "Advanced Setup" listet alle Dependencies auf, die zum bauen von Nativescript Projekten benötigt werden. 
+Alternativ kann auch einfach das Script vom Link ausgeführt werden, welches sämtliche Dependencies (Android SDK, JDK, Google Repo, Android Studio und weitere) automatisch installiert.
+
+Wenn das generelle Setup erledigt ist, können alle Libraries der App mit folgendem Befehl installiert werden:
+```
+cd eahjena
+npm install
+```
+
+Folgender Befehl baut die App im Android Emulator, iOS Simulator oder dem angeschlossenen Gerät:
 
 ```
-tns create my-blank-ng --template tns-template-blank-ng
+tns run android
+tns run ios
 ```
-
-> Note: This command will create a new NativeScript app that uses the latest version of this template published to [npm] (https://www.npmjs.com/package/tns-template-blank-ng).
-
-If you want to create a new app that uses the source of the template from the `master` branch, you can execute the following:
-
-```
-tns create my-blank-ng --template https://github.com/NativeScript/template-blank-ng
-```
-
-**NB:** Please, have in mind that the master branch may refer to dependencies that are not on NPM yet!
-
-## Walkthrough
-
-### Architecture
-The application component:
-- `app.component.ts` - sets up a page router outlet that lets you navigate between pages.
-
-There is a single blank component that sets up an empty page layout:
-- `/home`
-
-**Home** page has the following components:
-- `ActionBar` - It holds the title of the page.
-- `GridLayout` - The main page layout that should contains all the page content.
-
-## Get Help
-The NativeScript framework has a vibrant community that can help when you run into problems.
-
-Try [joining the NativeScript community Slack](http://developer.telerik.com/wp-login.php?action=slack-invitation). The Slack channel is a great place to get help troubleshooting problems, as well as connect with other NativeScript developers.
-
-If you have found an issue with this template, please report the problem in the [NativeScript repository](https://github.com/NativeScript/NativeScript/issues).
-
-## Contributing
-
-We love PRs, and accept them gladly. Feel free to propose changes and new ideas. We will review and discuss, so that they can be accepted and better integrated.
