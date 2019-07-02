@@ -5,7 +5,7 @@ Dadurch ist diese App sowohl unter Android, als auch unter iOS nutzbar.
 ## Vorschau
 Folgende Vorschau zeigt bisher implementierte Funktionalitäten (im iOS Simulator):
 
-<!-- <img src="https://user-images.githubusercontent.com/43359029/53537018-d0c72500-3b08-11e9-934c-3bb97e7d953e.png" width="500"/> -->
+<img src="https://github.com/ishiharas/eahjena/blob/master/preview.gif?raw=true" width="500"/>
 
 
 ## Download Android App
