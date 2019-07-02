@@ -10,7 +10,8 @@ Folgende Vorschau zeigt bisher implementierte Funktionalitäten (im iOS Simulato
 
 Dazu gehören folgende Komponenten:
 * Home
-&nbsp;Zeigt die heutigen Stundenplan-Veranstaltungen und Mensapläne
+
+&nbsp; Zeigt die heutigen Stundenplan-Veranstaltungen und Mensapläne
 
 * News
 
