@@ -1,8 +1,8 @@
 <GridLayout rows="60, *" tkMainContent iosOverflowSafeArea="false">
-    <ListView [items]="newsItems" row="0" rowSpan="2" (itemTap)="onItemTap($event)">
+    <ListView [items]="newsItems" row="0" rowSpan="2" (itemTap)="onItemTap($event)" (itemLoading)="onItemLoading($event)" separatorColor="#00000000" >
         <ng-template let-item="item" let-index="index">
-            <GridLayout rows="*, 25, *" [class.first-item]="index == 0" class="list">
-                <Label row="0" [text]="item.title" textWrap="true" style="font-size: 25; font-weight: 300; text-align: center; padding-top: 15; color: black"></Label>
+            <GridLayout rows="*, 25, *, auto" [class.first-item]="index == 0" class="list">
+                <Label row="0" [text]="item.title" textWrap="true" style="font-size: 22; font-weight: 300; text-align: center; padding-top: 15; color: black"></Label>
                 <Label row="1" [text]="item.shortDate" class="footnote" style="text-align: center"></Label>
                 <CardView row="2" class="card">
                     <GridLayout rows="auto, auto">
@@ -11,6 +11,7 @@
                         <Label row="1" text="&#xf141;" class="fa icon" textWrap="true" style="padding-bottom: 15; text-align: center"></Label>
                     </GridLayout>
                 </CardView>
+                <Label class="hr-light" row="3"></Label>
             </GridLayout>
         </ng-template>
     </ListView>

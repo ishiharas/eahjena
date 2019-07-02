@@ -1,7 +1,11 @@
-# EAH Jena Stundenplan-App (Crossplattform-Projekt)
-Diese App ist mithilfe des Nativescript Frameworks realisiert worden. Zusätzlich wurde das Angular Framework genutzt, um sich bekannter Werkzeuge bedienen zu können. 
+# EAH Jena Stundenplan-App
+Diese App ist mithilfe des Nativescript Frameworks realisiert worden. Zusätzlich wurde das Angular Framework genutzt, um sich bekannter Werkzeuge bedienen zu können.
+Dadurch ist diese App sowohl unter Android, als auch unter iOS nutzbar.
 
 ## Preview
+Folgender Preview zeigt kurz die Funktionalitäten unter iOS. Um die App unter Android zu testen, bitte einmal auf "Release" klicken und die .apk herunterladen. 
+
+
 
 
 Execute the following command to create an app from this template:
