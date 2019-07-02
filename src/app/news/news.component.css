@@ -1,0 +1,28 @@
+.first-item {
+    padding-top: 60;
+}
+
+.card {
+    background-color: rgb(245, 245, 245);
+    radius: 25;
+    padding: 10 20 40 20;
+    margin: 10 20 20 20;
+    elevation: 30;
+    color: #000000;
+}
+
+.icon-bg {
+    font-size: 19; 
+    color: #00aaa0;
+    opacity: 0.4; 
+}
+
+.icon {
+    font-size: 15; 
+    color: #ffffff;
+    vertical-align: center;
+}
+
+.list {
+    margin: 0 15 0 15;
+}

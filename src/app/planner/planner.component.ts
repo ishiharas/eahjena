@@ -11,6 +11,7 @@ import { isAndroid, isIOS, screen } from "tns-core-modules/platform";
 import * as dialogs from "tns-core-modules/ui/dialogs"
 import { RouterExtensions } from "nativescript-angular/router";
 import * as app from "tns-core-modules/application";
+import { timer } from "rxjs";
 
 @Component({
     selector: "Planner",
@@ -23,7 +24,7 @@ export class PlannerComponent implements OnInit  {
     public screenWidth: number = screen.mainScreen.widthDIPs;
 
     public _coursesAllweeks: Array<CoursesModel> = [];
-    public _coursesWeekList: any[];
+    public _coursesWeekList: any[] = [];
 
     public _isLoadingCourses: boolean = true;
     public today: string = formatDate(new Date(), 'EE, dd.MM.yyyy', 'en');
@@ -40,7 +41,7 @@ export class PlannerComponent implements OnInit  {
     public tabbarScrollview: ScrollView;
     public pageScrollview: ScrollView;
     public tabbarSelected: number = 0;
-    public tabbarSelectedKW: number = 0;
+    public tabbarSelectedKW: number = 1;
     public tabbarHidden: boolean = false;
     public lastScrollPosition: number = 0;
 
@@ -63,7 +64,7 @@ export class PlannerComponent implements OnInit  {
         if (isAndroid) {
             this.renderViewTimeout = setTimeout(() => {
                 this.renderView = true;
-            }, 5000);
+            }, 600);
         } else {
             this.renderViewTimeout = setTimeout(() => {
                 this.renderView = true;
@@ -76,7 +77,13 @@ export class PlannerComponent implements OnInit  {
      }
 
     get loadingAndUi(): boolean {
-        return (!this.renderView && this._isLoadingCourses) ? true : false;
+        if (this.renderView) {
+            if (!this._isLoadingCourses) {
+                return false;
+            }
+            return true;
+        }
+        return true;
     }
 
     openDrawer(): void {
@@ -164,28 +171,45 @@ export class PlannerComponent implements OnInit  {
         this._coursesService.getCourseData()
             .subscribe((result: Array<CoursesModel>) => {
                 let collection = [];
-                let collectionDays = [];
+                let collectionDays: {}[] = [];
 
-                result.forEach((event) => {
+                result.forEach((event, index) => { 
                     collection.push(event);
-                    event.weekdays.forEach((day, index) => {
+                    event.weekdays.forEach((day) => {
                         collectionDays.push({
                             name: day.name,
                             events: day.events,
                             dayInWeek: day.dayInWeek,
                             weekOfYear: day.events[0].weekOfYear
                         });
-                    })
-                    
-                })
-                setTimeout(() => {
-                    this._coursesAllweeks = collection;
-                    this._isLoadingCourses = false;
-                    this._coursesWeekList = collectionDays;
-                    this.tabbarSelectedKW = this._coursesWeekList[0].weekOfYear;
-                    
-                }, 1);
+                    });     
+                });
+
+                this.tabbarSelectedKW = result[0].weekInYear;
+                this._coursesAllweeks = collection;
+                this.loadWeekListInChunks(collectionDays);
+
+                this._isLoadingCourses = false;
             }, (error) => console.log(error));
+    }
+
+    async loadWeekListInChunks(collectionDays) {
+        if (10 < collectionDays.length) {
+            for (let index = 0; index < collectionDays.length; index++) {
+                if (index !== 0 && index % 15 == 0) {
+                    await this.delay();
+                    this._coursesWeekList.push(collectionDays[index]);
+                } else {
+                    this._coursesWeekList.push(collectionDays[index]);
+                }
+            }
+        } else {
+            this._coursesWeekList = collectionDays;
+        }
+    }
+
+    delay() {
+        return new Promise(resolve => setTimeout(resolve, 2000));
     }
 
     showLessonsDialog(weekday: number, course: number, coursecontent: any): void {

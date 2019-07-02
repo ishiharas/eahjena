@@ -33,6 +33,7 @@ export class AppComponent {
     }
 
     isComponentSelected(url: string): boolean {
+        console.log('lol ' + this._activatedUrl)
         return this._activatedUrl === url;
     }
 

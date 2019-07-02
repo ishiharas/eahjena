@@ -1,9 +1,10 @@
 <GridLayout rows="60, *" tkMainContent iosOverflowSafeArea="false">
-    <GridLayout row="0" rowSpan="2">
-        <ActivityIndicator busy="true" width="100" height="100" class="activity-indicator"></ActivityIndicator>
-    </GridLayout>
-    <GridLayout row="0" rowSpan="2" style="padding-top: 60" [visibility]="requestFinished ? 'visible' : 'collapsed'">
+
+    <GridLayout row="0" rowSpan="2" style="padding-top: 60; padding-left: 20; padding-right: 20">
         <WebView #webview [src]="webViewSrc" (loadFinished)="onLoadFinished($event)"></WebView>
+    </GridLayout>
+    <GridLayout row="0" rowSpan="2" [visibility]="!requestFinished ? 'visible' : 'collapsed'">
+        <ActivityIndicator busy="true" width="100" height="100" class="activity-indicator"></ActivityIndicator>
     </GridLayout>
     <GridLayout row="0" rows="auto, auto" columns="60, *" class="actionbar">
         <Label text="Rechtliches" row="0" col="0" colSpan="3" rowSpan="2" class="nav-header-title"></Label>

@@ -1,18 +1,16 @@
 <GridLayout rows="60, *" tkMainContent iosOverflowSafeArea="false">
-    <GridLayout *ngIf="requestFinished; else loading" row="0" rowSpan="2" rows="auto" style="padding-top: 60" [visibility]="requestFinished ? 'visible' : 'collapsed'">
-        <Label text="Temperatur:" row="0" class="footnote" style="vertical-align: top; padding-top: 10; text-align: center; font-size: 15"></Label>
-        <Label [text]="weather.temperature" row="0" style="vertical-align: top; padding-top: 40; text-align: center; font-size: 25; color: black"></Label>
-        <Label text="Windgeschwindigkeit:" row="0" class="footnote" style="vertical-align: top; padding-top: 100; text-align: center; font-size: 15"></Label>
-        <Label [text]="weather.windSpeed" row="0" style="vertical-align: top; padding-top: 130; text-align: center; font-size: 25; color: black"></Label>
-        <Label text="Windrichtung:" row="0" class="footnote" style="vertical-align: top; padding-top: 190; text-align: center; font-size: 15"></Label>
-        <Label [text]="weather.windDirection" row="0" style="vertical-align: top; padding-top: 220; text-align: center; font-size: 25; color: black"></Label>
+    <GridLayout row="0" rowSpan="2" [visibility]="!requestFinished ? 'visible' : 'collapsed'">
+        <ActivityIndicator busy="true" width="100" height="100" class="activity-indicator"></ActivityIndicator>
+    </GridLayout>
+    <GridLayout *ngIf="requestFinished" row="0" rowSpan="2" rows="auto" style="padding-top: 60">
+        <Label text="Temperatur:" row="0" class="footnote" style="vertical-align: top; padding-top: 10; text-align: center; font-size: 15; font-weight: 300"></Label>
+        <Label [text]="weather.temperature" row="0" style="vertical-align: top; padding-top: 40; text-align: center; font-size: 25; color: black; font-weight: 500"></Label>
+        <Label text="Windgeschwindigkeit:" row="0" class="footnote" style="vertical-align: top; padding-top: 100; text-align: center; font-size: 15; font-weight: 300"></Label>
+        <Label [text]="weather.windSpeed" row="0" style="vertical-align: top; padding-top: 130; text-align: center; font-size: 25; color: black; font-weight: 500"></Label>
+        <Label text="Windrichtung:" row="0" class="footnote" style="vertical-align: top; padding-top: 190; text-align: center; font-size: 15; font-weight: 300"></Label>
+        <Label [text]="weather.windDirection" row="0" style="vertical-align: top; padding-top: 220; text-align: center; font-size: 25; color: black; font-weight: 500"></Label>
         <Label [text]="'(Quelle: ' + weather.provider + ')'" row="0" class="footnote" style="vertical-align: top; padding-top: 300; text-align: center"></Label>
     </GridLayout>
-    <ng-template #loading>
-        <GridLayout style="padding-top: 150">
-            <ActivityIndicator [busy]="loadingAndUi" width="100" height="100" class="activity-indicator"></ActivityIndicator>
-        </GridLayout>
-    </ng-template>
     <GridLayout row="0" rows="auto, auto" columns="60, *" class="actionbar">
         <Label text="Wetter" row="0" col="0" colSpan="3" rowSpan="2" class="nav-header-title"></Label>
         <Label text="&#xf0c9;" class="fa nav-icon" row="0" col="0" (tap)="openDrawer()"></Label>

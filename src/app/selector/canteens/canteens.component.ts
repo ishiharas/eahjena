@@ -84,7 +84,11 @@ export class CanteensComponent implements OnInit {
 
         this.getCanteens().forEach((canteen) => {
 			if (!this.selection.canteens.find(e => e.name == canteen.name)) {
-				this.actionOptions.push(canteen.name);
+
+				// this single canteen is accessible, but provides no content
+				if (!canteen.name.includes('Carl-Zeiss-Straße')) {
+					this.actionOptions.push(canteen.name);
+				}
 			};
 		});
         this.actionOptions.sort();

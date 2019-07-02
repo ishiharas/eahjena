@@ -7,7 +7,8 @@ import { SharedModule } from "./shared/shared.module";
 import { NativeScriptUISideDrawerModule } from "nativescript-ui-sidedrawer/angular/side-drawer-directives";
 import { AuthGuard } from "./shared/service/auth-guard.service";
 import { TimestampService } from "./shared/service/timestamp.service";
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
+import { HomeInterceptor } from "./shared/mock/home-interceptor";
 
 
 @NgModule({

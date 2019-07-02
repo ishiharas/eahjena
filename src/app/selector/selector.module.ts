@@ -17,8 +17,7 @@ import { SharedModule } from "../shared/shared.module";
         SharedModule
     ],
     declarations: [
-        SelectorComponent,
-        PreferencesComponent
+        SelectorComponent
     ],
     providers: [
         {

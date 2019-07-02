@@ -1,6 +1,19 @@
-<ActionBar class="action-bar">
-    <Label class="action-bar-title" text="Home"></Label>
-</ActionBar>
-
-<StackLayout class="page">
-</StackLayout>
+<GridLayout rows="60, *" tkMainContent iosOverflowSafeArea="false">
+    <ScrollView row="0" rowSpan="2">
+        <GridLayout rows="auto, auto, auto" style="padding-top: 60">
+            <preferences row="0"></preferences>
+            <GridLayout row="1" columns="*, 20, 50" rows="auto, auto, auto" style="padding: 20; ">
+                <Label col="0" row="0" colSpan="2" class="hr-light"></Label>
+                <Label col="0" row="1" text="App-Einstellungen zurücksetzen: " textWrap="true" style="font-size: 16; font-weight: 500; color: #394a5f; padding-bottom: 10; padding-top: 10"></Label>
+                <Label col="0" row="2" text="Sämtliche Stundenplan-, Kantinen- und Einstellungsdaten werden unwiderruflich zurückgesetzt." class="footnote" textWrap="true"></Label>
+                <Label col="2" row="2" (tap)="resetAppsettings()" style="width: 50; height: 30; border-radius: 20; background-color: rgb(199, 25, 25);"></Label>
+                <Label col="2" row="2" (tap)="resetAppsettings()" text="&#xf55a;" class="fa" style="color: white; text-align: center; font-size: 15; vertical-align: center"></Label>
+            </GridLayout>         
+        </GridLayout>
+    </ScrollView>
+    <GridLayout row="0" rows="auto, auto" columns="60, *" class="actionbar">
+        <Label text="Einstellungen" row="0" col="0" colSpan="3" rowSpan="2" class="nav-header-title"></Label>
+        <Label text="&#xf0c9;" class="fa nav-icon" row="0" col="0" (tap)="openDrawer()"></Label>
+        <Label text="Menü" row="1" col="0" class="nav-icon-header" (tap)="openDrawer()"></Label>
+    </GridLayout>  
+</GridLayout>

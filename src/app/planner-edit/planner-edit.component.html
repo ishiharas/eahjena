@@ -21,7 +21,7 @@
                     </GridLayout>
                     <StackLayout *ngIf="checkSelected(item.categoryShortTitle)">
                         <StackLayout *ngFor="let events of item.collectedEvents" 
-                            style="font-weight: 300" (tap)="shortTitleTapped(item.categoryShortTitle)">
+                            style="font-weight: 300; padding-bottom: 10" (tap)="shortTitleTapped(item.categoryShortTitle)">
                             <Label [text]="events.shortTitle" style="padding-left: 50; color: #000000"></Label>
                             <StackLayout *ngFor="let date of events.dates">
                                 <GridLayout columns="125, auto" style="padding-left: 60; font-size: 11">

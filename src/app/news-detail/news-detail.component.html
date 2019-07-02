@@ -1,0 +1,14 @@
+<GridLayout rows="60, *" tkMainContent iosOverflowSafeArea="false">
+    <ScrollView row="0" rowSpan="2">
+        <StackLayout style="padding-top: 60; padding-left: 20; padding-right: 20">
+            <Label [text]="'- ' + author" textWrap="true" class="footnote" style="text-align: right; padding: 20 0 20 0"></Label>
+            <HtmlView [html]="content" textWrap="true" style="font-size: 25"></HtmlView>
+        </StackLayout>
+    </ScrollView>
+    <GridLayout row="0" rows="auto, auto" columns="60, 20, *, 80" class="actionbar">
+        <Label [text]="title" row="0" col="2" rowSpan="2" class="nav-header-title"></Label>
+        <Label text="&#xf053;" class="fa nav-icon" row="0" col="0" (tap)="onBackTap()"></Label>
+        <Label text="Zurück" row="1" col="0" class="nav-icon-header" (tap)="onBackTap()"></Label>
+    </GridLayout> 
+</GridLayout>
+    

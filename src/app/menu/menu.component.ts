@@ -40,7 +40,6 @@ export class MenuComponent implements OnInit {
     public lastScrollPosition: number = 0;
 
     public renderView = false;
-    public isBusy = true;
     public renderViewTimeout: any;
 
     constructor(private page: Page,
@@ -69,8 +68,14 @@ export class MenuComponent implements OnInit {
         clearTimeout(this.renderViewTimeout);
      }
 
-    get loadingAndUi(): boolean {
-        return (!this.renderView && this._isLoadingCanteens) ? true : false;
+     get loadingAndUi(): boolean {
+        if (this.renderView) {
+            if (!this._isLoadingCanteens) {
+                return false;
+            }
+            return true;
+        }
+        return true;
     }
 
     openDrawer(): void {

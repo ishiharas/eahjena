@@ -37,7 +37,6 @@ export class HomeComponent implements OnInit {
     public status = "not scrolling";
 
     public renderView = false;
-    public isBusy = true;
     public renderViewTimeout: any;
 
     constructor(private page: Page,
@@ -69,7 +68,13 @@ export class HomeComponent implements OnInit {
     }
 
     get loadingAndUi(): boolean {
-        return (!this.renderView && this._isLoadingCourses) ? true : false;
+        if (this.renderView) {
+            if (!this._isLoadingCourses) {
+                return false;
+            }
+            return true;
+        }
+        return true;
     }
 
     extractCoursesData(): void {

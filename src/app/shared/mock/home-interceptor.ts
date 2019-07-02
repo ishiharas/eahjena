@@ -20,9 +20,8 @@ export class HomeInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
 
-    
-    // if (request.urlWithParams.includes("canteens")) {
-    //     return of(new HttpResponse({body: canteensDetail}));
+    // if (request.urlWithParams.includes("timetable")) {
+    //     return of(new HttpResponse({body: coursesDetail}));
     //     return next.handle(request);
     // }
 
