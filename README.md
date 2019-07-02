@@ -9,6 +9,7 @@ Folgende Vorschau zeigt bisher implementierte Funktionalitäten (im iOS Simulato
 
 <img src="https://github.com/ishiharas/eahjena/blob/master/preview.gif?raw=true" width="354"/>
 
+## Funktionalitäten
 Implementiert sind aktuell folgende Komponenten:
 * Home
   * Zeigt die heutigen Stundenplan-Veranstaltungen und Mensapläne
@@ -21,7 +22,7 @@ Implementiert sind aktuell folgende Komponenten:
 * News
   * Aktuelle Pressemitteilungen der EAH Jena
 * Wetter
-  * Übersicht der Echtzeit-Wetterdaten der Klimastation Ernst-Abbe-Hochschule)
+  * Übersicht der Echtzeit-Wetterdaten der Klimastation Ernst-Abbe-Hochschule
 
 
 
@@ -60,4 +61,4 @@ Unter dem Pfad "src/app/" können sämtliche Views der App eingesehen werden. Di
 
 Die Datei app.component.ts und app.component.html beinhalten den nativen SideDrawer, der sämtliche Views "umspannt". 
 
-Service Logik, also sämtliche Kommunikation mit dem Backend, Festlegen des Datenmodels und lokales Speichern der bearbeiteten Stundenpläne des Nutzers sind im Ordner "src/app/shared/service" zu finden. Einzelne Konfigurationen liegen direkt im Parent-Ordner.
+Service Logik, also sämtliche Kommunikation mit dem Backend, Festlegen des Datenmodels und lokales Speichern der bearbeiteten Stundenpläne des Nutzers sind im Ordner "src/app/shared/service" zu finden. Einzelne Konfigurations-Varablen liegen direkt im Parent-Ordner.
