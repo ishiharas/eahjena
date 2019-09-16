@@ -15,3 +15,4 @@ export class WeatherModel {
         this.provider = options.provider;
     }
 }
+

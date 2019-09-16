@@ -9,6 +9,7 @@ import { Page } from "tns-core-modules/ui/page/page";
     selector: "Weather",
     moduleId: module.id,
     templateUrl: "./weather.component.html",
+	styleUrls: ['./weather.component.css'],
     providers: [WeatherService]
 })
 export class WeatherComponent implements OnInit {
@@ -37,3 +38,4 @@ export class WeatherComponent implements OnInit {
             }, (error) => console.log(error));
     }
 }
+

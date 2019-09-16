@@ -17,8 +17,12 @@ export class NewsService {
             .pipe(map((news) => {
                 news.channel.item.map((newsItem) => {
                     // create new description from encoded text, since the provided description isn't usable
-                    newsItem.description = newsItem.encoded.split(") ")[1].slice(0, 100);
-                    newsItem.description = newsItem.description.replace('&#58;', ':');
+                    // regex for < and >
+                    let regex = /\<(.*?)\>/g;
+                    newsItem.description = newsItem.encoded.replace(regex, "");
+                    let asciregex = /(&#58;)/g;
+                    newsItem.description = newsItem.description.replace(asciregex, ':');
+                    newsItem.description = newsItem.description.slice(0, 100);
                     newsItem.description = newsItem.description + '...';
 
                     // transform string timestamp to just a single date to show below the title in listview
@@ -26,9 +30,10 @@ export class NewsService {
                     newsItem.shortDate = container[1] + '. ' + container[2] + '. ' + container[3];
 
                     // transforms html-string, deletes first part (TEXTKÖRPER: ), adds font-size, color, family
-                    let htmlContainer = newsItem.encoded.split(") ");
-                    let firstItem = htmlContainer.shift();
-                    newsItem.encoded = htmlContainer.join();
+                    // let htmlContainer = newsItem.encoded.split(") ");
+                    // let htmlContainer = newsItem.encoded;
+                    // let firstItem = htmlContainer.shift();
+                    // newsItem.encoded = htmlContainer.join();
                     newsItem.encoded = "<font size='3' color='#000000' face='Arial,Helvetica'>" + newsItem.encoded + "</font>";
                     newsItem.encoded = newsItem.encoded.replace(/<p/g, "<p style='color:black'");
                 })

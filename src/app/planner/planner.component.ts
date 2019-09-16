@@ -13,6 +13,7 @@ import { RouterExtensions } from "nativescript-angular/router";
 import * as app from "tns-core-modules/application";
 import { timer } from "rxjs";
 
+
 @Component({
     selector: "Planner",
     moduleId: module.id,
@@ -70,6 +71,7 @@ export class PlannerComponent implements OnInit  {
                 this.renderView = true;
             }, 200);
         }
+
     }
 
     ngOnDestroy() {
@@ -98,6 +100,7 @@ export class PlannerComponent implements OnInit  {
         this.tabbarSelectedKW = kw;
         this.tabbarIndexScroll();
         this.pageScrollview.scrollToVerticalOffset(0, false);
+
     }
 
     onSwipe(event: SwipeGestureEventData) {
@@ -187,7 +190,13 @@ export class PlannerComponent implements OnInit  {
 
                 this.tabbarSelectedKW = result[0].weekInYear;
                 this._coursesAllweeks = collection;
-                this.loadWeekListInChunks(collectionDays);
+
+
+                // experimental function for better performance through loading week list in small pieces
+                // good smartphones handle it better then before, weak smartphones tend to die
+                // this.loadWeekListInChunks(collectionDays);
+                this._coursesWeekList = collectionDays;
+
 
                 this._isLoadingCourses = false;
             }, (error) => console.log(error));

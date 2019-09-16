@@ -24,15 +24,15 @@ export class SelectorComponent implements OnInit {
 
     constructor(private page: Page, 
                 private router: RouterExtensions) {
+                    // clean application-settings and local-storage
+                    localStorage.clear();
+                    clear();
+                    console.log('LocalStorage + Appsettings cleared');
     }
 
     ngOnInit(): void {
         this.page.actionBarHidden = true;
 
-        // clean application-settings and local-storage
-        localStorage.clear();
-        clear();
-        console.log('LocalStorage + Appsettings cleared');
     }
 
     onPreviousButton(): void {

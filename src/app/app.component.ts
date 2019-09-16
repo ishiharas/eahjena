@@ -5,6 +5,7 @@ import { getString, setString } from "tns-core-modules/application-settings/appl
 import { filter } from "rxjs/operators";
 import { DrawerTransitionBase, RadSideDrawer, PushTransition } from "nativescript-ui-sidedrawer";
 import * as app from "tns-core-modules/application";
+// import { PerformanceMonitor, PerformanceMonitorSample } from "nativescript-performance-monitor";
 
 @Component({
     moduleId: module.id,
@@ -17,6 +18,7 @@ export class AppComponent {
 
     constructor(private router: Router, 
         private routerExtensions: RouterExtensions) {
+
     }
 
     ngOnInit(): void {
@@ -26,6 +28,14 @@ export class AppComponent {
         this.router.events
             .pipe(filter((event: any) => event instanceof NavigationEnd))
             .subscribe((event: NavigationEnd) => this._activatedUrl = event.urlAfterRedirects);
+
+        // Activate, if you want to see a frame-per-second count in the console
+        // 
+        // new PerformanceMonitor().start({
+        //     hide: false,
+        //     onSample: (sample: PerformanceMonitorSample) => {
+        //       console.log("FPS: " + sample.fps);
+        //     }            });
     }
 
     get sideDrawerTransition(): DrawerTransitionBase {
