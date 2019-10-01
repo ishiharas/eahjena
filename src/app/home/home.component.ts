@@ -121,7 +121,7 @@ export class HomeComponent implements OnInit {
         console.log("scrollY: " + args.scrollY);
     }
 
-    hint(ingredients: string) {
+    hint(ingredients) {
         if (ingredients.trim()) {
             let transformed: Array<string> = [];
             if (ingredients.includes('/')) {

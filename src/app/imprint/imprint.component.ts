@@ -12,7 +12,7 @@ import * as app from "tns-core-modules/application";
     templateUrl: "./imprint.component.html"
 })
 export class ImprintComponent implements OnInit {
-    @ViewChild("webview") webViewElement: ElementRef;
+    @ViewChild("webview", { static: false }) webViewElement: ElementRef;
     public webViewSrc = imprint;
     public requestFinished: boolean = false;
         

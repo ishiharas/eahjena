@@ -17,3 +17,9 @@ export { weather };
 
 const imprint: string = baseUrl + "impress/";
 export { imprint };
+
+const dummyApiOne: string = 'https://next.json-generator.com/api/json/get/4kkU9vR8P';
+export { dummyApiOne };
+
+const dummyApiTwo: string = 'https://next.json-generator.com/api/json/get/Nk6vKI1PD';
+export { dummyApiTwo };

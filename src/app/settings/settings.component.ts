@@ -4,6 +4,9 @@ import { RadSideDrawer } from "nativescript-ui-sidedrawer";
 import * as app from "tns-core-modules/application";
 import { confirm } from "tns-core-modules/ui/dialogs/dialogs";
 import { RouterExtensions } from "nativescript-angular/router";
+// import { setString, setBoolean, clear, getString, remove } from "tns-core-modules/application-settings";
+import * as localStorage from 'nativescript-localstorage';
+import * as appSettings from "tns-core-modules/application-settings";
 
 @Component({
     selector: "Settings",
@@ -36,6 +39,10 @@ export class SettingsComponent implements OnInit {
         
         confirm(options).then((result: boolean) => {
             if (result) {
+                // clean application-settings and local-storage
+                localStorage.clear();
+                appSettings.clear();
+                console.log('settings: LocalStorage + Appsettings cleared');
                 this._router.navigate(['/selector'], {
                     clearHistory: true
                 });

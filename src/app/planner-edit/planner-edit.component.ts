@@ -56,8 +56,9 @@ export class PlannerEditComponent implements OnInit {
 
                     if (this.additionalModule) {
                         this.additionalModule.map((obj) => {
+                            console.log('logs: \t', obj.courseID, '\t', this.emittedID);
                             if (obj.courseID == this.emittedID) {
-                                this.markedIDs = obj.moduleId;
+                               this.markedIDs = obj.moduleId;
                             };
                         });
                     };
@@ -88,6 +89,7 @@ export class PlannerEditComponent implements OnInit {
                 result.forEach((event) => {
                     event.weekdays.forEach(weekday => {
                         weekday.events.forEach((event) => {
+                            console.log(event.title)
                             let titleManipulation = event.title.split('/');
                             let lastMan = titleManipulation.pop();
                             let restVar = titleManipulation.join('/');
@@ -109,6 +111,7 @@ export class PlannerEditComponent implements OnInit {
                                     categoryShortTitle: restShortVar,
                                     collectedEvents: []
                                 })
+                                console.log(event.uid, '', restVar, ' ', restShortVar, ' ')
                             }
                             let preIndex = listCollection.findIndex(k => k.categoryTitle == restVar);
 
@@ -231,8 +234,8 @@ export class PlannerEditComponent implements OnInit {
         // -- Beginning of Logging Method
         // Method for printing out content of saveState Button
         // Useful for debugging different Savestates of Localstorage
-        console.log('Storage Content of LSOBJECTS.ADDITIONALMODULES');
         this.additionalModule.forEach(obj => {
+            console.log('Storage Content of LSOBJECTS.ADDITIONALMODULES');
             console.log(obj.courseID);
             obj.moduleId.forEach(ob => {
                 console.log('---\t' + ob);

@@ -29,9 +29,9 @@ export class MenuComponent implements OnInit {
     public isAndroid = isAndroid;
     public isIos = isIOS;
     
-    @ViewChild("tabbarScroll") sv: ElementRef;
-    @ViewChild("tabbarStack") stc: ElementRef;
-    @ViewChild("pageScroll") psc: ElementRef;
+    @ViewChild("tabbarScroll", { static: false }) sv: ElementRef;
+    @ViewChild("tabbarStack", { static: false }) stc: ElementRef;
+    @ViewChild("pageScroll", { static: false }) psc: ElementRef;
     public tabbarStackview: StackLayout;
     public tabbarScrollview: ScrollView;
     public pageScrollview: ScrollView;

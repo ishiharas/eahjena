@@ -35,9 +35,9 @@ export class PlannerComponent implements OnInit  {
     public isAndroid = isAndroid;
     public isIos = isIOS;
     
-    @ViewChild("tabbarScroll") sv: ElementRef;
-    @ViewChild("tabbarStack") stc: ElementRef;
-    @ViewChild("pageScroll") psc: ElementRef;
+    @ViewChild("tabbarScroll", { static: false }) sv: ElementRef;
+    @ViewChild("tabbarStack", { static: false }) stc: ElementRef;
+    @ViewChild("pageScroll", { static: false }) psc: ElementRef;
     public tabbarStackview: StackLayout;
     public tabbarScrollview: ScrollView;
     public pageScrollview: ScrollView;
@@ -173,11 +173,10 @@ export class PlannerComponent implements OnInit  {
     extractCoursesData(): void {
         this._coursesService.getCourseData()
             .subscribe((result: Array<CoursesModel>) => {
-                let collection = [];
+                this._coursesAllweeks = result;
                 let collectionDays: {}[] = [];
 
-                result.forEach((event, index) => { 
-                    collection.push(event);
+                result.forEach((event) => { 
                     event.weekdays.forEach((day) => {
                         collectionDays.push({
                             name: day.name,
@@ -189,8 +188,6 @@ export class PlannerComponent implements OnInit  {
                 });
 
                 this.tabbarSelectedKW = result[0].weekInYear;
-                this._coursesAllweeks = collection;
-
 
                 // experimental function for better performance through loading week list in small pieces
                 // good smartphones handle it better then before, weak smartphones tend to die

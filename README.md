@@ -42,7 +42,7 @@ https://docs.nativescript.org/start/quick-setup#full-setup
 Der Punkt "Advanced Setup" listet alle Dependencies auf, die zum bauen von Nativescript Projekten benötigt werden. 
 Alternativ kann auch einfach das Script vom Link ausgeführt werden, welches sämtliche Dependencies (Android SDK, JDK, Google Repo, Android Studio und weitere) automatisch installiert.
 
-Wenn das generelle Setup erledigt ist, können alle Libraries, die von der EAH-Jena App benötigt werden mit folgendem Befehl installiert werden:
+Wenn das generelle Setup erledigt ist (siehe Bachelorarbeit: Projektaufbau), können alle Libraries, die von der EAH-Jena App benötigt werden mit folgendem Befehl installiert werden:
 
 ```
 cd eahjena
@@ -100,9 +100,13 @@ Da zum Zeitpunkt der Implementierung keine Daten durch die Schnittstelle empfang
 eahjena/src/app/shared/mock/home-interceptor.ts die folgenden Zeilen auskommentiert werden:
 
 ...
-if (request.urlWithParams.includes("event")) {
-    return of(new HttpResponse({body: coursesDetail}));
-}
+    if (request.urlWithParams.includes("event")) {
+      if (!this.local) {
+        return of(new HttpResponse({ body: coursesDetail }));
+      } else {
+        return of(new HttpResponse({ body: coursesDetailAdded }));
+      }  
+    }
 ...
 
 

@@ -29,8 +29,8 @@ export class CanteensService {
         let allSelected: Array<Observable<CanteensModel[]>> = [];
         let i = 0;
         while (getString("canteen_" + i)) {
-            allSelected.push(this.http
-                .get<Array<CanteensModel>>(
+            allSelected.push(
+                this.http.get<Array<CanteensModel>>(
                     this.canteensUrl + getString("canteen_" + i), 
                     { headers: headers }));
             i++;

@@ -5,12 +5,15 @@ import { CoursesModel } from "../model/courses.model";
 import { TimestampService } from "./timestamp.service";
 import { LSOBJECTS } from "../ls-objects";
 import { flatMap, finalize, map, tap } from "rxjs/operators";
-import { courses, eventQuery } from "../config";
+import { courses, eventQuery, dummyApiOne, dummyApiTwo } from "../config";
 import { getString } from "tns-core-modules/application-settings/application-settings";
 import * as localStorage from 'nativescript-localstorage';
 
 @Injectable()
 export class CoursesService {
+    private dummyApiOne: string = dummyApiOne;
+    private dummyApiTwo: string = dummyApiTwo;
+
     private coursesUrl: string = courses;
     private localCourseData: CoursesModel[] = localStorage.getItem(LSOBJECTS.MODULEPLAN);
 
@@ -39,15 +42,21 @@ export class CoursesService {
 
         return this._updateAvailable.pipe(flatMap((data) => {
             if (data.updatable) {
+                console.log('data updatable')
                 let baseRequest = this.http
-                    .get<Array<CoursesModel>>(this.coursesUrl + eventQuery + courseString, { headers: headers });
+                    // .get<Array<CoursesModel>>(this.coursesUrl + eventQuery + courseString, { headers: headers });
+                    .get<Array<CoursesModel>>(this.dummyApiOne, { headers: headers });
+                    console.log('url: ' + courseString)
+                    console.log('module ' + this._additionalModule)
                 if (this._additionalModule) {
+                    console.log('additional module')
                     let additionalForked: Observable<CoursesModel[]>[] = [];
                     additionalForked.push(baseRequest);
                     this._additionalModule.forEach((obj) => { 
+                        console.log('course: ' + obj.courseID + ' module: ' + obj.moduleId)
                         additionalForked.push(this.getSpecificModules(obj.courseID, obj.moduleId));
                     });
-
+                    localStorage.removeItem(LSOBJECTS.MODULEPLAN);
                     return forkJoin(additionalForked)
                         .pipe(map(response => response
                                 .reduce((a, b) => {
@@ -77,17 +86,17 @@ export class CoursesService {
                                     });
                                     return a;
                                 })))
-                        .pipe(finalize(() => {
+                        .pipe(map((finalData) => {
                                 localStorage.setItem(LSOBJECTS.LASTUPDATED, data.time);
-                            }), map((finalData) => {
                                 localStorage.setItemObject(LSOBJECTS.MODULEPLAN, finalData);
                                 console.log('saved moduleplan to localStorage');
                                 return finalData;
                             }));
                 } else {
-                    return baseRequest.pipe(finalize(() => {
+                    console.log('cleared')
+                    localStorage.removeItem(LSOBJECTS.MODULEPLAN);
+                    return baseRequest.pipe(map((finalData) => {
                         localStorage.setItem(LSOBJECTS.LASTUPDATED, data.time);
-                    }), map((finalData) => {
                         localStorage.setItemObject(LSOBJECTS.MODULEPLAN, finalData);
                         console.log('saved moduleplan to localStorage');
                         return finalData;
@@ -102,13 +111,15 @@ export class CoursesService {
 
     getSpecificCourseData(courseId: string): Observable<CoursesModel[]> {
         let headers = this.createRequestHeader();
-        return this.http.get<Array<CoursesModel>>(this.coursesUrl + eventQuery + courseId, { headers: headers });
+        // return this.http.get<Array<CoursesModel>>(this.coursesUrl + eventQuery + courseId, { headers: headers });
+        return this.http.get<Array<CoursesModel>>(this.dummyApiTwo, { headers: headers });
     }
 
     getSpecificModules(splusID: string, moduleIDs: string[]): Observable<CoursesModel[]> {
         let headers = this.createRequestHeader();
 
-        return this.http.get<CoursesModel[]>(this.coursesUrl + eventQuery + splusID, { headers: headers })
+        // return this.http.get<CoursesModel[]>(this.coursesUrl + eventQuery + splusID, { headers: headers })
+        return this.http.get<CoursesModel[]>(this.dummyApiTwo, { headers: headers })
             .pipe(map((mainModel) => {
                 return mainModel.map((models) => {
                     models.weekdays.map((weeks) => {
