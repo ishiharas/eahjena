@@ -1,0 +1,152 @@
+/* ------ Here begins the custom tapbar ------ */
+
+.tabbar {
+    background-color: rgb(249, 249, 249);
+    /* border-radius: 15; */
+    border-top-width: 1;
+    border-color: rgb(236, 236, 236);
+}
+
+.tabbar-cell {
+    color: rgb(59, 59, 59);
+    font-family: sans-serif;
+    font-size: 12;
+    vertical-align: center;
+    font-weight: 200;
+    height: 45;
+    width: 80;
+    text-align: center;
+}
+
+.tabbar-selectedcell {
+    background-color: rgb(238, 238, 238);
+    color: rgb(21, 115, 255);
+    border-color: rgb(21, 115, 255);
+    border-top-width: 1;
+    /* border-radius: 15; */
+}
+
+.tabbar-slide-in {
+    animation-duration: 0.5;
+    animation-fill-mode: forwards;
+	animation-timing-function: ease;  
+    animation-name: tabbar-slide-in;
+    vertical-align: bottom;
+}
+
+@keyframes tabbar-slide-in {
+    0% { transform: translate(0, 0) }
+    100% { transform: translate(0, 100)}
+}
+
+.tabbar-slide-out {
+    animation-duration: 0.5;
+    animation-fill-mode: forwards;
+	animation-timing-function: ease;  
+    animation-name: tabbar-slide-out;
+    vertical-align: bottom;
+}
+
+@keyframes tabbar-slide-out {
+    0% { transform: translate(0, 100) }
+    100% { transform: translate(0, 0)}
+}
+
+/* ------ Here ends the custom tapbar ------ */
+.event-component-isIos {
+    background-color: rgb(245, 245, 245);
+    radius: 15;
+    margin-left: 20;
+    margin-right: 20;
+    margin-bottom: 40;
+    margin-top: 10;
+    elevation: 30;
+    color: #000000;
+}
+
+.event-component-isAndroid {
+    background-color: rgb(245, 245, 245);
+    radius: 25;
+    margin-left: 20;
+    margin-right: 20;
+    margin-bottom: 40;
+    margin-top: 10;
+    elevation: 30;
+    color: #000000;
+}
+
+.inner-event-component {
+    color: #000000;
+}
+
+.event-component-header {
+    font-size: 20;
+    font-weight: 300;
+    color: #000000;
+    vertical-align: center;
+}
+
+.list-courses {
+    font-size: 15;
+    padding-left: 10;
+    padding-right: 10;
+}
+
+.list-group {
+    background-color:  rgb(245, 245, 245);
+}
+
+
+.slide-out-left {
+	animation-duration: 0.5;
+	animation-timing-function: ease;  
+	animation-name: slide-out-left;
+}
+
+@keyframes slide-out-left {
+    0% { transform: translate(0, 0) }
+    25% { transform: translate(-500, 0); opacity: 0 }
+    26% { transform: translate(0, 0) }
+    100% { opacity: 1 }
+}
+
+.slide-out-right {
+	animation-duration: 0.5;
+	animation-timing-function: ease;  
+	animation-name: slide-out-right;
+}
+
+@keyframes slide-out-right {
+    0% { transform: translate(0, 0) }
+    25% { transform: translate(500, 0); opacity: 0 }
+    26% { transform: translate(0, 0) }
+    100% { opacity: 1 }
+}
+
+.module-added-top-ios {
+    background-color: rgba(167, 219, 216, 0.400);
+    border-top-left-radius: 15;
+    border-top-right-radius: 15;
+}
+
+.module-added-bottom-ios {
+    background-color: rgba(167, 219, 216, 0.400);
+    border-bottom-left-radius: 15;
+    border-bottom-right-radius: 15;
+}
+
+.module-added-top-android {
+    background-color: rgba(167, 219, 216, 0.400);
+    border-top-left-radius: 6;
+    border-top-right-radius: 6;
+}
+
+.module-added-bottom-android {
+    background-color: rgba(167, 219, 216, 0.400);
+    border-bottom-left-radius: 6;
+    border-bottom-right-radius: 6;
+}
+
+.module-added-center {
+    background-color: rgba(167, 219, 216, 0.400);
+}

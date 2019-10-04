@@ -16,7 +16,8 @@ const routes: Routes = [
     { path: "news-detail", loadChildren: "~/app/news-detail/news-detail.module#NewsDetailModule" },
     { path: "imprint", loadChildren: "~/app/imprint/imprint.module#ImprintModule" },
     { path: "weather", loadChildren: "~/app/weather/weather.module#WeatherModule" },
-    { path: "settings", loadChildren: "~/app/settings/settings.module#SettingsModule" }
+    { path: "settings", loadChildren: "~/app/settings/settings.module#SettingsModule" },
+    { path: "planner-android", loadChildren: "~/app/planner-android/planner-android.module#PlannerAndroidModule" }
 ];
 
 @NgModule({

@@ -100,7 +100,6 @@ export class PlannerComponent implements OnInit  {
         this.tabbarSelectedKW = kw;
         this.tabbarIndexScroll();
         this.pageScrollview.scrollToVerticalOffset(0, false);
-
     }
 
     onSwipe(event: SwipeGestureEventData) {
@@ -192,12 +191,15 @@ export class PlannerComponent implements OnInit  {
                 // experimental function for better performance through loading week list in small pieces
                 // good smartphones handle it better then before, weak smartphones tend to die
                 // this.loadWeekListInChunks(collectionDays);
-                this._coursesWeekList = collectionDays;
 
+                this._coursesWeekList = collectionDays;
 
                 this._isLoadingCourses = false;
             }, (error) => console.log(error));
     }
+
+
+    
 
     async loadWeekListInChunks(collectionDays) {
         if (10 < collectionDays.length) {
@@ -223,7 +225,6 @@ export class PlannerComponent implements OnInit  {
         let allEvents = "Alle Ereignisse in der Reihe";
         let eventUid = this._coursesWeekList[weekday].events[course].uid;
         let eventUidAll = this._coursesWeekList[weekday].events[course].uid.split('-')[0];
-        console.log(coursecontent)
         dialogs.action({
             message: "Ereignis löschen",
             cancelButtonText: "Abbrechen",

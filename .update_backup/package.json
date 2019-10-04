@@ -2,10 +2,10 @@
   "nativescript": {
     "id": "de.schulzmicha.eahjena",
     "tns-android": {
-      "version": "6.1.2"
+      "version": "6.0.0"
     },
     "tns-ios": {
-      "version": "6.1.0"
+      "version": "6.0.1"
     }
   },
   "description": "NativeScript Application",
@@ -31,7 +31,7 @@
     "nativescript-ui-sidedrawer": "7.0.0",
     "reflect-metadata": "~0.1.10",
     "rxjs": "^6.4.0",
-    "tns-core-modules": "^6.1.1",
+    "tns-core-modules": "6.0.1",
     "zone.js": "^0.9.1"
   },
   "devDependencies": {

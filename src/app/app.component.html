@@ -2,7 +2,7 @@
     <StackLayout tkDrawerContent class="side-drawer-layout">
         <Image src="res://eahlogo_triangle" stretch="aspectFit" class="logo"></Image>
         <ScrollView height="100%">
-            <GridLayout rows="auto, auto, auto, auto, auto, auto, auto" class="drawer-layout">
+            <GridLayout rows="auto, auto, auto, auto, auto, auto, auto, auto" class="drawer-layout">
                 <GridLayout row="0" columns="40, *" 
                     class="drawer-layout" [class.selected]="isComponentSelected('/home')" 
                     (tap)="onNavItemTap('/home')">
@@ -51,6 +51,13 @@
                         <Label col="0" text="&#xf013;" class="fa divider"></Label>
                         <Label col="1" text="Einstellungen" class="divider"></Label>
                 </GridLayout>
+
+                <GridLayout row="7" columns="40, *" 
+                class="drawer-layout" [class.selected]="isComponentSelected('/planner-android')" 
+                (tap)="onNavItemTap('/planner-android')">
+                    <Label col="0" text="&#xf013;" class="fa divider"></Label>
+                    <Label col="1" text="planner_v2" class="divider"></Label>
+            </GridLayout>
             </GridLayout>
         </ScrollView>
     </StackLayout>
