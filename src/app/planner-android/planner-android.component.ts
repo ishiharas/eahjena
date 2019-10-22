@@ -7,7 +7,8 @@ import { formatDate } from "@angular/common";
 import { SwipeDirection, SwipeGestureEventData } from "tns-core-modules/ui/gestures/gestures";
 import { StackLayout } from "tns-core-modules/ui/layouts/stack-layout/stack-layout";
 import { ScrollView, ScrollEventData } from "tns-core-modules/ui/scroll-view/scroll-view";
-import { TabView, SelectedIndexChangedEventData } from "tns-core-modules/ui/tab-view";
+import { SelectedIndexChangedEventData } from "tns-core-modules/ui/tab-view";
+import { TabView } from "tns-core-modules/ui/tab-view/tab-view";
 import { isAndroid, isIOS, screen } from "tns-core-modules/platform";
 import * as dialogs from "tns-core-modules/ui/dialogs"
 import { RouterExtensions } from "nativescript-angular/router";
@@ -40,9 +41,11 @@ export class PlannerAndroidComponent implements OnInit  {
     @ViewChild("tabbarScroll", { static: false }) sv: ElementRef;
     @ViewChild("tabbarStack", { static: false }) stc: ElementRef;
     @ViewChild("pageScroll", { static: false }) psc: ElementRef;
+    @ViewChild("tabviewSelector", { static: false }) tvs: ElementRef;
     public tabbarStackview: StackLayout;
     public tabbarScrollview: ScrollView;
     public pageScrollview: ScrollView;
+    public tabview: TabView;
 
     public tabbarSelected: number = 0;
     public tabbarSelectedKW: number = 1;
@@ -72,18 +75,17 @@ export class PlannerAndroidComponent implements OnInit  {
         if (isAndroid) {
             this.renderViewTimeout = setTimeout(() => {
                 this.renderView = true;
-            }, 600);
+            }, 500);
         } else {
             this.renderViewTimeout = setTimeout(() => {
                 this.renderView = true;
             }, 200);
         }
-
     }
 
     ngOnDestroy() {
         clearTimeout(this.renderViewTimeout);
-     }
+    }
 
     get loadingAndUi(): boolean {
         if (this.renderView) {
@@ -101,49 +103,44 @@ export class PlannerAndroidComponent implements OnInit  {
     }
 
     tabbarTapped(args, kw: number): void {
-        console.log("tabbar was tapped: " + args);
         this.tabbarSelected = args;
         this.tabbarSelectedKW = kw;
-        this.tabbarIndexScroll();
     }
 
-    // onSwipe(event: SwipeGestureEventData) {
-    //     this.pageScrollview = this.psc.nativeElement;
-    //     let swipeEnabled = !this.swipeLeft && !this.swipeRight;
-    //     let courseSize = this._coursesAllweeks.length - 1;
-        
-    //     if (event.direction === SwipeDirection.left) {
-    //         console.log("swipe to the left triggered");
-    //         if (this.tabbarSelected < courseSize && swipeEnabled) {
-    //             this.swipeLeft = true;
-    //             this.tabbarSelected = this.tabbarSelected + 1;
-    //             this.tabbarIndexScroll();
-    //             let selectedKW = this._coursesAllweeks[this.tabbarSelected].weekInYear;
-    //             setTimeout(() => {
-    //                 this.swipeLeft = false;
-    //             }, 500);
-    //             setTimeout(() => {
-    //                 this.tabbarSelectedKW = selectedKW;
-    //             }, 125);
-    //         }
+    hideMoreButtonTabview(): void {
+        this.tabview = this.tvs.nativeElement;
+        const nativeIosTabview = this.tabview.ios as UITabBarController;
+        nativeIosTabview.moreNavigationController.navigationBarHidden = true;
+    }
 
-    //     } else if (event.direction === SwipeDirection.right) {
-    //         console.log("swipe to the right triggered");
-    //         if (this.tabbarSelected > 0 && swipeEnabled) {
-    //             this.swipeRight = true;
-    //             this.tabbarSelected = this.tabbarSelected - 1;
-    //             this.tabbarIndexScroll();
+    onSwipe(event: SwipeGestureEventData) {
+        if (this.isIos) {
+            let swipeEnabled = !this.swipeLeft && !this.swipeRight;
+            let courseSize = this._coursesAllweeks.length - 1;
+            
+            if (event.direction === SwipeDirection.left) {
+                if (this.tabbarSelected < courseSize && swipeEnabled) {
+                    this.tabbarSelected++;
 
-    //             let selectedKW = this._coursesAllweeks[this.tabbarSelected].weekInYear;
-    //             setTimeout(() => {
-    //                 this.swipeRight = false;
-    //             }, 500);
-    //             setTimeout(() => {
-    //                 this.tabbarSelectedKW = selectedKW;
-    //             }, 125);
-    //         }
-    //     } 
-    // }
+                    this.swipeLeft = true;
+                    setTimeout(() => { this.swipeLeft = false; }, 500);
+
+                    let selectedKW = this._coursesAllweeks[this.tabbarSelected].weekInYear;
+                    setTimeout(() => { this.tabbarSelectedKW = selectedKW; }, 125);
+                }
+            } else if (event.direction === SwipeDirection.right) {
+                if (this.tabbarSelected > 0 && swipeEnabled) {
+                    this.tabbarSelected--;
+    
+                    this.swipeRight = true;
+                    setTimeout(() => { this.swipeRight = false; }, 500);
+
+                    let selectedKW = this._coursesAllweeks[this.tabbarSelected].weekInYear;
+                    setTimeout(() => { this.tabbarSelectedKW = selectedKW; }, 125);
+                }
+            } 
+        }
+    }
 
     onScroll(args: ScrollEventData) {
         this.pageScrollview = this.psc.nativeElement;
@@ -168,46 +165,15 @@ export class PlannerAndroidComponent implements OnInit  {
         this.tabbarScrollview = this.sv.nativeElement;
         this.tabbarStackview = this.stc.nativeElement;
 
-        if (this.screenWidth < this.tabbarStackview.getActualSize().width * this.tabbarSelected + this.tabbarStackview.getActualSize().width/2 || this.swipeRight) {
-                this.tabbarScrollview.scrollToHorizontalOffset(
-                    this.tabbarStackview.getActualSize().width * (this.tabbarSelected - 1), true);
-        }
-    }
-
-    onPan(args: PanGestureEventData) {
-        console.log("Object that triggered the event: " + args.object);
-        console.log("View that triggered the event: " + args.view);
-        console.log("Event name: " + args.eventName);
-        console.log("Pan delta: [" + args.deltaX + ", " + args.deltaY + "] state: " + args.state);
+        this.tabbarScrollview.scrollToHorizontalOffset(
+            this.tabbarStackview.getActualSize().width * (this.tabbarSelected - 1), true);
     }
 
     extractCoursesData(): void {
         this._coursesService.getCourseData()
             .subscribe((result: Array<CoursesModel>) => {
                 this._coursesAllweeks = result;
-                // let collectionDays: {}[] = [];
-
-                // result.forEach((event, kwIndex) => { 
-                //     event.weekdays.forEach((day) => {
-                //         console.log(kwIndex);
-                //         collectionDays.push({
-                //             name: day.name,
-                //             kwIndex: kwIndex,
-                //             events: day.events,
-                //             dayInWeek: day.dayInWeek,
-                //             weekOfYear: day.events[0].weekOfYear
-                //         });
-                //     });     
-                // });
-
                 this.tabbarSelectedKW = result[0].weekInYear;
-
-                // experimental function for better performance through loading week list in small pieces
-                // good smartphones handle it better then before, weak smartphones tend to die
-                // this.loadWeekListInChunks(collectionDays);
-
-                // this._coursesWeekList = collectionDays;
-
                 this._isLoadingCourses = false;
             }, (error) => console.log(error));
     }
@@ -218,18 +184,23 @@ export class PlannerAndroidComponent implements OnInit  {
         if (isIOS) {
           tabView.viewController.tabBar.hidden = true;
         }
+
         if (isAndroid) {
-        //   const tabLayout = tabView.nativeViewProtected.tabLayout;
-        //   tabLayout.getLayoutParams().height = 0;
-        //   tabLayout.requestLayout();
-        tabView.android.removeViewAt(1);
+            tabView.android.removeViewAt(1);
         }
     }
 
     onSelectedIndexChanged(args: SelectedIndexChangedEventData) {
         this.tabbarSelected = args.newIndex;
         this.tabbarSelectedKW = this._coursesAllweeks[this.tabbarSelected].weekInYear;
-        this.tabbarIndexScroll();
+
+        if (this.isIos && (this.tabbarSelected > 3)) {
+            this.hideMoreButtonTabview();
+        }
+
+        if (this.tabbarSelected > 0) {
+            this.tabbarIndexScroll();
+        }
     }
     
 

@@ -38,14 +38,14 @@ export class CoursesService {
 
     getCourseData(): Observable<CoursesModel[]> {
         let headers = this.createRequestHeader();
-        let courseString = getString("timetable_id");
+        let courseString = getString(LSOBJECTS.MODULEIDS);
 
         return this._updateAvailable.pipe(flatMap((data) => {
             if (data.updatable) {
                 console.log('data updatable')
                 let baseRequest = this.http
-                    // .get<Array<CoursesModel>>(this.coursesUrl + eventQuery + courseString, { headers: headers });
-                    .get<Array<CoursesModel>>(this.dummyApiOne, { headers: headers });
+                    .get<Array<CoursesModel>>(this.coursesUrl + eventQuery + courseString, { headers: headers });
+                    // .get<Array<CoursesModel>>(this.dummyApiOne, { headers: headers });
                     console.log('url: ' + courseString)
                     console.log('module ' + this._additionalModule)
                 if (this._additionalModule) {
@@ -111,15 +111,15 @@ export class CoursesService {
 
     getSpecificCourseData(courseId: string): Observable<CoursesModel[]> {
         let headers = this.createRequestHeader();
-        // return this.http.get<Array<CoursesModel>>(this.coursesUrl + eventQuery + courseId, { headers: headers });
-        return this.http.get<Array<CoursesModel>>(this.dummyApiTwo, { headers: headers });
+        return this.http.get<Array<CoursesModel>>(this.coursesUrl + eventQuery + courseId, { headers: headers });
+        // return this.http.get<Array<CoursesModel>>(this.dummyApiTwo, { headers: headers });
     }
 
     getSpecificModules(splusID: string, moduleIDs: string[]): Observable<CoursesModel[]> {
         let headers = this.createRequestHeader();
 
-        // return this.http.get<CoursesModel[]>(this.coursesUrl + eventQuery + splusID, { headers: headers })
-        return this.http.get<CoursesModel[]>(this.dummyApiTwo, { headers: headers })
+        return this.http.get<CoursesModel[]>(this.coursesUrl + eventQuery + splusID, { headers: headers })
+        // return this.http.get<CoursesModel[]>(this.dummyApiTwo, { headers: headers })
             .pipe(map((mainModel) => {
                 return mainModel.map((models) => {
                     models.weekdays.map((weeks) => {

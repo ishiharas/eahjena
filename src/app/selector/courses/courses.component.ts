@@ -227,8 +227,8 @@ export class CoursesComponent implements OnInit {
                     this.selectedID.emit(this.selection.timetableId);
                     this.selectedIdString.emit(this.getCourseIdString(this.selection.course_index, this.selection.term_index, this.selection.group_index));
 
-                    if (!getString('timetable_id')) {
-                        setString('timetable_id', this.selection.timetableId);
+                    if (!getString(LSOBJECTS.MODULEIDS)) {
+                        setString(LSOBJECTS.MODULEIDS, this.selection.timetableId);
                     };
                 };
             });

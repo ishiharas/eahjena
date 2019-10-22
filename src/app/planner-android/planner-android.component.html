@@ -1,23 +1,22 @@
 <GridLayout rows="60, *" tkMainContent>
     <GridLayout row="0" rowSpan="2" *ngIf="!loadingAndUi">
-        <TabView [selectedIndex]="tabbarSelected" (loaded)="onTabViewLoaded($event)" (selectedIndexChanged)="onSelectedIndexChanged($event)">
+        <TabView #tabviewSelector [selectedIndex]="tabbarSelected" (loaded)="onTabViewLoaded($event)" (selectedIndexChanged)="onSelectedIndexChanged($event)" (swipe)="onSwipe($event)" [class.slide-out-left]="swipeLeft" [class.slide-out-right]="swipeRight">
             <ng-container *ngFor="let tab of _coursesAllweeks">
                 <ScrollView *tabItem="tab" #pageScroll (scroll)="onScroll($event)">
                     <StackLayout style="padding-top: 75">
                         <StackLayout *ngFor="let week of tab.weekdays; let weekdayIndex = index">
-                                <GridLayout rows="auto, auto, auto" columns="*, auto, *">
-                                    <Label row="0" col="1" text="&#xf111;" class="fa" style="font-size: 25; color: #00aaa0; vertical-align: center; opacity: 0.4;" horizontalAlignment="center"></Label>
-                                    <Label row="0" col="1" text="&#xf254;" class="fa" style="font-size: 16; color: #ffffff; vertical-align: center;" horizontalAlignment="center" ></Label>     
-                                    <Label row="1" col="1" [text]="week.events[0]?.dayOfWeek" class="event-component-header"></Label>
-                                    <Label row="2" col="1" [text]="week.events[0]?.date" class="footnote" horizontalAlignment="center"></Label>
-                                </GridLayout>
+                            <GridLayout rows="auto, auto, auto" columns="*, auto, *">
+                                <Label row="0" col="1" text="&#xf111;" class="fa" style="font-size: 25; color: #00aaa0; vertical-align: center; opacity: 0.4;" horizontalAlignment="center"></Label>
+                                <Label row="0" col="1" text="&#xf254;" class="fa" style="font-size: 16; color: #ffffff; vertical-align: center;" horizontalAlignment="center" ></Label>     
+                                <Label row="1" col="1" [text]="week.events[0]?.dayOfWeek" class="event-component-header"></Label>
+                                <Label row="2" col="1" [text]="week.events[0]?.date" class="footnote" horizontalAlignment="center"></Label>
+                            </GridLayout>
                             <CardView [class.event-component-isIos]="isIos" [class.event-component-isAndroid]="isAndroid" iosOverflowSafeArea="false">
                                 <StackLayout>
                                     <GridLayout *ngFor="let course of week?.events; let first = first; let last = last; let courseIndex = index" 
                                         rows="auto, auto, auto" columns="*, 80" 
                                         class="list-courses" ripple rippleColor="#00aaa0"
-                                        [ngClass]="[(course.added && first && isAndroid) ? 'module-added-top-android' : '', (course.added && first && isIos) ? 'module-added-top-ios' : '', (course.added && last && isAndroid) ? 'module-added-bottom-android' : '', (course.added && last && isIos) ? 'module-added-bottom-ios' : '', (course.added && !first && !last) ? 'module-added-center' : '']"
-                                        >
+                                        [ngClass]="[(course.added && first && isAndroid) ? 'module-added-top-android' : '', (course.added && first && isIos) ? 'module-added-top-ios' : '', (course.added && last && isAndroid) ? 'module-added-bottom-android' : '', (course.added && last && isIos) ? 'module-added-bottom-ios' : '', (course.added && !first && !last) ? 'module-added-center' : '']">
                                         <Label [text]="course.lecturer" 
                                             row="0" col="0"
                                             class="footnote m-t-10" style="font-size: 11" textWrap="true"></Label>
@@ -54,7 +53,7 @@
     <GridLayout row="0" rowSpan="2" [visibility]="loadingAndUi ? 'visible' : 'collapsed'">
         <ActivityIndicator busy="true" width="100" height="100" class="activity-indicator"></ActivityIndicator>
     </GridLayout>
-    <ScrollView #tabbarScroll row="1" orientation="horizontal" [ngClass]="tabbarHidden ? 'tabbar-slide-in' : 'tabbar-slide-out'">
+    <ScrollView #tabbarScroll row="1" orientation="horizontal" [ngClass]="tabbarHidden ? 'tabbar-slide-in' : 'tabbar-slide-out'" style="background-color: rgb(249, 249, 249)">
         <StackLayout orientation="horizontal" class="tabbar">
             <StackLayout    #tabbarStack
                             *ngFor="let item of _coursesAllweeks; let i = index" 

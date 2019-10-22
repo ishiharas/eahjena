@@ -17,7 +17,12 @@ import { HomeInterceptor } from "./shared/mock/home-interceptor";
     ],
     providers: [
         AuthGuard,
-        TimestampService
+        TimestampService,
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: HomeInterceptor,
+            multi: true
+        }
     ],
     imports: [
         NativeScriptModule,
